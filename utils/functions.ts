@@ -1,4 +1,4 @@
-export function generateRoomId() {
+export function generateRoomId(): string {
   let result = '';
   const idLength = 7;
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -15,13 +15,13 @@ export function isStringEmpty(value: string): boolean {
   return value.replace(/\s/g, '').length === 0
 }
 
-export function getRandomElementFromArray<T extends any>(array: T[]): T {
+export function getRandomElementFromArray<T>(array: T[]): T {
   const index = Math.floor(Math.random() * array.length);
 
   return array[index];
 }
 
-export function shuffleArray<T extends any>(unshuffledArray: T[]): T[] {
+export function shuffleArray<T>(unshuffledArray: T[]): T[] {
   return unshuffledArray
     .map(value => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)

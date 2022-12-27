@@ -9,7 +9,7 @@ import { isStringEmpty } from '../utils/functions';
 import generateRandomName from '../utils/generateRandomName';
 import { SceneState } from '../utils/game';
 
-export default function Room() {
+export default function Room(): JSX.Element {
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME)
   const router = useRouter();
   const { room_id } = router.query;
@@ -42,14 +42,14 @@ export default function Room() {
     return name;
   }
 
-  const createPartyRoom = () => {
+  const createPartyRoom = (): void => {
     const newName = getAndStoreFormName()
 
     const newRoomID = createRoom(newName)
     redirectToRoom(newRoomID)
   }
 
-  const joinPartyRoom = async () => {
+  const joinPartyRoom = async (): Promise<void> => {
     const newName = getAndStoreFormName()
 
     const roomID = room_id?.toString() ?? '';
@@ -57,7 +57,7 @@ export default function Room() {
     redirectToRoom(joinedRoomID)
   }
 
-  const redirectToRoom = (roomID: string) => {
+  const redirectToRoom = (roomID: string): void => {
     router.push(`/${roomID}`, undefined, { shallow: true });
   }
 
@@ -65,7 +65,7 @@ export default function Room() {
     navigator.clipboard.writeText(process.env.NEXT_PUBLIC_HOST + '/' + room_id)
   }, [room_id]);
 
-  const validateCharacter = () => {
+  const validateCharacter = (): void => {
     if (!selectedPlayer) {
       alert('Une erreur est survenue')
       return
@@ -121,7 +121,7 @@ export default function Room() {
           <h1>{room_id}</h1>
 
           {(player?.isOwner && players.length > 1) &&
-            <Button onClick={() => startGame(joinedRoom ? joinedRoom : '')}>
+            <Button onClick={(): void => startGame(joinedRoom ? joinedRoom : '')}>
               Lancer la partie
             </Button>}
 
