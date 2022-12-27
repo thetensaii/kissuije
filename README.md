@@ -7,13 +7,19 @@ Guess and deduce the character you have before other players find theirs!
 
 ## Getting Started
 
-First, install all the dependencies :
+First, copy `.env.example` file as `.env.local` :
+
+```bash
+cp .env.example .env.local
+```
+
+Then, install all the dependencies :
 
 ```bash
 pnpm install
 ```
 
-Then, run the development server:
+Finally, run the development server:
 
 ```bash
 pnpm run dev
