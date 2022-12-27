@@ -7,13 +7,27 @@ import { ClientToServerEvents, ServerToClientEvents } from '../utils/sockets';
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 type SetSceneState = (scene: SceneState) => void
 
-export const useRoom = (setSceneState: SetSceneState) => {
+type CreateRoomFn = (name: string) => string
+type JoinRoomFn = (name: string, roomID: string) => Promise<string>
+type StartGameFn = (roomId: string) => void
+type ValidatePlayerCharacterFn = (playerId: string, character: string) => void
+
+type UseRoomReturnType = {
+  player: Player|null,
+  joinedRoom: false|string,
+  players: Player[],
+  selectedPlayer: Player|null,
+  createRoom: CreateRoomFn,
+  joinRoom: JoinRoomFn,
+  startGame: StartGameFn,
+  validatePlayerCharacter: ValidatePlayerCharacterFn,
+}
+
+export const useRoom = (setSceneState: SetSceneState): UseRoomReturnType => {
 
   const [joinedRoom, setJoinedRoom] = useState<false | string>(false);
   const [players, setPlayers] = useState<Player[]>([]);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null)
-
-
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/room/create');
@@ -83,13 +97,13 @@ export const useRoom = (setSceneState: SetSceneState) => {
     return player;
   }, [selectedPlayerId, players])
 
-  const createRoom = (name: string): string => {
+  const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId()
     runSocketEnterRoom(name, roomID)
     return roomID;
   }
 
-  const joinRoom = async (name: string, roomID: string): Promise<string> => {
+  const joinRoom: JoinRoomFn = async (name: string, roomID: string): Promise<string> => {
     const doesRoomExist: boolean = await new Promise(resolve => {
       socket.emit('doRoomExist', roomID, (doesExist) => {
         resolve(doesExist)
@@ -102,7 +116,7 @@ export const useRoom = (setSceneState: SetSceneState) => {
     return roomID;
   }
 
-  const runSocketEnterRoom = (name: string, roomID: string) => {
+  const runSocketEnterRoom = (name: string, roomID: string): void => {
     socket.emit('newPlayer', name, roomID, (players) => {
       setPlayers([
         ...players,
@@ -113,11 +127,11 @@ export const useRoom = (setSceneState: SetSceneState) => {
     setSceneState(SceneState.ROOM_JOINED)
   }
 
-  const startGame = (roomId: string) => {
+  const startGame: StartGameFn = (roomId: string): void => {
     socket.emit('startGame', roomId);
   }
 
-  const validatePlayerCharacter = (playerId: string, character: string) => {
+  const validatePlayerCharacter: ValidatePlayerCharacterFn = (playerId: string, character: string): void => {
     socket.emit('validatePlayerCharacter', playerId, character);
 
     setPlayers((players) => players.map((player) => {

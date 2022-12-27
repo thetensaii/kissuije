@@ -1,14 +1,14 @@
-import { name1, name2 } from "./constants";
+import { name1, name2 } from './constants';
 
-function capFirst(string: string) {
+function capFirst(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function getRandomInt(min: number, max: number) {
+function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-export default function generateRandomName() {
+export default function generateRandomName(): string {
   const name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + capFirst(name2[getRandomInt(0, name2.length + 1)]);
   return name;
 }

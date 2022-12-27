@@ -21,7 +21,7 @@ interface NextApiResponseWithSocket extends NextApiResponse {
 export default function room(
   _req: NextApiRequest,
   res: NextApiResponseWithSocket
-) {
+): void {
 
   if (res.socket.server.io) {
     res.end();
