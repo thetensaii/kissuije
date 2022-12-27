@@ -29,10 +29,10 @@ export default function room(
   }
 
   const io = new IOServer<
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData
+    ClientToServerEvents,
+    ServerToClientEvents,
+    InterServerEvents,
+    SocketData
   >(res.socket.server);
 
   res.socket.server.io = io;
