@@ -25,8 +25,8 @@ export interface ClientToServerEvents {
   validatePlayerCharacter: (playerId: string, character: string) => void;
 }
 
-export interface InterServerEvents {
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface InterServerEvents { }
 
 export interface SocketData {
   name: string;
