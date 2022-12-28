@@ -33,7 +33,6 @@ export function apiSockerHandler(io: CustomServer): void {
         isOwner,
       };
 
-      console.log(`CONNECTION ---- Name : ${name} - Room : ${room} - Client n°${numClients + 1}`);
       socket.join(room);
       socket.broadcast.to(room).emit('playerJoinRoom', newPlayer);
 
@@ -61,7 +60,6 @@ export function apiSockerHandler(io: CustomServer): void {
       const { name, joinedRoom, isOwner } = socket.data;
       if (!name || !joinedRoom) return;
 
-      console.log(`DISCONNECTION ---- Name : ${name} - Room : ${joinedRoom} - IS OWNER : ${isOwner}`);
       socket.broadcast.to(joinedRoom).emit('playerLeaveRoom', socket.id);
       socket.leave(joinedRoom);
 
@@ -124,11 +122,7 @@ export function apiSockerHandler(io: CustomServer): void {
         .map((s) => getSocketById(io, s))
         .filter((s) => s !== undefined && s.data.character).length;
 
-      console.log('numberOfPlayers : ' + numberOfPlayers);
-      console.log('numberOfPlayerWithCharacter : ' + numberOfPlayerWithCharacter);
-
       if (numberOfPlayers === numberOfPlayerWithCharacter) {
-        console.log('LAUNCH GAME');
         const shuffledRoomSocketIds = shuffleArray(roomSocketIds);
 
         socket.to(joinedRoom).emit('launchGame', shuffledRoomSocketIds);
