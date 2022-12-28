@@ -12,7 +12,7 @@ export function generateRoomId(): string {
 }
 
 export function isStringEmpty(value: string): boolean {
-  return value.replace(/\s/g, '').length === 0
+  return value.replace(/\s/g, '').length === 0;
 }
 
 export function getRandomElementFromArray<T>(array: T[]): T {
@@ -23,7 +23,7 @@ export function getRandomElementFromArray<T>(array: T[]): T {
 
 export function shuffleArray<T>(unshuffledArray: T[]): T[] {
   return unshuffledArray
-    .map(value => ({ value, sort: Math.random() }))
+    .map((value) => ({ value, sort: Math.random() }))
     .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
+    .map(({ value }) => value);
 }
