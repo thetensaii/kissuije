@@ -1,6 +1,5 @@
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { Player } from './game';
-
 
 export interface ServerToClientEvents {
   newOwner: (id: string) => void;
@@ -12,31 +11,18 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  doRoomExist: (
-    room: string,
-    callback: (doesExists: boolean) => void
-  ) => void;
-  newPlayer: (
-    name: string,
-    room: string,
-    callback: (players: Player[]) => void
-  ) => void;
+  doRoomExist: (room: string, callback: (doesExists: boolean) => void) => void;
+  newPlayer: (name: string, room: string, callback: (players: Player[]) => void) => void;
   startGame: (roomId: string) => void;
   validatePlayerCharacter: (playerId: string, character: string) => void;
 }
 
-export type InterServerEvents = Record<string, never>
+export type InterServerEvents = Record<string, never>;
 
-export interface SocketData {
-  name: string;
+export interface SocketData extends Player {
   joinedRoom: string;
-  isOwner: boolean;
-  character?: string;
 }
 
-export type ServerSocket = Socket<
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData
->;
+export type CustomSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+
+export type CustomServer = Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;

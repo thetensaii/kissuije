@@ -1,9 +1,9 @@
 export type Player = {
-  id: string,
-  name: string,
-  isOwner: boolean,
-  character?: string,
-}
+  id: string;
+  name: string;
+  isOwner: boolean;
+  character?: string;
+};
 
 export const SceneState = {
   HOME: 'HOME',
@@ -12,5 +12,5 @@ export const SceneState = {
   WAIT_THAT_OTHERS_CHOOSE: 'WAIT_THAT_OTHERS_CHOOSE',
   GAME: 'GAME',
   END_GAME: 'END_GAME',
-} as const
+} as const;
 export type SceneState = keyof typeof SceneState;
