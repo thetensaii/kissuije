@@ -43,12 +43,10 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
     });
 
     socket.on('playerJoinRoom', (player) => {
-      console.log(`Oh ${player.name} a rejoint le salon !!`);
       setPlayers((players) => [...players, player]);
     });
 
     socket.on('playerLeaveRoom', (id) => {
-      console.log(`Oh non ${id} a quitté le salon !!`);
       setPlayers((players) => players.filter((player) => player.id !== id));
     });
 
@@ -70,7 +68,6 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
     });
 
     socket.on('launchGame', (playersIdsByGameOrder) => {
-      console.log('Launch Game');
       setSelectedPlayerId(null);
       setPlayers((players) =>
         [...players].sort((p1, p2) => playersIdsByGameOrder.indexOf(p1.id) - playersIdsByGameOrder.indexOf(p2.id))
