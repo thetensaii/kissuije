@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
-import { getRandomElementFromArray, shuffleArray, sortById } from './functions';
-import { Player } from './game';
-import { CustomServer, CustomSocket } from './socketsTypes';
+import { getRandomElementFromArray, shuffleArray, sortById } from '../common/functions';
+import { Player } from '../common/game';
+import { CustomServer, CustomSocket } from './socketTypes';
 
 function getRoomSocketIds(io: Server, room: string): string[] {
   return Array.from(io.sockets.adapter.rooms.get(room)?.values() ?? []);
@@ -19,7 +19,7 @@ type GameRoom = {
 
 const gameRooms: Map<string, GameRoom> = new Map<string, GameRoom>();
 
-export function apiSockerHandler(io: CustomServer): void {
+export function apiSocketHandler(io: CustomServer): void {
   io.on('connection', (socket) => {
     socket.on('doRoomExist', (room, callback) => {
       callback(io.sockets.adapter.rooms.has(room));
