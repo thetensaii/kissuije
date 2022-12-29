@@ -8,8 +8,8 @@ import {
   InterServerEvents,
   ServerToClientEvents,
   SocketData,
-} from '../../../utils/socketsParameters';
-import { apiSockerHandler } from '../../../utils/apiSocketHandler';
+} from 'utils/socketsTypes';
+import { apiSockerHandler } from 'utils/apiSocketHandler';
 
 interface SocketServer extends HTTPServer {
   io?: IOServer | undefined;

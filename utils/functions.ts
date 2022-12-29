@@ -27,3 +27,7 @@ export function shuffleArray<T>(unshuffledArray: T[]): T[] {
     .sort((a, b) => a.sort - b.sort)
     .map(({ value }) => value);
 }
+
+export function sortById<T extends { id: string }>(array: T[], sortedIds: string[]): T[] {
+  return [...array].sort((a, b) => sortedIds.indexOf(a.id) - sortedIds.indexOf(b.id));
+}
