@@ -2,6 +2,7 @@ export type Player = {
   id: string;
   name: string;
   isOwner: boolean;
+  hasFoundCharacter: boolean;
   character?: string;
 };
 
