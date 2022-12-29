@@ -1,4 +1,4 @@
-export const name1 = [
+export const names1 = [
   'abandoned',
   'able',
   'absolute',
@@ -1349,7 +1349,7 @@ export const name1 = [
   'rocky',
 ];
 
-export const name2 = [
+export const names2 = [
   'people',
   'history',
   'way',

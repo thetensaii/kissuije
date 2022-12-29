@@ -2,17 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Server as HTTPServer } from 'http';
 import type { Socket as NetSocket } from 'net';
 import { Server as IOServer } from 'socket.io';
-import {
-  ClientToServerEvents,
-  CustomServer,
-  InterServerEvents,
-  ServerToClientEvents,
-  SocketData,
-} from 'utils/socketsTypes';
-import { apiSockerHandler } from 'utils/apiSocketHandler';
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
+import { apiSocketHandler } from 'lib/backend/apiSocketHandler';
+import { CustomServer, SocketData } from 'lib/backend/socketTypes';
 
 interface SocketServer extends HTTPServer {
-  io?: IOServer | undefined;
+  io?: CustomServer | undefined;
 }
 
 interface SocketWithIO extends NetSocket {
@@ -35,7 +30,7 @@ export default function room(_req: NextApiRequest, res: NextApiResponseWithSocke
 
   res.socket.server.io = io;
 
-  apiSockerHandler(io);
+  apiSocketHandler(io);
 
   res.end();
 }
