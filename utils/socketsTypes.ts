@@ -7,7 +7,7 @@ export interface ServerToClientEvents {
   playerLeaveRoom: (id: string) => void;
   choosePlayerCharacter: (id: string) => void;
   updatePlayerCharacter: (id: string, character: string) => void;
-  launchGame: (playerdIdsByGameOrder: string[]) => void;
+  launchGame: (playersByGameOrder: Player[]) => void;
 }
 
 export interface ClientToServerEvents {

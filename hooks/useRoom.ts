@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { generateRoomId } from '../utils/functions';
-import { Player, SceneState } from '../utils/game';
-import { ClientToServerEvents, ServerToClientEvents } from '../utils/socketsParameters';
+import { generateRoomId } from 'utils/functions';
+import { Player, SceneState } from 'utils/game';
+import { ClientToServerEvents, ServerToClientEvents } from 'utils/socketsTypes';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 type SetSceneStateFn = (scene: SceneState) => void;
@@ -17,6 +17,7 @@ type UseRoomReturnType = {
   joinedRoom: false | string;
   players: Player[];
   selectedPlayer: Player | null;
+  playingPlayer: Player;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -27,6 +28,7 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
   const [joinedRoom, setJoinedRoom] = useState<false | string>(false);
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/room/create');
@@ -67,11 +69,10 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
       );
     });
 
-    socket.on('launchGame', (playersIdsByGameOrder) => {
+    socket.on('launchGame', (playersByGameOrder) => {
       setSelectedPlayerId(null);
-      setPlayers((players) =>
-        [...players].sort((p1, p2) => playersIdsByGameOrder.indexOf(p1.id) - playersIdsByGameOrder.indexOf(p2.id))
-      );
+      setPlayers(playersByGameOrder);
+      setPlayingPlayerIndex(0);
       setSceneState(SceneState.GAME);
     });
   }, [setSceneState]);
@@ -97,6 +98,10 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
 
     return player;
   }, [selectedPlayerId, players]);
+
+  const playingPlayer: Player = useMemo(() => {
+    return players[playingPlayerIndex];
+  }, [playingPlayerIndex, players]);
 
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
@@ -151,6 +156,7 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
     joinedRoom,
     players,
     selectedPlayer,
+    playingPlayer,
     createRoom,
     joinRoom,
     startGame,
