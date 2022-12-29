@@ -5,9 +5,9 @@ import Button from 'components/atom/Button';
 import { useUser } from 'providers/UserProvider';
 import { useRoom } from 'hooks/useRoom';
 import Head from 'next/head';
-import { isStringEmpty } from 'utils/functions';
-import generateRandomName from 'utils/generateRandomName';
-import { SceneState } from 'utils/game';
+import { isStringEmpty } from 'lib/common/functions';
+import { SceneState } from 'lib/common/game';
+import { generateRandomName } from 'lib/common/generators/nameGenerator';
 
 export default function Room(): JSX.Element {
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);

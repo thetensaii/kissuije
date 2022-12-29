@@ -1,4 +1,3 @@
-import { Server, Socket } from 'socket.io';
 import { Player } from './game';
 
 export interface ServerToClientEvents {
@@ -18,11 +17,3 @@ export interface ClientToServerEvents {
 }
 
 export type InterServerEvents = Record<string, never>;
-
-export interface SocketData extends Player {
-  joinedRoom: string;
-}
-
-export type CustomSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
-
-export type CustomServer = Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;

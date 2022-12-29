@@ -14,4 +14,5 @@ export const SceneState = {
   GAME: 'GAME',
   END_GAME: 'END_GAME',
 } as const;
+
 export type SceneState = keyof typeof SceneState;

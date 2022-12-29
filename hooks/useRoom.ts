@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { generateRoomId } from 'utils/functions';
-import { Player, SceneState } from 'utils/game';
-import { ClientToServerEvents, ServerToClientEvents } from 'utils/socketsTypes';
+import { Player, SceneState } from 'lib/common/game';
+import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
+import { generateRoomId } from 'lib/common/generators/roomIdGenerator';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 type SetSceneStateFn = (scene: SceneState) => void;

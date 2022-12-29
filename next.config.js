@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   eslint: {
-    dirs: ['pages', 'utils', 'components', 'hooks', 'providers'],
+    dirs: ['pages', 'lib', 'components', 'hooks', 'providers'],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
