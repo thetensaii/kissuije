@@ -5,6 +5,6 @@ const nextConfig = {
   eslint: {
     dirs: ['pages', 'utils', 'components', 'hooks', 'providers'],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
