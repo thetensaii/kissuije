@@ -1,21 +1,30 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from '../styles/Home.module.scss';
-import Button from '../components/atom/Button';
-import { useUser } from '../providers/UserProvider';
-import { useRoom } from '../hooks/useRoom';
+import styles from 'styles/Home.module.scss';
+import Button from 'components/atom/Button';
+import { useUser } from 'providers/UserProvider';
+import { useRoom } from 'hooks/useRoom';
 import Head from 'next/head';
-import { isStringEmpty } from '../utils/functions';
-import generateRandomName from '../utils/generateRandomName';
-import { SceneState } from '../utils/game';
+import { isStringEmpty } from 'utils/functions';
+import generateRandomName from 'utils/generateRandomName';
+import { SceneState } from 'utils/game';
 
 export default function Room(): JSX.Element {
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);
   const router = useRouter();
   const { room_id } = router.query;
   const { name, setName } = useUser();
-  const { player, joinedRoom, players, selectedPlayer, createRoom, joinRoom, startGame, validatePlayerCharacter } =
-    useRoom(setSceneState);
+  const {
+    player,
+    joinedRoom,
+    players,
+    selectedPlayer,
+    playingPlayer,
+    createRoom,
+    joinRoom,
+    startGame,
+    validatePlayerCharacter,
+  } = useRoom(setSceneState);
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const characterInputRef = useRef<HTMLInputElement>(null);
@@ -156,19 +165,24 @@ export default function Room(): JSX.Element {
             <h1>C'est PARTI !!!!</h1>
             <ul>
               {players.map((p) => {
-                if (p.id === player.id)
-                  return (
-                    <li key={p.id}>
-                      {p.name} <i>(moi)</i>
-                    </li>
-                  );
+                const characterElement: JSX.Element = p.id === player.id ? <i>(moi)</i> : <i>({p.character})</i>;
+
                 return (
                   <li key={p.id}>
-                    {p.name} <i>({p.character})</i>
+                    {p.name} {characterElement}
                   </li>
                 );
               })}
             </ul>
+
+            {player.id === playingPlayer.id && (
+              <>
+                <div>
+                  <input type="text" />
+                  <Button>Envoyez la question</Button>
+                </div>
+              </>
+            )}
           </>
         )}
       </main>
