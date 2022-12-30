@@ -7,7 +7,7 @@ import { useRoom } from 'hooks/useRoom';
 import Head from 'next/head';
 import { isStringEmpty } from 'lib/common/functions';
 import { SceneState } from 'lib/common/game';
-import { generateRandomName } from 'lib/common/generators/nameGenerator';
+import { generateRandomName } from 'lib/common/generators/name-generator';
 
 export default function Room(): JSX.Element {
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);
@@ -155,7 +155,7 @@ export default function Room(): JSX.Element {
             </div>
 
             <p>
-              Nombre de vote : {players.filter((p) => p.character !== undefined).length} / {players.length}
+              Nombre de vote : {players.filter((p) => !isStringEmpty(p.character)).length} / {players.length}
             </p>
           </>
         )}
