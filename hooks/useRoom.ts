@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { Player, SceneState } from 'lib/common/game';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
-import { generateRoomId } from 'lib/common/generators/roomIdGenerator';
+import { generateRoomId } from 'lib/common/generators/roomId-generator';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 type SetSceneStateFn = (scene: SceneState) => void;
@@ -105,30 +105,31 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
 
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
-    runSocketEnterRoom(name, roomID);
+    socket.emit('createRoom', name, roomID, (owner) => {
+      setPlayers([owner]);
+      setJoinedRoom(roomID);
+      setSceneState(SceneState.ROOM_JOINED);
+    });
+
     return roomID;
   };
 
   const joinRoom: JoinRoomFn = async (name: string, roomID: string): Promise<string> => {
     const doesRoomExist: boolean = await new Promise((resolve) => {
-      socket.emit('doRoomExist', roomID, (doesExist) => {
+      socket.emit('doesRoomExist', roomID, (doesExist) => {
         resolve(doesExist);
       });
     });
 
     if (!doesRoomExist) return createRoom(name);
 
-    runSocketEnterRoom(name, roomID);
-    return roomID;
-  };
-
-  const runSocketEnterRoom = (name: string, roomID: string): void => {
-    socket.emit('newPlayer', name, roomID, (players) => {
+    socket.emit('joinRoom', name, roomID, (players) => {
       setPlayers([...players]);
       setJoinedRoom(roomID);
+      setSceneState(SceneState.ROOM_JOINED);
     });
 
-    setSceneState(SceneState.ROOM_JOINED);
+    return roomID;
   };
 
   const startGame: StartGameFn = (roomId: string): void => {
@@ -136,7 +137,7 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
   };
 
   const validatePlayerCharacter: ValidatePlayerCharacterFn = (playerId: string, character: string): void => {
-    socket.emit('validatePlayerCharacter', playerId, character);
+    socket.emit('choosePlayerCharacter', playerId, character);
 
     setPlayers((players) =>
       players.map((player) => {

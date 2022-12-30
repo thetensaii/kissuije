@@ -10,10 +10,10 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  doRoomExist: (room: string, callback: (doesExists: boolean) => void) => void;
-  newPlayer: (name: string, room: string, callback: (players: Player[]) => void) => void;
+  doesRoomExist: (room: string, callback: (doesExist: boolean) => void) => void;
+  createRoom: (name: string, roomId: string, callback: (owner: Player) => void) => void;
+  joinRoom: (name: string, roomId: string, callback: (roomPlayers: Player[]) => void) => void;
+  newPlayer: (name: string, roomId: string, callback: (players: Player[]) => void) => void;
   startGame: (roomId: string) => void;
-  validatePlayerCharacter: (playerId: string, character: string) => void;
+  choosePlayerCharacter: (playerId: string, character: string) => void;
 }
-
-export type InterServerEvents = Record<string, never>;
