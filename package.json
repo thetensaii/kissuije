@@ -9,7 +9,8 @@
     "yarn": "please-use-pnpm"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -n NEXT,TS -c magenta,cyan \"next dev\" \"pnpm ts --watch\"",
+    "ts": "tsc --noEmit --incremental --preserveWatchOutput --pretty",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
+    "concurrently": "^7.6.0",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.3",
     "eslint-config-prettier": "^8.5.0",
