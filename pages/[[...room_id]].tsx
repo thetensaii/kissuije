@@ -1,191 +1,36 @@
-import React, { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from 'styles/Home.module.scss';
-import Button from 'components/atom/Button';
-import { useUser } from 'providers/UserProvider';
-import { useRoom } from 'hooks/useRoom';
-import Head from 'next/head';
-import { isStringEmpty } from 'lib/common/functions';
 import { SceneState } from 'lib/common/game';
-import { generateRandomName } from 'lib/common/generators/name-generator';
+import { Home } from 'components/organism/Home';
+import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { JoinedRoom } from 'components/organism/JoinedRoom';
+import { ChooseCharacter } from 'components/organism/ChooseCharacter';
+import { WaitingRoom } from 'components/organism/WaitingRoom';
+import { Game } from 'components/organism/Game';
+import { useCallback, useMemo } from 'react';
 
-export default function Room(): JSX.Element {
-  const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);
+export default function Root(): JSX.Element {
   const router = useRouter();
   const { room_id } = router.query;
-  const { name, setName } = useUser();
-  const {
-    player,
-    joinedRoom,
-    players,
-    selectedPlayer,
-    playingPlayer,
-    createRoom,
-    joinRoom,
-    startGame,
-    validatePlayerCharacter,
-  } = useRoom(setSceneState);
+  const { sceneState } = useGameRoomContext();
 
-  const nameInputRef = useRef<HTMLInputElement>(null);
-  const characterInputRef = useRef<HTMLInputElement>(null);
+  const roomId = useMemo(() => {
+    if (room_id === undefined) return undefined;
 
-  const getAndStoreFormName = (): string => {
-    let name: string = generateRandomName();
-    if (nameInputRef.current?.value && !isStringEmpty(nameInputRef.current.value)) {
-      name = nameInputRef.current.value;
-      localStorage.setItem('name', name);
-    } else {
-      localStorage.removeItem('name');
-    }
-
-    setName(name);
-
-    return name;
-  };
-
-  const createPartyRoom = (): void => {
-    const newName = getAndStoreFormName();
-
-    const newRoomID = createRoom(newName);
-    redirectToRoom(newRoomID);
-  };
-
-  const joinPartyRoom = async (): Promise<void> => {
-    const newName = getAndStoreFormName();
-
-    const roomID = room_id?.toString() ?? '';
-    const joinedRoomID = await joinRoom(newName, roomID);
-    redirectToRoom(joinedRoomID);
-  };
-
-  const redirectToRoom = (roomID: string): void => {
-    router.push(`/${roomID}`, undefined, { shallow: true });
-  };
-
-  const copyRoomLink = useCallback(() => {
-    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_HOST + '/' + room_id);
+    return room_id[0];
   }, [room_id]);
 
-  const validateCharacter = (): void => {
-    if (!selectedPlayer) {
-      alert('Une erreur est survenue');
-      return;
-    }
-
-    if (!characterInputRef.current?.value || isStringEmpty(characterInputRef.current.value)) {
-      alert('Il faut saisir un personnage');
-      return;
-    }
-
-    const character = characterInputRef.current.value;
-    validatePlayerCharacter(selectedPlayer.id, character);
-  };
-
-  return (
-    <>
-      <Head>
-        <title>Kissuije - Jeu Gratuit Multijoueur de Devinettes & Déduction</title>
-        <meta
-          name="description"
-          content="Kissuije (Qui suis-je ?) est un jeu de devinettes multijoueur gratuit. Devinez et déduisez le personnage que vous avez avant que les autres joueurs trouvent les leur !"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.container}>
-        <h2>{sceneState}</h2>
-        {sceneState === SceneState.HOME && (
-          <>
-            <h1>Kissuije</h1>
-            <div>
-              <label htmlFor="name">Pseudo :</label>
-              <input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
-            </div>
-
-            {room_id && <Button onClick={joinPartyRoom}>Rejoindre partie</Button>}
-
-            <Button onClick={createPartyRoom}>Créer une salle privée</Button>
-          </>
-        )}
-
-        {sceneState === SceneState.ROOM_JOINED && (
-          <>
-            <h1>{room_id}</h1>
-
-            {player?.isOwner && players.length > 1 && (
-              <Button onClick={(): void => startGame(joinedRoom ? joinedRoom : '')}>Lancer la partie</Button>
-            )}
-
-            <h3>Liste des participants</h3>
-            <ul>
-              <li>{`${name} (moi)`}</li>
-              {players
-                .filter((p) => {
-                  if (!player) return true;
-                  return p.id !== player.id;
-                })
-                .map((player) => (
-                  <li key={player.id}>{player.name}</li>
-                ))}
-            </ul>
-
-            <Button onClick={copyRoomLink}>Copier le lien d'invitation</Button>
-
-            <a href="/">
-              <Button>Retour à l'accueil</Button>
-            </a>
-          </>
-        )}
-
-        {sceneState === SceneState.CHOOSE_CHARACTER && selectedPlayer && (
-          <>
-            <h3>Choisissez le personnage de : {selectedPlayer.name} </h3>
-
-            <input type="text" placeholder="Entrez un personnage" ref={characterInputRef} />
-
-            <Button onClick={validateCharacter}>Valider le personnage</Button>
-          </>
-        )}
-
-        {sceneState === SceneState.WAIT_THAT_OTHERS_CHOOSE && selectedPlayer?.character && (
-          <>
-            <div>
-              <h3>Tu as choisi : {selectedPlayer.character}</h3>
-              <h4>Pour {selectedPlayer.name}</h4>
-            </div>
-
-            <p>
-              Nombre de vote : {players.filter((p) => !isStringEmpty(p.character)).length} / {players.length}
-            </p>
-          </>
-        )}
-
-        {sceneState === SceneState.GAME && player && (
-          <>
-            <h1>C'est PARTI !!!!</h1>
-            <ul>
-              {players.map((p) => {
-                const characterElement: JSX.Element = p.id === player.id ? <i>(moi)</i> : <i>({p.character})</i>;
-
-                return (
-                  <li key={p.id}>
-                    {p.name} {characterElement}
-                  </li>
-                );
-              })}
-            </ul>
-
-            {player.id === playingPlayer.id && (
-              <>
-                <div>
-                  <input type="text" />
-                  <Button>Envoyez la question</Button>
-                </div>
-              </>
-            )}
-          </>
-        )}
-      </main>
-    </>
+  const redirectToRoom = useCallback(
+    (roomID: string): void => {
+      router.push(`/${roomID}`, undefined, { shallow: true });
+    },
+    [router]
   );
+
+  if (sceneState === SceneState.HOME) return <Home roomId={roomId} redirectToRoom={redirectToRoom} />;
+  if (sceneState === SceneState.JOINED_ROOM) return <JoinedRoom />;
+  if (sceneState === SceneState.CHOOSE_CHARACTER) return <ChooseCharacter />;
+  if (sceneState === SceneState.WAITING_ROOM) return <WaitingRoom />;
+  if (sceneState === SceneState.GAME) return <Game />;
+
+  return <h1>Erreur : Veuillez recharger la page</h1>;
 }

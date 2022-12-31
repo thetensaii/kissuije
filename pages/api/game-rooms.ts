@@ -32,7 +32,7 @@ interface NextApiResponseWithSocket extends NextApiResponse {
   socket: SocketWithIO;
 }
 
-export default function room(_req: NextApiRequest, res: NextApiResponseWithSocket): void {
+export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWithSocket): void {
   if (res.socket.server.io) {
     res.end();
     return;
