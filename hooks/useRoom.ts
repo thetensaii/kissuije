@@ -5,14 +5,14 @@ import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTy
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
-type SetSceneStateFn = (scene: SceneState) => void;
 
 type CreateRoomFn = (name: string) => string;
 type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 
-type UseRoomReturnType = {
+export type UseRoomReturnType = {
+  sceneState: SceneState;
   player: Player | null;
   joinedRoom: false | string;
   players: Player[];
@@ -24,14 +24,15 @@ type UseRoomReturnType = {
   validatePlayerCharacter: ValidatePlayerCharacterFn;
 };
 
-export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
+export const useRoom = (): UseRoomReturnType => {
+  const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);
   const [joinedRoom, setJoinedRoom] = useState<false | string>(false);
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
 
   const socketInitializer = useCallback(async () => {
-    await fetch('api/room/create');
+    await fetch('api/game-rooms');
 
     socket = io();
 
@@ -108,7 +109,7 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
     socket.emit('createRoom', name, roomID, (owner) => {
       setPlayers([owner]);
       setJoinedRoom(roomID);
-      setSceneState(SceneState.ROOM_JOINED);
+      setSceneState(SceneState.JOINED_ROOM);
     });
 
     return roomID;
@@ -126,7 +127,7 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
     socket.emit('joinRoom', name, roomID, (players) => {
       setPlayers([...players]);
       setJoinedRoom(roomID);
-      setSceneState(SceneState.ROOM_JOINED);
+      setSceneState(SceneState.JOINED_ROOM);
     });
 
     return roomID;
@@ -149,10 +150,11 @@ export const useRoom = (setSceneState: SetSceneStateFn): UseRoomReturnType => {
         };
       })
     );
-    setSceneState(SceneState.WAIT_THAT_OTHERS_CHOOSE);
+    setSceneState(SceneState.WAITING_ROOM);
   };
 
   return {
+    sceneState,
     player,
     joinedRoom,
     players,

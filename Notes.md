@@ -1,12 +1,15 @@
-# Mes notes
+# My notes
 
-### 1) Pas de type check en dev (Discussion lié au problème : )
-Lorsque l'on lance notre environnement de dev avec la commande `next dev`, aucun type checking n'est fait, c'est un peu comme développé en javascript du coup.    
-Au moins il y a un type checking au moment du build.   
-À Priori il n'y a pas de type checking pour des raisons de performance afin d'améliorer la DX, mais personellement je préfère un environnement type safe qu'un HMR très rapide.   
-(Discussion concernant le problème : [ICI](https://github.com/vercel/next.js/discussions/33634))
-
-Solution : 
+### 1) No type checking in dev environment
+When we launch the dev environment with the `next dev` command, there is no type checking, it is like coding in javascript. You are only able to see type error on runtime.   
+   
+At least, there is type checking at build time (`next build`).
+   
+It seems like, there is no type checking for performance reason and DX improvement, mais personally i prefer a type safe environment more than a very fast HMR.
+   
+(The github discussion on the problem [HERE](https://github.com/vercel/next.js/discussions/33634))
+   
+My Solution : 
 ```json
 (package.json)
 
@@ -15,3 +18,11 @@ Solution :
   "ts": "tsc --noEmit --incremental --preserveWatchOutput --pretty",
 }
 ```
+
+### 2) Whole page component is re-renderered on every game update
+As i put the game logic in only ONE **React Context** that is use in every component.   
+   
+If some context data is updated, every component which subscribed to the context are re-rendered, even if they don't use the updated data which is not performant.
+   
+But, we'll see later.
+
