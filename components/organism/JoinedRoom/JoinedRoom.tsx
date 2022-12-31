@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useCallback } from 'react';
 
 export const JoinedRoom = (): JSX.Element => {

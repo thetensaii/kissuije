@@ -1,5 +1,5 @@
 import { isStringEmpty } from 'lib/common/functions';
-import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { useGameRoomContext } from 'providers/GameRoomProvider';
 
 export const WaitingRoom = (): JSX.Element => {
   const { selectedPlayer, players } = useGameRoomContext();
