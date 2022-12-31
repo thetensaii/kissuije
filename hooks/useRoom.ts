@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { Player, SceneState } from 'lib/common/game';
+import { SceneState } from 'lib/frontend/game';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
+import { Player } from 'lib/frontend/player';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -15,6 +16,7 @@ export type UseRoomReturnType = {
   sceneState: SceneState;
   player: Player | null;
   joinedRoom: false | string;
+  ownerId: string;
   players: Player[];
   selectedPlayer: Player | null;
   playingPlayer: Player;
@@ -27,6 +29,7 @@ export type UseRoomReturnType = {
 export const useRoom = (): UseRoomReturnType => {
   const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);
   const [joinedRoom, setJoinedRoom] = useState<false | string>(false);
+  const [ownerId, setOwnerId] = useState<string>('');
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
@@ -37,12 +40,7 @@ export const useRoom = (): UseRoomReturnType => {
     socket = io();
 
     socket.on('newOwner', (playerId) => {
-      setPlayers((players) =>
-        players.map((p) => {
-          if (p.id === playerId) return { ...p, isOwner: true };
-          return p;
-        })
-      );
+      setOwnerId(playerId);
     });
 
     socket.on('playerJoinRoom', (player) => {
@@ -109,6 +107,7 @@ export const useRoom = (): UseRoomReturnType => {
     socket.emit('createRoom', name, roomID, (owner) => {
       setPlayers([owner]);
       setJoinedRoom(roomID);
+      setOwnerId(owner.id);
       setSceneState(SceneState.JOINED_ROOM);
     });
 
@@ -157,6 +156,7 @@ export const useRoom = (): UseRoomReturnType => {
     sceneState,
     player,
     joinedRoom,
+    ownerId,
     players,
     selectedPlayer,
     playingPlayer,
