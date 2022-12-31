@@ -1,0 +1,1 @@
+export { JoinedRoom } from './JoinedRoom';
