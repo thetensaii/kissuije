@@ -1,6 +1,6 @@
 import Button from 'components/atom/Button';
 import { isStringEmpty } from 'lib/common/functions';
-import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
 
 export const ChooseCharacter = (): JSX.Element => {

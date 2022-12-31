@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { SceneState } from 'lib/common/game';
 import { Home } from 'components/organism/Home';
-import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { JoinedRoom } from 'components/organism/JoinedRoom';
 import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitingRoom } from 'components/organism/WaitingRoom';

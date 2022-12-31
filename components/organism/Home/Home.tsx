@@ -1,6 +1,6 @@
 import Button from 'components/atom/Button';
 import { useName } from 'hooks/useName';
-import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
 
 interface Props {

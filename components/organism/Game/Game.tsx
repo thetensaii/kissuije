@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { useGameRoomContext } from 'providers/RoomSocketProvider';
+import { useGameRoomContext } from 'providers/GameRoomProvider';
 
 export const Game = (): JSX.Element => {
   const { players, player, playingPlayer } = useGameRoomContext();
