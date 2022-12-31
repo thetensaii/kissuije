@@ -14,7 +14,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "chmod +x ./node_modules/husky/lib/bin.js && husky install"
   },
   "dependencies": {
     "@types/node": "18.11.9",
