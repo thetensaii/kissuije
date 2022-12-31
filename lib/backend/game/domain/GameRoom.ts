@@ -14,8 +14,6 @@ export class GameRoom {
     this.players = new Players(owner);
     this.ownerId = owner.id;
     this.whoPickCharacterForWho = {};
-
-    owner.isOwner = true;
   }
 
   public getOwnerId(): Player['id'] {
@@ -37,7 +35,6 @@ export class GameRoom {
 
     const newOwner = getRandomElementFromArray(players);
     this.ownerId = newOwner.id;
-    newOwner.isOwner = true;
   }
 
   public getPlayers(): Players {

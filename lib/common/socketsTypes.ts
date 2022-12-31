@@ -1,4 +1,4 @@
-import { Player } from './game';
+import { Player } from '../frontend/player';
 
 export interface ServerToClientEvents {
   newOwner: (id: string) => void;

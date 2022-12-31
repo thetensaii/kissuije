@@ -1,10 +1,3 @@
-export type Player = {
-  id: string;
-  name: string;
-  isOwner: boolean;
-  character: string;
-};
-
 export const SceneState = {
   HOME: 'HOME',
   JOINED_ROOM: 'JOINED_ROOM',
