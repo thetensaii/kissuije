@@ -35,7 +35,7 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
         <input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
       </div>
       {roomId && <Button onClick={joinPartyRoom}>Rejoindre partie</Button>}
-      <Button onClick={createPartyRoom}>Créer une salle privée</Button>;
+      <Button onClick={createPartyRoom}>Créer une salle privée</Button>
     </>
   );
 }
