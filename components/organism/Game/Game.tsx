@@ -22,11 +22,17 @@ export const Game = (): JSX.Element => {
         })}
       </ul>
 
-      {player.id === playingPlayer.id && (
+      {player.id === playingPlayer.id ? (
         <>
           <div>
             <input type="text" />
             <Button>Envoyez la question</Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            C'est au tour de <b>{playingPlayer.name}</b> de jouer..
           </div>
         </>
       )}
