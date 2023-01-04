@@ -1,11 +1,25 @@
 import Button from 'components/atom/Button';
+import { isStringEmpty } from 'lib/common/functions';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useRef } from 'react';
 
 export const Game = (): JSX.Element => {
-  const { players, player, playingPlayer } = useGameRoomContext();
+  const { players, player, playingPlayer, question, askQuestion } = useGameRoomContext();
+
+  const questionInputRef = useRef<HTMLInputElement>(null);
 
   if (!player) return <></>;
   if (!player) return <></>;
+
+  const handleQuestionForm = (): void => {
+    const question = questionInputRef.current?.value;
+    if (!question || isStringEmpty(question)) {
+      alert('Merci de saisir une question');
+      return;
+    }
+
+    askQuestion(question);
+  };
 
   return (
     <>
@@ -24,16 +38,32 @@ export const Game = (): JSX.Element => {
 
       {player.id === playingPlayer.id ? (
         <>
-          <div>
-            <input type="text" />
-            <Button>Envoyez la question</Button>
-          </div>
+          {question ? (
+            <div>
+              Vous avez posé la question suivante :
+              <br />
+              <b>{question}</b>
+            </div>
+          ) : (
+            <div>
+              <input type="text" ref={questionInputRef} />
+              <Button onClick={handleQuestionForm}>Envoyez la question</Button>
+            </div>
+          )}
         </>
       ) : (
         <>
-          <div>
-            C'est au tour de <b>{playingPlayer.name}</b> de jouer..
-          </div>
+          {question ? (
+            <div>
+              <b>{playingPlayer.name}</b> a posé cette question :
+              <br />
+              <b>{question}</b>
+            </div>
+          ) : (
+            <div>
+              C'est au tour de <b>{playingPlayer.name}</b> de jouer..
+            </div>
+          )}
         </>
       )}
     </>

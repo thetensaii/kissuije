@@ -7,6 +7,7 @@ export interface ServerToClientEvents {
   choosePlayerCharacter: (id: string) => void;
   updatePlayerCharacter: (id: string, character: string) => void;
   launchGame: (playersByGameOrder: Player[]) => void;
+  newQuestionAsked: (question: string) => void;
 }
 
 export interface ClientToServerEvents {
@@ -15,5 +16,6 @@ export interface ClientToServerEvents {
   joinRoom: (name: string, roomId: string, callback: (roomPlayers: Player[]) => void) => void;
   newPlayer: (name: string, roomId: string, callback: (players: Player[]) => void) => void;
   startGame: (roomId: string) => void;
-  choosePlayerCharacter: (playerId: string, character: string) => void;
+  choosePlayerCharacter: (targetId: string, character: string) => void;
+  askQuestion: (question: string) => void;
 }

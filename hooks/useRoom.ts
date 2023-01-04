@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { SceneState } from 'lib/frontend/game';
+import { SceneState } from 'lib/frontend/sceneState';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { Player } from 'lib/frontend/player';
@@ -11,6 +11,7 @@ type CreateRoomFn = (name: string) => string;
 type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
+type AskQuestionFn = (question: string) => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -20,10 +21,12 @@ export type UseRoomReturnType = {
   players: Player[];
   selectedPlayer: Player | null;
   playingPlayer: Player;
+  question: string | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
+  askQuestion: AskQuestionFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -33,6 +36,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
+  const [question, setQuestion] = useState<string | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -73,6 +77,10 @@ export const useRoom = (): UseRoomReturnType => {
       setPlayers(playersByGameOrder);
       setPlayingPlayerIndex(0);
       setSceneState(SceneState.GAME);
+    });
+
+    socket.on('newQuestionAsked', (question) => {
+      setQuestion(question);
     });
   }, [setSceneState]);
 
@@ -152,6 +160,12 @@ export const useRoom = (): UseRoomReturnType => {
     setSceneState(SceneState.WAITING_ROOM);
   };
 
+  const askQuestion: AskQuestionFn = (question: string) => {
+    socket.emit('askQuestion', question);
+
+    setQuestion(question);
+  };
+
   return {
     sceneState,
     player,
@@ -160,9 +174,11 @@ export const useRoom = (): UseRoomReturnType => {
     players,
     selectedPlayer,
     playingPlayer,
+    question,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
+    askQuestion,
   };
 };
