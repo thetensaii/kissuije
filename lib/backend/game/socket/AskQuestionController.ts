@@ -15,6 +15,7 @@ export class AskQuestionController {
         const newQuestion = this.askQuestionService.askQuestion(roomId, socket.id, question);
 
         socket.broadcast.to(roomId).emit('newQuestionAsked', newQuestion.text);
+        socket.emit('newQuestionAsked', newQuestion.text);
       });
     });
   }

@@ -4,6 +4,7 @@ import { Player } from '../domain/Player';
 import { RoomNotFoundError } from '../domain/errors/RoomNotFoundError';
 import { PlayerBindToPlayerType } from '../domain/Players';
 import { Attempt } from '../domain/Attempt';
+import { Answer } from '../domain/Answer';
 
 export class InMemoryGameRooms extends GameRooms {
   private gameRooms: Map<GameRoom['id'], GameRoom>;
@@ -77,6 +78,20 @@ export class InMemoryGameRooms extends GameRooms {
     const newQuestion = room.askQuestion(playerId, question);
 
     return newQuestion;
+  }
+
+  public answerQuestion(roomId: string, answer: Answer): Attempt {
+    const room = this.getRoom(roomId);
+
+    const question = room.answerQuestion(answer);
+
+    return question;
+  }
+
+  public doEverybodyAnswered(roomId: string): boolean {
+    const room = this.getRoom(roomId);
+
+    return room.doEverybodyAnswered();
   }
 
   private getRoom(roomId: GameRoom['id']): GameRoom {

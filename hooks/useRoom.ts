@@ -4,6 +4,7 @@ import { SceneState } from 'lib/frontend/sceneState';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { Player } from 'lib/frontend/player';
+import { Answer, convertSocketAnswerToAnswer, Question } from 'lib/frontend/question';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -12,6 +13,7 @@ type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 type AskQuestionFn = (question: string) => void;
+type AnswerQuestionFn = (answer: Answer) => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -21,12 +23,14 @@ export type UseRoomReturnType = {
   players: Player[];
   selectedPlayer: Player | null;
   playingPlayer: Player;
-  question: string | null;
+  question: Question | null;
+  doIAnswered: boolean;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
   askQuestion: AskQuestionFn;
+  answerQuestion: AnswerQuestionFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -36,7 +40,8 @@ export const useRoom = (): UseRoomReturnType => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
-  const [question, setQuestion] = useState<string | null>(null);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [doIAnswered, setDoIAnswered] = useState<boolean>(false);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -80,7 +85,21 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('newQuestionAsked', (question) => {
-      setQuestion(question);
+      setQuestion({
+        text: question,
+        answers: [],
+      });
+    });
+
+    socket.on('newAnswer', (answer) => {
+      setQuestion((question) => {
+        if (!question) throw new Error('No Question');
+
+        return {
+          ...question,
+          answers: [...question.answers, convertSocketAnswerToAnswer(answer)],
+        };
+      });
     });
   }, [setSceneState]);
 
@@ -162,8 +181,11 @@ export const useRoom = (): UseRoomReturnType => {
 
   const askQuestion: AskQuestionFn = (question: string) => {
     socket.emit('askQuestion', question);
+  };
 
-    setQuestion(question);
+  const answerQuestion: AnswerQuestionFn = (answer: Answer) => {
+    socket.emit('answerQuestion', answer);
+    setDoIAnswered(true);
   };
 
   return {
@@ -175,10 +197,12 @@ export const useRoom = (): UseRoomReturnType => {
     selectedPlayer,
     playingPlayer,
     question,
+    doIAnswered,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
     askQuestion,
+    answerQuestion,
   };
 };
