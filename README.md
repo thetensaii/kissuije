@@ -53,8 +53,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   
 - [ ] **Game logic**
   - [ ] Ask a question logic
-    - [ ] When its their turn player can send their question
-    - [ ] Other players choose between `yes`, `no`, and `i don't know`
+    - [x] When its their turn player can send their question
+    - [x] Other players choose between `yes`, `no`, and `i don't know` to answer
     - [ ] If majority is `yes`, player can ask another question
     - [ ] If majority is `no`, we pass to the next player
     - [ ] If there is no `yes` or `no` answers, or they are equal then player can ask another question
