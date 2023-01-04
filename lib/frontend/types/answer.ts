@@ -7,11 +7,6 @@ export const AnswerType = {
 } as const;
 export type AnswerType = keyof typeof AnswerType;
 
-export type Question = {
-  text: string;
-  answers: AnswerType[];
-};
-
 export const convertSocketAnswerToAnswer = (answer: SocketAnswerType): AnswerType => {
   return answer;
 };

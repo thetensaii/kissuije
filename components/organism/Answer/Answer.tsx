@@ -1,7 +1,7 @@
 import Button from 'components/atom/Button';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useState } from 'react';
-import { AnswerType } from 'lib/frontend/question';
 
 export const Answer = (): JSX.Element => {
   const { players, playingPlayer, question, doIAnswered, answerQuestion } = useGameRoomContext();

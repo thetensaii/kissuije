@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { SceneState } from 'lib/frontend/sceneState';
+import { SceneState } from 'lib/frontend/types/sceneState';
 import { Home } from 'components/organism/Home';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { JoinedRoom } from 'components/organism/JoinedRoom';
