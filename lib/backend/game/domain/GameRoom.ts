@@ -1,4 +1,5 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
+import { Answer } from './Answer';
 import { Attempt } from './Attempt';
 import { Attempts } from './Attempts';
 import { Player } from './Player';
@@ -76,5 +77,20 @@ export class GameRoom {
     const newQuestion = this.questions.newAttempt(playerId, this.actualRound, question);
 
     return newQuestion;
+  }
+
+  public answerQuestion(answer: Answer): Attempt {
+    const attempt = this.questions.addAnswer(answer);
+
+    return attempt;
+  }
+
+  public doEverybodyAnswered(): boolean {
+    const lastQuestion = this.questions.getLastAttempt();
+    const players = this.players.getAll();
+
+    if (lastQuestion.answers.length === players.length - 1) return true;
+
+    return false;
   }
 }

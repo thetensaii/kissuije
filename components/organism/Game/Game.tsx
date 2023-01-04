@@ -1,14 +1,15 @@
 import Button from 'components/atom/Button';
 import { isStringEmpty } from 'lib/common/functions';
+import { Answer } from 'lib/frontend/question';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 export const Game = (): JSX.Element => {
-  const { players, player, playingPlayer, question, askQuestion } = useGameRoomContext();
+  const { players, player, playingPlayer, question, doIAnswered, askQuestion, answerQuestion } = useGameRoomContext();
 
   const questionInputRef = useRef<HTMLInputElement>(null);
+  const [answerValue, setAnswerValue] = useState<Answer>('yes');
 
-  if (!player) return <></>;
   if (!player) return <></>;
 
   const handleQuestionForm = (): void => {
@@ -19,6 +20,10 @@ export const Game = (): JSX.Element => {
     }
 
     askQuestion(question);
+  };
+
+  const handleAnswerForm = (): void => {
+    answerQuestion(answerValue);
   };
 
   return (
@@ -42,7 +47,11 @@ export const Game = (): JSX.Element => {
             <div>
               Vous avez posé la question suivante :
               <br />
-              <b>{question}</b>
+              <b>{question.text}</b>
+              <br />
+              <div>
+                Réponses : {question.answers.length} / {players.length - 1}
+              </div>
             </div>
           ) : (
             <div>
@@ -57,7 +66,50 @@ export const Game = (): JSX.Element => {
             <div>
               <b>{playingPlayer.name}</b> a posé cette question :
               <br />
-              <b>{question}</b>
+              <b>{question.text}</b>
+              <br />
+              {!doIAnswered && (
+                <>
+                  <div>
+                    <input
+                      type="radio"
+                      name="answer"
+                      id="yes"
+                      checked={answerValue === Answer.yes}
+                      value={Answer.yes}
+                      onChange={(): void => setAnswerValue(Answer.yes)}
+                    />
+                    <label htmlFor="yes">Oui</label>
+                    <br />
+                    <input
+                      type="radio"
+                      name="answer"
+                      id="no"
+                      checked={answerValue === Answer.no}
+                      value={Answer.no}
+                      onChange={(): void => setAnswerValue(Answer.no)}
+                    />
+                    <label htmlFor="no">Non</label>
+                    <br />
+                    <input
+                      type="radio"
+                      name="answer"
+                      id="idk"
+                      checked={answerValue === Answer.idk}
+                      value={Answer.idk}
+                      onChange={(): void => setAnswerValue(Answer.idk)}
+                    />
+                    <label htmlFor="idk">Je ne sais pas</label>
+                    <br />
+
+                    <Button onClick={handleAnswerForm}>Envoyez la réponse</Button>
+                  </div>
+                  <br />
+                </>
+              )}
+              <div>
+                Réponses : {question.answers.length} / {players.length - 1}
+              </div>
             </div>
           ) : (
             <div>
