@@ -19,11 +19,11 @@ export class ChoosePlayerCharacterController {
 
   public choosePlayerCharacter(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('choosePlayerCharacter', (playerId, character) => {
+      socket.on('choosePlayerCharacter', (targetId, character) => {
         const roomId = socket.data.joinedRoom ?? '';
 
-        const updatedPlayer = this.choosePlayerCharacterService.choosePlayerCharacter(roomId, playerId, character);
-        socket.broadcast.to(roomId).emit('updatePlayerCharacter', playerId, updatedPlayer.character);
+        const updatedPlayer = this.choosePlayerCharacterService.choosePlayerCharacter(roomId, targetId, character);
+        socket.broadcast.to(roomId).emit('updatePlayerCharacter', targetId, updatedPlayer.character);
 
         // TODO : checker si
         const doAllPlayersHaveCharacter = this.doAllPlayersHaveCharacterService.doAllPlayersHaveCharacter(roomId);

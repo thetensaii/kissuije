@@ -1,4 +1,6 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
+import { Attempt } from './Attempt';
+import { Attempts } from './Attempts';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
 
@@ -9,11 +11,17 @@ export class GameRoom {
 
   private whoPickCharacterForWho: PlayerBindToPlayerType;
 
+  private actualRound: number;
+  private questions: Attempts;
+
   constructor(id: GameRoom['id'], owner: Player) {
     this.id = id;
     this.players = new Players(owner);
     this.ownerId = owner.id;
     this.whoPickCharacterForWho = {};
+
+    this.actualRound = 0;
+    this.questions = new Attempts();
   }
 
   public getOwnerId(): Player['id'] {
@@ -47,8 +55,8 @@ export class GameRoom {
     return this.whoPickCharacterForWho;
   }
 
-  public choosePlayerCharacter(playerId: Player['id'], character: Player['character']): Player {
-    const player = this.players.getPlayer(playerId);
+  public choosePlayerCharacter(targetId: Player['id'], character: Player['character']): Player {
+    const player = this.players.getPlayer(targetId);
     player.character = character;
 
     return player;
@@ -62,5 +70,11 @@ export class GameRoom {
     this.players.shuffleOrder();
 
     return this.players.getAll();
+  }
+
+  public askQuestion(playerId: Player['id'], question: string): Attempt {
+    const newQuestion = this.questions.newAttempt(playerId, this.actualRound, question);
+
+    return newQuestion;
   }
 }

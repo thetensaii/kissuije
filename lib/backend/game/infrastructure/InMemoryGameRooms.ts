@@ -3,6 +3,7 @@ import { GameRooms } from '../domain/GameRooms';
 import { Player } from '../domain/Player';
 import { RoomNotFoundError } from '../domain/errors/RoomNotFoundError';
 import { PlayerBindToPlayerType } from '../domain/Players';
+import { Attempt } from '../domain/Attempt';
 
 export class InMemoryGameRooms extends GameRooms {
   private gameRooms: Map<GameRoom['id'], GameRoom>;
@@ -48,10 +49,10 @@ export class InMemoryGameRooms extends GameRooms {
     return whoPickCharacterForWho;
   }
 
-  public choosePlayerCharacter(roomId: GameRoom['id'], playerId: Player['id'], character: Player['character']): Player {
+  public choosePlayerCharacter(roomId: GameRoom['id'], targetId: Player['id'], character: Player['character']): Player {
     const room = this.getRoom(roomId);
 
-    const updatedPlayer = room.choosePlayerCharacter(playerId, character);
+    const updatedPlayer = room.choosePlayerCharacter(targetId, character);
 
     return updatedPlayer;
   }
@@ -68,6 +69,14 @@ export class InMemoryGameRooms extends GameRooms {
     const players = room.startGame();
 
     return players;
+  }
+
+  public askQuestion(roomId: string, playerId: string, question: string): Attempt {
+    const room = this.getRoom(roomId);
+
+    const newQuestion = room.askQuestion(playerId, question);
+
+    return newQuestion;
   }
 
   private getRoom(roomId: GameRoom['id']): GameRoom {

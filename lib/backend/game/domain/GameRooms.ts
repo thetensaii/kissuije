@@ -1,3 +1,4 @@
+import { Attempt } from './Attempt';
 import { GameRoom } from './GameRoom';
 import { Player } from './Player';
 import { PlayerBindToPlayerType } from './Players';
@@ -10,11 +11,13 @@ export abstract class GameRooms {
   public abstract startPlayerCharacterSelection(roomId: GameRoom['id']): PlayerBindToPlayerType;
   public abstract choosePlayerCharacter(
     roomId: GameRoom['id'],
-    playerId: Player['id'],
+    targetId: Player['id'],
     character: Player['character']
   ): Player;
 
   public abstract doAllPlayersHaveCharacter(roomId: GameRoom['id']): boolean;
 
   public abstract startGame(roomId: GameRoom['id']): Player[];
+
+  public abstract askQuestion(roomId: GameRoom['id'], playerId: Player['id'], question: string): Attempt;
 }
