@@ -4,7 +4,7 @@ import { SceneState } from 'lib/frontend/sceneState';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { Player } from 'lib/frontend/player';
-import { Answer, convertSocketAnswerToAnswer, Question } from 'lib/frontend/question';
+import { AnswerType, convertSocketAnswerToAnswer, Question } from 'lib/frontend/question';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -13,7 +13,7 @@ type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 type AskQuestionFn = (question: string) => void;
-type AnswerQuestionFn = (answer: Answer) => void;
+type AnswerQuestionFn = (answer: AnswerType) => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -25,6 +25,7 @@ export type UseRoomReturnType = {
   playingPlayer: Player;
   question: Question | null;
   doIAnswered: boolean;
+  everybodyAnswered: boolean;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -42,6 +43,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
   const [question, setQuestion] = useState<Question | null>(null);
   const [doIAnswered, setDoIAnswered] = useState<boolean>(false);
+  const [everybodyAnswered, setEverybodyAnswered] = useState<boolean>(false);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -100,6 +102,10 @@ export const useRoom = (): UseRoomReturnType => {
           answers: [...question.answers, convertSocketAnswerToAnswer(answer)],
         };
       });
+    });
+
+    socket.on('everybodyAnswered', () => {
+      setEverybodyAnswered(true);
     });
   }, [setSceneState]);
 
@@ -183,7 +189,7 @@ export const useRoom = (): UseRoomReturnType => {
     socket.emit('askQuestion', question);
   };
 
-  const answerQuestion: AnswerQuestionFn = (answer: Answer) => {
+  const answerQuestion: AnswerQuestionFn = (answer: AnswerType) => {
     socket.emit('answerQuestion', answer);
     setDoIAnswered(true);
   };
@@ -198,6 +204,7 @@ export const useRoom = (): UseRoomReturnType => {
     playingPlayer,
     question,
     doIAnswered,
+    everybodyAnswered,
     createRoom,
     joinRoom,
     startGame,
