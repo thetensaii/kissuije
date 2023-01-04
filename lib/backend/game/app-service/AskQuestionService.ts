@@ -1,18 +1,15 @@
+import { Attempt } from '../domain/Attempt';
 import { GameRoom as DomainGameRoom } from '../domain/GameRoom';
 import { GameRooms as DomainGameRooms } from '../domain/GameRooms';
 import { Player as DomainPlayer } from '../domain/Player';
 
-export class ChoosePlayerCharacterService {
+export class AskQuestionService {
   private gameRooms: DomainGameRooms;
   constructor(gameRooms: DomainGameRooms) {
     this.gameRooms = gameRooms;
   }
 
-  public choosePlayerCharacter(
-    roomId: DomainGameRoom['id'],
-    targetId: DomainPlayer['id'],
-    character: DomainPlayer['character']
-  ): DomainPlayer {
-    return this.gameRooms.choosePlayerCharacter(roomId, targetId, character);
+  public askQuestion(roomId: DomainGameRoom['id'], playerId: DomainPlayer['id'], question: string): Attempt {
+    return this.gameRooms.askQuestion(roomId, playerId, question);
   }
 }
