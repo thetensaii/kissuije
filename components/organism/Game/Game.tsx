@@ -1,9 +1,10 @@
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { Answer } from '../Answer';
+import { AnswersResult } from '../AnswersResult';
 import { Question } from '../Question';
 
 export const Game = (): JSX.Element => {
-  const { players, player, playingPlayer } = useGameRoomContext();
+  const { players, player, playingPlayer, everybodyAnswered } = useGameRoomContext();
 
   if (!player) return <></>;
 
@@ -22,7 +23,7 @@ export const Game = (): JSX.Element => {
         })}
       </ul>
 
-      {player.id === playingPlayer.id ? <Question /> : <Answer />}
+      {!everybodyAnswered ? player.id === playingPlayer.id ? <Question /> : <Answer /> : <AnswersResult />}
     </>
   );
 };
