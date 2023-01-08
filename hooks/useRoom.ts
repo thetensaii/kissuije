@@ -13,8 +13,8 @@ type CreateRoomFn = (name: string) => string;
 type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
-type AskQuestionFn = (question: string) => void;
-type AnswerQuestionFn = (answer: AnswerType) => void;
+export type AskQuestionFn = (question: string) => void;
+export type AnswerQuestionFn = (answer: AnswerType) => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -24,9 +24,11 @@ export type UseRoomReturnType = {
   players: PlayerType[];
   selectedPlayer: PlayerType | null;
   playingPlayer: PlayerType;
+  playingPlayerIsMe: boolean;
   question: QuestionType | null;
   doIAnswered: boolean;
   everybodyAnswered: boolean;
+  previousQuestion: QuestionType | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -45,6 +47,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [question, setQuestion] = useState<QuestionType | null>(null);
   const [doIAnswered, setDoIAnswered] = useState<boolean>(false);
   const [everybodyAnswered, setEverybodyAnswered] = useState<boolean>(false);
+  const [previousQuestion, setPreviousQuestion] = useState<QuestionType | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -88,9 +91,13 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('newQuestionAsked', (question) => {
-      setQuestion({
-        text: question,
-        answers: [],
+      setQuestion((prevQuestion) => {
+        setPreviousQuestion(prevQuestion);
+
+        return {
+          text: question,
+          answers: [],
+        };
       });
     });
 
@@ -135,6 +142,11 @@ export const useRoom = (): UseRoomReturnType => {
   const playingPlayer: PlayerType = useMemo(() => {
     return players[playingPlayerIndex];
   }, [playingPlayerIndex, players]);
+
+  const playingPlayerIsMe: boolean = useMemo(() => {
+    if (!player) return false;
+    return player.id === playingPlayer.id;
+  }, [player, playingPlayer]);
 
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
@@ -203,9 +215,11 @@ export const useRoom = (): UseRoomReturnType => {
     players,
     selectedPlayer,
     playingPlayer,
+    playingPlayerIsMe,
     question,
     doIAnswered,
     everybodyAnswered,
+    previousQuestion,
     createRoom,
     joinRoom,
     startGame,
