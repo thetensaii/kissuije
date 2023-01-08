@@ -1,10 +1,22 @@
 import { useGameRoomContext } from 'providers/GameRoomProvider';
-import { Answer } from '../Answer';
+import { QuestionForm } from 'components/molecule/QuestionForm';
+import { WaitForQuestion } from 'components/molecule/WaitForQuestion';
+import { AnswerForm } from 'components/molecule/AnswerForm';
+import { WaitForAnswer } from 'components/molecule/WaitForAnswer';
 import { AnswersResult } from '../AnswersResult';
-import { Question } from '../Question';
 
 export const Game = (): JSX.Element => {
-  const { players, player, playingPlayer, everybodyAnswered } = useGameRoomContext();
+  const {
+    players,
+    player,
+    playingPlayer,
+    playingPlayerIsMe,
+    question,
+    doIAnswered,
+    everybodyAnswered,
+    askQuestion,
+    answerQuestion,
+  } = useGameRoomContext();
 
   if (!player) return <></>;
 
@@ -23,7 +35,27 @@ export const Game = (): JSX.Element => {
         })}
       </ul>
 
-      {!everybodyAnswered ? player.id === playingPlayer.id ? <Question /> : <Answer /> : <AnswersResult />}
+      {!everybodyAnswered ? (
+        !question ? (
+          playingPlayerIsMe ? (
+            <QuestionForm askQuestion={askQuestion} />
+          ) : (
+            <WaitForQuestion waitingFor={playingPlayer.name} />
+          )
+        ) : !playingPlayerIsMe && !doIAnswered ? (
+          <AnswerForm questionAsker={playingPlayer.name} questionText={question.text} answerQuestion={answerQuestion} />
+        ) : (
+          <WaitForAnswer
+            questionAskerIsMe={playingPlayerIsMe}
+            questionAsker={playingPlayer.name}
+            questionText={question.text}
+            numberOfAnswers={question.answers.length}
+            maxTotalAnswers={players.length - 1}
+          />
+        )
+      ) : (
+        <AnswersResult />
+      )}
     </>
   );
 };
