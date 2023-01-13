@@ -3,7 +3,8 @@ import { QuestionForm } from 'components/molecule/QuestionForm';
 import { WaitForQuestion } from 'components/molecule/WaitForQuestion';
 import { AnswerForm } from 'components/molecule/AnswerForm';
 import { WaitForAnswer } from 'components/molecule/WaitForAnswer';
-import { AnswersResult } from '../AnswersResult';
+import { AnswersResult } from '../../molecule/AnswersResult';
+import { PlayersList } from 'components/molecule/PlayersList';
 
 export const Game = (): JSX.Element => {
   const {
@@ -14,6 +15,7 @@ export const Game = (): JSX.Element => {
     question,
     doIAnswered,
     everybodyAnswered,
+    previousQuestion,
     askQuestion,
     answerQuestion,
   } = useGameRoomContext();
@@ -23,17 +25,8 @@ export const Game = (): JSX.Element => {
   return (
     <>
       <h1>C'est PARTI !!!!</h1>
-      <ul>
-        {players.map((p) => {
-          const characterElement: JSX.Element = p.id === player.id ? <i>(moi)</i> : <i>({p.character})</i>;
 
-          return (
-            <li key={p.id}>
-              {p.name} {characterElement}
-            </li>
-          );
-        })}
-      </ul>
+      <PlayersList player={player} players={players} />
 
       {!everybodyAnswered ? (
         !question ? (
@@ -54,7 +47,15 @@ export const Game = (): JSX.Element => {
           />
         )
       ) : (
-        <AnswersResult />
+        <></>
+      )}
+
+      {previousQuestion ? (
+        <AnswersResult question={previousQuestion} />
+      ) : question ? (
+        <AnswersResult question={question} />
+      ) : (
+        <></>
       )}
     </>
   );

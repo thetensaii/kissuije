@@ -1,13 +1,10 @@
 import { AnswerType } from 'lib/frontend/types/answer';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { QuestionType } from 'lib/frontend/types/question';
 
-export const AnswersResult = (): JSX.Element => {
-  const { question, everybodyAnswered } = useGameRoomContext();
-
-  if (!everybodyAnswered) return <></>;
-
-  if (!question) return <></>;
-
+type Props = {
+  question: QuestionType;
+};
+export const AnswersResult = ({ question }: Props): JSX.Element => {
   const yesAnswersNumber = question.answers.filter((a) => a === AnswerType.yes).length;
   const noAnswersNumber = question.answers.filter((a) => a === AnswerType.no).length;
   const idkAnswersNumber = question.answers.filter((a) => a === AnswerType.idk).length;
