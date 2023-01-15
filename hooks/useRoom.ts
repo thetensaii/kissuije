@@ -5,7 +5,6 @@ import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
 import { SceneState } from 'lib/frontend/types/sceneState';
-import { QuestionType } from 'lib/frontend/types/question';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -25,13 +24,10 @@ export type UseRoomReturnType = {
   selectedPlayer: PlayerType | null;
   playingPlayer: PlayerType;
   playingPlayerIsMe: boolean;
-  question: QuestionType | null;
-  previousQuestion: QuestionType | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
-  askQuestion: AskQuestionFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -41,8 +37,6 @@ export const useRoom = (): UseRoomReturnType => {
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
-  const [question, setQuestion] = useState<QuestionType | null>(null);
-  const [previousQuestion, setPreviousQuestion] = useState<QuestionType | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -83,17 +77,6 @@ export const useRoom = (): UseRoomReturnType => {
       setPlayers(playersByGameOrder);
       setPlayingPlayerIndex(0);
       setSceneState(SceneState.GAME);
-    });
-
-    socket.on('newQuestionAsked', (question) => {
-      setQuestion((prevQuestion) => {
-        setPreviousQuestion(prevQuestion);
-
-        return {
-          text: question,
-          answers: [],
-        };
-      });
     });
   }, [setSceneState]);
 
@@ -178,10 +161,6 @@ export const useRoom = (): UseRoomReturnType => {
     setSceneState(SceneState.WAITING_ROOM);
   };
 
-  const askQuestion: AskQuestionFn = (question: string) => {
-    socket.emit('askQuestion', question);
-  };
-
   return {
     sceneState,
     player,
@@ -191,12 +170,9 @@ export const useRoom = (): UseRoomReturnType => {
     selectedPlayer,
     playingPlayer,
     playingPlayerIsMe,
-    question,
-    previousQuestion,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
-    askQuestion,
   };
 };

@@ -1,5 +1,4 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
-import { Attempt } from './Attempt';
 import { Attempts } from './Attempts';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
@@ -70,11 +69,5 @@ export class GameRoom {
     this.players.shuffleOrder();
 
     return this.players.getAll();
-  }
-
-  public askQuestion(playerId: Player['id'], question: string): Attempt {
-    const newQuestion = this.questions.newAttempt(playerId, this.actualRound, question);
-
-    return newQuestion;
   }
 }
