@@ -16,8 +16,4 @@ export class Attempt {
     this.text = text;
     this.answers = [];
   }
-
-  public addAnswer(answer: Answer): void {
-    this.answers.push(answer);
-  }
 }
