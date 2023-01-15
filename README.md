@@ -52,20 +52,22 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - [x] Players are ordered in a random order
   
 - [ ] **Game logic**
-  - [ ] Ask a question logic
-    - [x] When its their turn player can send their question
-    - [x] Other players choose between `yes`, `no`, and `i don't know` to answer
-    - [ ] If majority is `yes`, player can ask another question
-    - [ ] If majority is `no`, we pass to the next player
-    - [ ] If there is no `yes` or `no` answers, or they are equal then player can ask another question
-  - [ ] Try to guess character
-    - [ ] When its their turn player can try to guess the character
-    - [ ] If majority is `yes` then player win (we store the ranking) and we pass to the next player
-    - [ ] If majority is `no` then we pass to the next player=
-    - [ ] When there is one player left, game is ended
+  - [ ] Every player ask a question or try to guess at the same time
+    - [ ] Ask a Question
+    - [ ] Try to Guess
+  - [ ] Every player answer every other players questions/guesses at the same time
+    - [ ] If Question players choose between `yes`, `no`, and `i don't know` to answer
+    - [ ] If Guess players choose between `yes` and `no` to answer
+  - [ ] Handle Round Results
+    - [ ] If Question print Results
+    - [ ] If Guess and majority answers are `yes`, player win
+    - [ ] If more than one player left, we go to next round
+    - [ ] If one player left, game is ended
+  - [ ] Handle winners
+    - [ ] If player has won he can't ask a question or try to guess but he has to answers other players questions/guesses until game is ended
 
 - [ ] **End Game logic**
-  - [ ] Print player ranking
+  - [ ] Print player ranking + character
   - [ ] Print Overview of the game (everybody's ranking + character)
   - [ ] Replay button which launch another game
   - [ ] Create new room button
