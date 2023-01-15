@@ -22,5 +22,4 @@ export abstract class GameRooms {
 
   public abstract askQuestion(roomId: GameRoom['id'], playerId: Player['id'], question: string): Attempt;
   public abstract answerQuestion(roomId: GameRoom['id'], answer: Answer): Attempt;
-  public abstract doEverybodyAnswered(roomId: GameRoom['id']): boolean;
 }

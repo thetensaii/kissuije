@@ -22,7 +22,6 @@ import { ChoosePlayerCharacterController } from 'lib/backend/game/socket/ChooseP
 import { AskQuestionService } from 'lib/backend/game/app-service/AskQuestionService';
 import { AskQuestionController } from 'lib/backend/game/socket/AskQuestionController';
 import { AnswerQuestionService } from 'lib/backend/game/app-service/AnswerQuestionService';
-import { DoEverybodyAnsweredService } from 'lib/backend/game/app-service/DoEverybodyAnsweredService';
 import { AnswerAdapter } from 'lib/backend/game/socket/adapters/AnswerAdapter';
 import { AnswerQuestionController } from 'lib/backend/game/socket/AnswerQuestionController';
 
@@ -89,13 +88,8 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   askQuestionController.askQuestion(io);
 
   const answerQuestionService = new AnswerQuestionService(inMemoryGameRooms);
-  const doEverybodyAnsweredService = new DoEverybodyAnsweredService(inMemoryGameRooms);
   const answerAdapter = new AnswerAdapter();
-  const answerQuestionController = new AnswerQuestionController(
-    answerQuestionService,
-    doEverybodyAnsweredService,
-    answerAdapter
-  );
+  const answerQuestionController = new AnswerQuestionController(answerQuestionService, answerAdapter);
   answerQuestionController.answerQuestion(io);
 
   res.end();

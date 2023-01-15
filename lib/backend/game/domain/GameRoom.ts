@@ -84,13 +84,4 @@ export class GameRoom {
 
     return attempt;
   }
-
-  public doEverybodyAnswered(): boolean {
-    const lastQuestion = this.questions.getLastAttempt();
-    const players = this.players.getAll();
-
-    if (lastQuestion.answers.length === players.length - 1) return true;
-
-    return false;
-  }
 }

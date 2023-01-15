@@ -27,7 +27,6 @@ export type UseRoomReturnType = {
   playingPlayerIsMe: boolean;
   question: QuestionType | null;
   doIAnswered: boolean;
-  everybodyAnswered: boolean;
   previousQuestion: QuestionType | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
@@ -46,7 +45,6 @@ export const useRoom = (): UseRoomReturnType => {
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
   const [question, setQuestion] = useState<QuestionType | null>(null);
   const [doIAnswered, setDoIAnswered] = useState<boolean>(false);
-  const [everybodyAnswered, setEverybodyAnswered] = useState<boolean>(false);
   const [previousQuestion, setPreviousQuestion] = useState<QuestionType | null>(null);
 
   const socketInitializer = useCallback(async () => {
@@ -110,10 +108,6 @@ export const useRoom = (): UseRoomReturnType => {
           answers: [...question.answers, convertSocketAnswerToAnswer(answer)],
         };
       });
-    });
-
-    socket.on('everybodyAnswered', () => {
-      setEverybodyAnswered(true);
     });
   }, [setSceneState]);
 
@@ -218,7 +212,6 @@ export const useRoom = (): UseRoomReturnType => {
     playingPlayerIsMe,
     question,
     doIAnswered,
-    everybodyAnswered,
     previousQuestion,
     createRoom,
     joinRoom,

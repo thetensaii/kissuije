@@ -88,12 +88,6 @@ export class InMemoryGameRooms extends GameRooms {
     return question;
   }
 
-  public doEverybodyAnswered(roomId: string): boolean {
-    const room = this.getRoom(roomId);
-
-    return room.doEverybodyAnswered();
-  }
-
   private getRoom(roomId: GameRoom['id']): GameRoom {
     const room = this.gameRooms.get(roomId);
     if (!room) throw new RoomNotFoundError();
