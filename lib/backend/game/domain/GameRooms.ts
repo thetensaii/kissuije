@@ -15,6 +15,4 @@ export abstract class GameRooms {
   ): Player;
 
   public abstract doAllPlayersHaveCharacter(roomId: GameRoom['id']): boolean;
-
-  public abstract startGame(roomId: GameRoom['id']): Player[];
 }

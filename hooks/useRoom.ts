@@ -22,8 +22,6 @@ export type UseRoomReturnType = {
   ownerId: string;
   players: PlayerType[];
   selectedPlayer: PlayerType | null;
-  playingPlayer: PlayerType;
-  playingPlayerIsMe: boolean;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -36,7 +34,6 @@ export const useRoom = (): UseRoomReturnType => {
   const [ownerId, setOwnerId] = useState<string>('');
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
-  const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -71,13 +68,6 @@ export const useRoom = (): UseRoomReturnType => {
         })
       );
     });
-
-    socket.on('launchGame', (playersByGameOrder) => {
-      setSelectedPlayerId(null);
-      setPlayers(playersByGameOrder);
-      setPlayingPlayerIndex(0);
-      setSceneState(SceneState.GAME);
-    });
   }, [setSceneState]);
 
   useEffect(() => {
@@ -101,15 +91,6 @@ export const useRoom = (): UseRoomReturnType => {
 
     return player;
   }, [selectedPlayerId, players]);
-
-  const playingPlayer: PlayerType = useMemo(() => {
-    return players[playingPlayerIndex];
-  }, [playingPlayerIndex, players]);
-
-  const playingPlayerIsMe: boolean = useMemo(() => {
-    if (!player) return false;
-    return player.id === playingPlayer.id;
-  }, [player, playingPlayer]);
 
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
@@ -168,8 +149,6 @@ export const useRoom = (): UseRoomReturnType => {
     ownerId,
     players,
     selectedPlayer,
-    playingPlayer,
-    playingPlayerIsMe,
     createRoom,
     joinRoom,
     startGame,

@@ -1,5 +1,4 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
-import { Attempts } from './Attempts';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
 
@@ -10,17 +9,11 @@ export class GameRoom {
 
   private whoPickCharacterForWho: PlayerBindToPlayerType;
 
-  private actualRound: number;
-  private questions: Attempts;
-
   constructor(id: GameRoom['id'], owner: Player) {
     this.id = id;
     this.players = new Players(owner);
     this.ownerId = owner.id;
     this.whoPickCharacterForWho = {};
-
-    this.actualRound = 0;
-    this.questions = new Attempts();
   }
 
   public getOwnerId(): Player['id'] {
