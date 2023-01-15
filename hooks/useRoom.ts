@@ -21,7 +21,7 @@ export type UseRoomReturnType = {
   joinedRoom: false | string;
   ownerId: string;
   players: PlayerType[];
-  selectedPlayer: PlayerType | null;
+  playerChoosed: PlayerType | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -33,7 +33,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [joinedRoom, setJoinedRoom] = useState<false | string>(false);
   const [ownerId, setOwnerId] = useState<string>('');
   const [players, setPlayers] = useState<PlayerType[]>([]);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -53,7 +53,7 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('choosePlayerCharacter', (id) => {
-      setSelectedPlayerId(id);
+      setPlayerChoosedId(id);
       setSceneState(SceneState.CHOOSE_CHARACTER);
     });
 
@@ -83,14 +83,14 @@ export const useRoom = (): UseRoomReturnType => {
     return players.find((p) => p.id === socket.id) ?? null;
   }, [players]);
 
-  const selectedPlayer = useMemo(() => {
-    if (!selectedPlayerId) return null;
+  const playerChoosed = useMemo(() => {
+    if (!playerChoosedId) return null;
 
-    const player = players.find((player) => player.id === selectedPlayerId);
+    const player = players.find((player) => player.id === playerChoosedId);
     if (!player) throw new Error('No matching player found !');
 
     return player;
-  }, [selectedPlayerId, players]);
+  }, [playerChoosedId, players]);
 
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
@@ -148,7 +148,7 @@ export const useRoom = (): UseRoomReturnType => {
     joinedRoom,
     ownerId,
     players,
-    selectedPlayer,
+    playerChoosed,
     createRoom,
     joinRoom,
     startGame,
