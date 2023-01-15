@@ -4,11 +4,11 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
 
 export const ChooseCharacter = (): JSX.Element => {
-  const { selectedPlayer, validatePlayerCharacter } = useGameRoomContext();
+  const { playerChoosed, validatePlayerCharacter } = useGameRoomContext();
 
   const characterInputRef = useRef<HTMLInputElement>(null);
 
-  if (!selectedPlayer) return <></>;
+  if (!playerChoosed) return <></>;
 
   const validateCharacter = (): void => {
     if (!characterInputRef.current?.value || isStringEmpty(characterInputRef.current.value)) {
@@ -17,12 +17,12 @@ export const ChooseCharacter = (): JSX.Element => {
     }
 
     const character = characterInputRef.current.value;
-    validatePlayerCharacter(selectedPlayer.id, character);
+    validatePlayerCharacter(playerChoosed.id, character);
   };
 
   return (
     <>
-      <h3>Choisissez le personnage de : {selectedPlayer.name} </h3>
+      <h3>Choisissez le personnage de : {playerChoosed.name} </h3>
 
       <input type="text" placeholder="Entrez un personnage" ref={characterInputRef} />
 

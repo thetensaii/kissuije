@@ -2,10 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
-import { AnswerType, convertSocketAnswerToAnswer } from 'lib/frontend/types/answer';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
 import { SceneState } from 'lib/frontend/types/sceneState';
-import { QuestionType } from 'lib/frontend/types/question';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -22,19 +21,11 @@ export type UseRoomReturnType = {
   joinedRoom: false | string;
   ownerId: string;
   players: PlayerType[];
-  selectedPlayer: PlayerType | null;
-  playingPlayer: PlayerType;
-  playingPlayerIsMe: boolean;
-  question: QuestionType | null;
-  doIAnswered: boolean;
-  everybodyAnswered: boolean;
-  previousQuestion: QuestionType | null;
+  playerChoosed: PlayerType | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
-  askQuestion: AskQuestionFn;
-  answerQuestion: AnswerQuestionFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -42,12 +33,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [joinedRoom, setJoinedRoom] = useState<false | string>(false);
   const [ownerId, setOwnerId] = useState<string>('');
   const [players, setPlayers] = useState<PlayerType[]>([]);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
-  const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
-  const [question, setQuestion] = useState<QuestionType | null>(null);
-  const [doIAnswered, setDoIAnswered] = useState<boolean>(false);
-  const [everybodyAnswered, setEverybodyAnswered] = useState<boolean>(false);
-  const [previousQuestion, setPreviousQuestion] = useState<QuestionType | null>(null);
+  const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -67,7 +53,7 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('choosePlayerCharacter', (id) => {
-      setSelectedPlayerId(id);
+      setPlayerChoosedId(id);
       setSceneState(SceneState.CHOOSE_CHARACTER);
     });
 
@@ -81,39 +67,6 @@ export const useRoom = (): UseRoomReturnType => {
           };
         })
       );
-    });
-
-    socket.on('launchGame', (playersByGameOrder) => {
-      setSelectedPlayerId(null);
-      setPlayers(playersByGameOrder);
-      setPlayingPlayerIndex(0);
-      setSceneState(SceneState.GAME);
-    });
-
-    socket.on('newQuestionAsked', (question) => {
-      setQuestion((prevQuestion) => {
-        setPreviousQuestion(prevQuestion);
-
-        return {
-          text: question,
-          answers: [],
-        };
-      });
-    });
-
-    socket.on('newAnswer', (answer) => {
-      setQuestion((question) => {
-        if (!question) throw new Error('No Question');
-
-        return {
-          ...question,
-          answers: [...question.answers, convertSocketAnswerToAnswer(answer)],
-        };
-      });
-    });
-
-    socket.on('everybodyAnswered', () => {
-      setEverybodyAnswered(true);
     });
   }, [setSceneState]);
 
@@ -130,23 +83,14 @@ export const useRoom = (): UseRoomReturnType => {
     return players.find((p) => p.id === socket.id) ?? null;
   }, [players]);
 
-  const selectedPlayer = useMemo(() => {
-    if (!selectedPlayerId) return null;
+  const playerChoosed = useMemo(() => {
+    if (!playerChoosedId) return null;
 
-    const player = players.find((player) => player.id === selectedPlayerId);
+    const player = players.find((player) => player.id === playerChoosedId);
     if (!player) throw new Error('No matching player found !');
 
     return player;
-  }, [selectedPlayerId, players]);
-
-  const playingPlayer: PlayerType = useMemo(() => {
-    return players[playingPlayerIndex];
-  }, [playingPlayerIndex, players]);
-
-  const playingPlayerIsMe: boolean = useMemo(() => {
-    if (!player) return false;
-    return player.id === playingPlayer.id;
-  }, [player, playingPlayer]);
+  }, [playerChoosedId, players]);
 
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
@@ -198,33 +142,16 @@ export const useRoom = (): UseRoomReturnType => {
     setSceneState(SceneState.WAITING_ROOM);
   };
 
-  const askQuestion: AskQuestionFn = (question: string) => {
-    socket.emit('askQuestion', question);
-  };
-
-  const answerQuestion: AnswerQuestionFn = (answer: AnswerType) => {
-    socket.emit('answerQuestion', answer);
-    setDoIAnswered(true);
-  };
-
   return {
     sceneState,
     player,
     joinedRoom,
     ownerId,
     players,
-    selectedPlayer,
-    playingPlayer,
-    playingPlayerIsMe,
-    question,
-    doIAnswered,
-    everybodyAnswered,
-    previousQuestion,
+    playerChoosed,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
-    askQuestion,
-    answerQuestion,
   };
 };

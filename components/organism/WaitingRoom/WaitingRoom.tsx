@@ -2,15 +2,15 @@ import { isStringEmpty } from 'lib/common/functions';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 
 export const WaitingRoom = (): JSX.Element => {
-  const { selectedPlayer, players } = useGameRoomContext();
+  const { playerChoosed, players } = useGameRoomContext();
 
-  if (!selectedPlayer) return <></>;
+  if (!playerChoosed) return <></>;
 
   return (
     <>
       <div>
-        <h3>Tu as choisi : {selectedPlayer.character}</h3>
-        <h4>Pour {selectedPlayer.name}</h4>
+        <h3>Tu as choisi : {playerChoosed.character}</h3>
+        <h4>Pour {playerChoosed.name}</h4>
       </div>
 
       <p>
