@@ -1,4 +1,3 @@
-import { Answer } from './Answer';
 import { Attempt } from './Attempt';
 import { Player } from './Player';
 
@@ -17,14 +16,6 @@ export class Attempts {
     this.attempts.push(attempt);
 
     return attempt;
-  }
-
-  public addAnswer(answer: Answer): Attempt {
-    const lastAttempt = this.getLastAttempt();
-
-    lastAttempt.addAnswer(answer);
-
-    return lastAttempt;
   }
 
   public getLastAttempt(): Attempt {

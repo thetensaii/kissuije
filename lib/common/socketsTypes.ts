@@ -10,8 +10,6 @@ export interface ServerToClientEvents {
   updatePlayerCharacter: (id: string, character: string) => void;
   launchGame: (playersByGameOrder: FrontendPlayerType[]) => void;
   newQuestionAsked: (question: string) => void;
-  newAnswer: (answer: SocketAnswerType) => void;
-  everybodyAnswered: () => void;
 }
 
 export interface ClientToServerEvents {
@@ -22,5 +20,4 @@ export interface ClientToServerEvents {
   startGame: (roomId: string) => void;
   choosePlayerCharacter: (targetId: string, character: string) => void;
   askQuestion: (question: string) => void;
-  answerQuestion: (answer: SocketAnswerType) => void;
 }

@@ -1,4 +1,3 @@
-import { Answer } from './Answer';
 import { Attempt } from './Attempt';
 import { GameRoom } from './GameRoom';
 import { Player } from './Player';
@@ -21,5 +20,4 @@ export abstract class GameRooms {
   public abstract startGame(roomId: GameRoom['id']): Player[];
 
   public abstract askQuestion(roomId: GameRoom['id'], playerId: Player['id'], question: string): Attempt;
-  public abstract answerQuestion(roomId: GameRoom['id'], answer: Answer): Attempt;
 }

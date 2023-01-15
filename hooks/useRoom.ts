@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
-import { AnswerType, convertSocketAnswerToAnswer } from 'lib/frontend/types/answer';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { QuestionType } from 'lib/frontend/types/question';
@@ -26,14 +26,12 @@ export type UseRoomReturnType = {
   playingPlayer: PlayerType;
   playingPlayerIsMe: boolean;
   question: QuestionType | null;
-  doIAnswered: boolean;
   previousQuestion: QuestionType | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
   askQuestion: AskQuestionFn;
-  answerQuestion: AnswerQuestionFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -44,7 +42,6 @@ export const useRoom = (): UseRoomReturnType => {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [playingPlayerIndex, setPlayingPlayerIndex] = useState<number>(0);
   const [question, setQuestion] = useState<QuestionType | null>(null);
-  const [doIAnswered, setDoIAnswered] = useState<boolean>(false);
   const [previousQuestion, setPreviousQuestion] = useState<QuestionType | null>(null);
 
   const socketInitializer = useCallback(async () => {
@@ -95,17 +92,6 @@ export const useRoom = (): UseRoomReturnType => {
         return {
           text: question,
           answers: [],
-        };
-      });
-    });
-
-    socket.on('newAnswer', (answer) => {
-      setQuestion((question) => {
-        if (!question) throw new Error('No Question');
-
-        return {
-          ...question,
-          answers: [...question.answers, convertSocketAnswerToAnswer(answer)],
         };
       });
     });
@@ -196,11 +182,6 @@ export const useRoom = (): UseRoomReturnType => {
     socket.emit('askQuestion', question);
   };
 
-  const answerQuestion: AnswerQuestionFn = (answer: AnswerType) => {
-    socket.emit('answerQuestion', answer);
-    setDoIAnswered(true);
-  };
-
   return {
     sceneState,
     player,
@@ -211,13 +192,11 @@ export const useRoom = (): UseRoomReturnType => {
     playingPlayer,
     playingPlayerIsMe,
     question,
-    doIAnswered,
     previousQuestion,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
     askQuestion,
-    answerQuestion,
   };
 };
