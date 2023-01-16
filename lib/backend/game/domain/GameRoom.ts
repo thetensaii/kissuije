@@ -1,5 +1,8 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
+import { Attempt } from './Attempt';
 import { Attempts } from './Attempts';
+import { GameHasNotStartedError } from './errors/GameHasNotStartedError';
+import { RoundAttemptsNotFoundError } from './errors/RoundAttemptsNotFoundError';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
 
@@ -10,7 +13,7 @@ export class GameRoom {
 
   private whoPickCharacterForWho: PlayerBindToPlayerType;
   private actualRound: number | null;
-  private attempts: Map<NonNullable<GameRoom['actualRound']>, Attempts>;
+  private gameAttempts: Map<NonNullable<GameRoom['actualRound']>, Attempts>;
 
   constructor(id: GameRoom['id'], owner: Player) {
     this.id = id;
@@ -18,7 +21,7 @@ export class GameRoom {
     this.ownerId = owner.id;
     this.whoPickCharacterForWho = {};
     this.actualRound = null;
-    this.attempts = new Map<NonNullable<GameRoom['actualRound']>, Attempts>();
+    this.gameAttempts = new Map<NonNullable<GameRoom['actualRound']>, Attempts>();
   }
 
   public getOwnerId(): Player['id'] {
@@ -67,8 +70,26 @@ export class GameRoom {
     if (this.actualRound === null) this.actualRound = 1;
     else this.actualRound += 1;
 
-    this.attempts.set(this.actualRound, new Attempts());
+    this.gameAttempts.set(this.actualRound, new Attempts());
 
     return this.actualRound;
+  }
+
+  public askQuestion(playerId: Player['id'], text: Attempt['text']): void {
+    const actualRoundAttempts = this.getActualRoundAttempts();
+
+    if (actualRoundAttempts.doesPlayerAttemptExist(playerId)) throw new Error();
+
+    actualRoundAttempts.newQuestion(playerId, text);
+  }
+
+  private getActualRoundAttempts(): Attempts {
+    if (!this.actualRound) throw new GameHasNotStartedError();
+
+    const roundAttempts = this.gameAttempts.get(this.actualRound);
+
+    if (!roundAttempts) throw new RoundAttemptsNotFoundError();
+
+    return roundAttempts;
   }
 }
