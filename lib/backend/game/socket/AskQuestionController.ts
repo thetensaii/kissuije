@@ -8,7 +8,7 @@ export class AskQuestionController {
     this.askQuestionService = askQuestionService;
   }
 
-  public askquestion(io: CustomServer): void {
+  public askQuestion(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('askQuestion', (text) => {
         const roomId = socket.data.joinedRoom ?? '';
@@ -16,8 +16,8 @@ export class AskQuestionController {
 
         this.askQuestionService.askQuestion(roomId, playerId, text);
 
-        socket.emit('playerAskedQuestion', socket.id);
-        socket.to(roomId).emit('playerAskedQuestion', socket.id);
+        socket.emit('playerAttempted', socket.id);
+        socket.to(roomId).emit('playerAttempted', socket.id);
       });
     });
   }

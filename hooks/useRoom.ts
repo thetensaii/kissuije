@@ -13,6 +13,7 @@ type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 export type AskQuestionFn = (text: string) => void;
+export type TryGuessFn = (text: string) => void;
 export type AnswerQuestionFn = (answer: AnswerType) => void;
 
 export type UseRoomReturnType = {
@@ -23,12 +24,12 @@ export type UseRoomReturnType = {
   players: PlayerType[];
   playerChoosed: PlayerType | null;
   actualRound: number;
-  canAttempt: boolean;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
   askQuestion: AskQuestionFn;
+  tryGuess: TryGuessFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -38,7 +39,6 @@ export const useRoom = (): UseRoomReturnType => {
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
   const [actualRound, setActualRound] = useState<number>(0);
-  const [canAttempt, setCanAttempt] = useState<boolean>(false);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -83,11 +83,10 @@ export const useRoom = (): UseRoomReturnType => {
     socket.on('launchFirstRound', () => {
       setPlayerChoosedId(null);
       setActualRound(1);
-      setCanAttempt(true);
       setSceneState(SceneState.GAME);
     });
 
-    socket.on('playerAskedQuestion', (playerId) => {
+    socket.on('playerAttempted', (playerId) => {
       setPlayers((players) => {
         return players.map<PlayerType>((p) =>
           p.id === playerId
@@ -176,7 +175,10 @@ export const useRoom = (): UseRoomReturnType => {
 
   const askQuestion: AskQuestionFn = (text: string): void => {
     socket.emit('askQuestion', text);
-    setCanAttempt(false);
+  };
+
+  const tryGuess: TryGuessFn = (text: string): void => {
+    socket.emit('tryGuess', text);
   };
 
   return {
@@ -187,11 +189,11 @@ export const useRoom = (): UseRoomReturnType => {
     players,
     playerChoosed,
     actualRound,
-    canAttempt,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
     askQuestion,
+    tryGuess,
   };
 };

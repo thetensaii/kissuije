@@ -3,6 +3,7 @@ import { GameRooms } from '../domain/GameRooms';
 import { Player } from '../domain/Player';
 import { RoomNotFoundError } from '../domain/errors/RoomNotFoundError';
 import { PlayerBindToPlayerType } from '../domain/Players';
+import { Question } from '../domain/Question';
 export class InMemoryGameRooms extends GameRooms {
   private gameRooms: Map<GameRoom['id'], GameRoom>;
 
@@ -62,7 +63,7 @@ export class InMemoryGameRooms extends GameRooms {
     return room.doAllPlayersHaveCharacter();
   }
 
-  public launchNewRound(roomId: string): NonNullable<GameRoom['actualRound']> {
+  public launchNewRound(roomId: GameRoom['id']): NonNullable<GameRoom['actualRound']> {
     const room = this.getRoom(roomId);
 
     const newRoundNumber = room.launchNewRound();
@@ -70,10 +71,16 @@ export class InMemoryGameRooms extends GameRooms {
     return newRoundNumber;
   }
 
-  public askQuestion(roomId: string, playerId: string, text: string): void {
+  public askQuestion(roomId: GameRoom['id'], playerId: string, text: Question['text']): void {
     const room = this.getRoom(roomId);
 
     room.askQuestion(playerId, text);
+  }
+
+  public tryGuess(roomId: GameRoom['id'], playerId: string, text: Question['text']): void {
+    const room = this.getRoom(roomId);
+
+    room.tryGuess(playerId, text);
   }
 
   private getRoom(roomId: GameRoom['id']): GameRoom {
