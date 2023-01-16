@@ -1,3 +1,4 @@
+import { Attempt } from './Attempt';
 import { GameRoom } from './GameRoom';
 import { Player } from './Player';
 import { PlayerBindToPlayerType } from './Players';
@@ -16,4 +17,5 @@ export abstract class GameRooms {
 
   public abstract doAllPlayersHaveCharacter(roomId: GameRoom['id']): boolean;
   public abstract launchNewRound(roomId: GameRoom['id']): NonNullable<GameRoom['actualRound']>;
+  public abstract askQuestion(roomId: GameRoom['id'], playerId: Player['id'], text: Attempt['text']): void;
 }
