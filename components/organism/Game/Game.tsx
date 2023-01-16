@@ -1,9 +1,10 @@
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { PlayersList } from 'components/molecule/PlayersList';
 import { QuestionForm } from 'components/molecule/QuestionForm';
+import { GuessForm } from 'components/molecule/GuessForm';
 
 export const Game = (): JSX.Element => {
-  const { players, player, actualRound, canAttempt, askQuestion } = useGameRoomContext();
+  const { players, player, actualRound, askQuestion, tryGuess } = useGameRoomContext();
 
   if (!player) return <></>;
 
@@ -14,7 +15,12 @@ export const Game = (): JSX.Element => {
 
       <PlayersList player={player} players={players} />
 
-      {canAttempt && <QuestionForm askQuestion={askQuestion} />}
+      {!player.attempted && (
+        <>
+          <QuestionForm askQuestion={askQuestion} />
+          <GuessForm tryGuess={tryGuess} />
+        </>
+      )}
     </>
   );
 };

@@ -1,9 +1,9 @@
 import { Attempt } from './Attempt';
 import { Player } from './Player';
 
-export class Question extends Attempt {
+export class Guess extends Attempt {
   constructor(askerId: Player['id'], text: string) {
     super(askerId, text);
-    this.type = 'question';
+    this.type = 'guess';
   }
 }

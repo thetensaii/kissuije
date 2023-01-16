@@ -14,7 +14,7 @@ export interface ServerToClientEvents {
   updatePlayerCharacter: (id: string, character: string) => void;
   launchFirstRound: () => void;
   newRound: (roundNumber: number) => void;
-  playerAskedQuestion: (playerId: string) => void;
+  playerAttempted: (playerId: string) => void;
 }
 
 export interface ClientToServerEvents {
@@ -25,4 +25,5 @@ export interface ClientToServerEvents {
   startGame: (roomId: string) => void;
   choosePlayerCharacter: (targetId: string, character: string) => void;
   askQuestion: (text: string) => void;
+  tryGuess: (text: string) => void;
 }
