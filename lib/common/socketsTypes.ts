@@ -8,6 +8,8 @@ export interface ServerToClientEvents {
   playerLeaveRoom: (id: string) => void;
   choosePlayerCharacter: (id: string) => void;
   updatePlayerCharacter: (id: string, character: string) => void;
+  launchFirstRound: () => void;
+  newRound: (roundNumber: number) => void;
 }
 
 export interface ClientToServerEvents {

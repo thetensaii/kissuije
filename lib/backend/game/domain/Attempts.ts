@@ -8,17 +8,13 @@ export class Attempts {
     this.attempts = [];
   }
 
-  public newAttempt(askerId: Player['id'], askedRound: number, text: Attempt['text']): Attempt {
+  public newAttempt(askerId: Player['id'], text: Attempt['text']): Attempt {
     const attemptId = this.attempts.length + 1;
 
-    const attempt = new Attempt(attemptId, askerId, askedRound, text);
+    const attempt = new Attempt(attemptId, askerId, text);
 
     this.attempts.push(attempt);
 
     return attempt;
-  }
-
-  public getLastAttempt(): Attempt {
-    return this.attempts[this.attempts.length - 1];
   }
 }
