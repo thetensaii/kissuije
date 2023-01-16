@@ -32,6 +32,7 @@ export class InMemoryGameRooms extends GameRooms {
 
   public leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom {
     const room = this.getRoom(roomId);
+
     room.removePlayer(playerId);
 
     if (room.getPlayers().getAll().length === 0) this.gameRooms.delete(roomId);
@@ -59,6 +60,14 @@ export class InMemoryGameRooms extends GameRooms {
     const room = this.getRoom(roomId);
 
     return room.doAllPlayersHaveCharacter();
+  }
+
+  public launchNewRound(roomId: string): NonNullable<GameRoom['actualRound']> {
+    const room = this.getRoom(roomId);
+
+    const newRoundNumber = room.launchNewRound();
+
+    return newRoundNumber;
   }
 
   private getRoom(roomId: GameRoom['id']): GameRoom {

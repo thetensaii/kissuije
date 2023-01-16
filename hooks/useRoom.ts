@@ -22,6 +22,7 @@ export type UseRoomReturnType = {
   ownerId: string;
   players: PlayerType[];
   playerChoosed: PlayerType | null;
+  actualRound: number;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -34,6 +35,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [ownerId, setOwnerId] = useState<string>('');
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
+  const [actualRound, setActualRound] = useState<number>(0);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -67,6 +69,12 @@ export const useRoom = (): UseRoomReturnType => {
           };
         })
       );
+    });
+
+    socket.on('launchFirstRound', () => {
+      setPlayerChoosedId(null);
+      setActualRound(1);
+      setSceneState(SceneState.GAME);
     });
   }, [setSceneState]);
 
@@ -149,6 +157,7 @@ export const useRoom = (): UseRoomReturnType => {
     ownerId,
     players,
     playerChoosed,
+    actualRound,
     createRoom,
     joinRoom,
     startGame,

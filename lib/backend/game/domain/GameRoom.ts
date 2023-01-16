@@ -1,4 +1,5 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
+import { Attempts } from './Attempts';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
 
@@ -8,12 +9,16 @@ export class GameRoom {
   private ownerId: Player['id'];
 
   private whoPickCharacterForWho: PlayerBindToPlayerType;
+  private actualRound: number | null;
+  private attempts: Map<NonNullable<GameRoom['actualRound']>, Attempts>;
 
   constructor(id: GameRoom['id'], owner: Player) {
     this.id = id;
     this.players = new Players(owner);
     this.ownerId = owner.id;
     this.whoPickCharacterForWho = {};
+    this.actualRound = null;
+    this.attempts = new Map<NonNullable<GameRoom['actualRound']>, Attempts>();
   }
 
   public getOwnerId(): Player['id'] {
@@ -58,9 +63,12 @@ export class GameRoom {
     return this.players.doAllPlayersHaveCharacter();
   }
 
-  public startGame(): Player[] {
-    this.players.shuffleOrder();
+  public launchNewRound(): NonNullable<GameRoom['actualRound']> {
+    if (this.actualRound === null) this.actualRound = 1;
+    else this.actualRound += 1;
 
-    return this.players.getAll();
+    this.attempts.set(this.actualRound, new Attempts());
+
+    return this.actualRound;
   }
 }
