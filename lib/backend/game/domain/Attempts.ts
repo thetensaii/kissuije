@@ -1,5 +1,6 @@
 import { Attempt } from './Attempt';
 import { Player } from './Player';
+import { Question } from './Question';
 
 export class Attempts {
   private attempts: Attempt[];
@@ -8,13 +9,23 @@ export class Attempts {
     this.attempts = [];
   }
 
-  public newAttempt(askerId: Player['id'], text: Attempt['text']): Attempt {
-    const attemptId = this.attempts.length + 1;
+  public doesPlayerAttemptExist(playerId: Player['id']): boolean {
+    const playerAttempt = this.getPlayerAttempt(playerId);
 
-    const attempt = new Attempt(attemptId, askerId, text);
+    if (!playerAttempt) return false;
+
+    return true;
+  }
+
+  public newQuestion(askerId: Player['id'], text: Question['text']): Attempt {
+    const attempt = new Question(askerId, text);
 
     this.attempts.push(attempt);
 
     return attempt;
+  }
+
+  private getPlayerAttempt(playerId: Player['id']): Attempt | undefined {
+    return this.attempts.find((attempt) => attempt.askerId === playerId);
   }
 }

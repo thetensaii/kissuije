@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { AnswerType } from 'lib/frontend/types/answer';
-import { PlayerType } from 'lib/frontend/types/player';
+import { convertSocketPlayerToFrontendPlayer, PlayerType } from 'lib/frontend/types/player';
 import { SceneState } from 'lib/frontend/types/sceneState';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
@@ -12,7 +12,7 @@ type CreateRoomFn = (name: string) => string;
 type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
-export type AskQuestionFn = (question: string) => void;
+export type AskQuestionFn = (text: string) => void;
 export type AnswerQuestionFn = (answer: AnswerType) => void;
 
 export type UseRoomReturnType = {
@@ -23,10 +23,12 @@ export type UseRoomReturnType = {
   players: PlayerType[];
   playerChoosed: PlayerType | null;
   actualRound: number;
+  canAttempt: boolean;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
+  askQuestion: AskQuestionFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -36,6 +38,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
   const [actualRound, setActualRound] = useState<number>(0);
+  const [canAttempt, setCanAttempt] = useState<boolean>(false);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -47,7 +50,13 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('playerJoinRoom', (player) => {
-      setPlayers((players) => [...players, player]);
+      setPlayers((players) => [
+        ...players,
+        {
+          ...player,
+          attempted: false,
+        },
+      ]);
     });
 
     socket.on('playerLeaveRoom', (id) => {
@@ -74,7 +83,21 @@ export const useRoom = (): UseRoomReturnType => {
     socket.on('launchFirstRound', () => {
       setPlayerChoosedId(null);
       setActualRound(1);
+      setCanAttempt(true);
       setSceneState(SceneState.GAME);
+    });
+
+    socket.on('playerAskedQuestion', (playerId) => {
+      setPlayers((players) => {
+        return players.map<PlayerType>((p) =>
+          p.id === playerId
+            ? {
+                ...p,
+                attempted: true,
+              }
+            : p
+        );
+      });
     });
   }, [setSceneState]);
 
@@ -103,7 +126,7 @@ export const useRoom = (): UseRoomReturnType => {
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
     socket.emit('createRoom', name, roomID, (owner) => {
-      setPlayers([owner]);
+      setPlayers([convertSocketPlayerToFrontendPlayer(owner)]);
       setJoinedRoom(roomID);
       setOwnerId(owner.id);
       setSceneState(SceneState.JOINED_ROOM);
@@ -122,7 +145,8 @@ export const useRoom = (): UseRoomReturnType => {
     if (!doesRoomExist) return createRoom(name);
 
     socket.emit('joinRoom', name, roomID, (players) => {
-      setPlayers([...players]);
+      const frontendTypePlayers = players.map<PlayerType>(convertSocketPlayerToFrontendPlayer);
+      setPlayers(frontendTypePlayers);
       setJoinedRoom(roomID);
       setSceneState(SceneState.JOINED_ROOM);
     });
@@ -150,6 +174,11 @@ export const useRoom = (): UseRoomReturnType => {
     setSceneState(SceneState.WAITING_ROOM);
   };
 
+  const askQuestion: AskQuestionFn = (text: string): void => {
+    socket.emit('askQuestion', text);
+    setCanAttempt(false);
+  };
+
   return {
     sceneState,
     player,
@@ -158,9 +187,11 @@ export const useRoom = (): UseRoomReturnType => {
     players,
     playerChoosed,
     actualRound,
+    canAttempt,
     createRoom,
     joinRoom,
     startGame,
     validatePlayerCharacter,
+    askQuestion,
   };
 };

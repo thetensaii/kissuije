@@ -70,6 +70,12 @@ export class InMemoryGameRooms extends GameRooms {
     return newRoundNumber;
   }
 
+  public askQuestion(roomId: string, playerId: string, text: string): void {
+    const room = this.getRoom(roomId);
+
+    room.askQuestion(playerId, text);
+  }
+
   private getRoom(roomId: GameRoom['id']): GameRoom {
     const room = this.gameRooms.get(roomId);
     if (!room) throw new RoomNotFoundError();
