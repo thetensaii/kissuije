@@ -1,10 +1,11 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
-import { Attempt } from './Attempt';
 import { Attempts } from './Attempts';
 import { GameHasNotStartedError } from './errors/GameHasNotStartedError';
 import { RoundAttemptsNotFoundError } from './errors/RoundAttemptsNotFoundError';
+import { Guess } from './Guess';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
+import { Question } from './Question';
 
 export class GameRoom {
   private id: string;
@@ -75,12 +76,20 @@ export class GameRoom {
     return this.actualRound;
   }
 
-  public askQuestion(playerId: Player['id'], text: Attempt['text']): void {
+  public askQuestion(playerId: Player['id'], text: Question['text']): void {
     const actualRoundAttempts = this.getActualRoundAttempts();
 
     if (actualRoundAttempts.doesPlayerAttemptExist(playerId)) throw new Error();
 
     actualRoundAttempts.newQuestion(playerId, text);
+  }
+
+  public tryGuess(playerId: Player['id'], text: Guess['text']): void {
+    const actualRoundAttempts = this.getActualRoundAttempts();
+
+    if (actualRoundAttempts.doesPlayerAttemptExist(playerId)) throw new Error();
+
+    actualRoundAttempts.tryGuess(playerId, text);
   }
 
   private getActualRoundAttempts(): Attempts {
