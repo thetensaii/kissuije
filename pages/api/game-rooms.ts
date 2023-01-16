@@ -18,6 +18,7 @@ import { StartPlayerCharacterSelectionController } from 'lib/backend/game/socket
 import { ChoosePlayerCharacterService } from 'lib/backend/game/app-service/ChoosePlayerCharacterService';
 import { DoAllPlayersHaveCharacterService } from 'lib/backend/game/app-service/DoAllPlayersHaveCharacterService';
 import { ChoosePlayerCharacterController } from 'lib/backend/game/socket/ChoosePlayerCharacterController';
+import { LaunchNewRoundService } from 'lib/backend/game/app-service/LaunchNewRoundService';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -69,9 +70,11 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
 
   const choosePlayerCharacterService = new ChoosePlayerCharacterService(inMemoryGameRooms);
   const doAllPlayersHaveCharacterService = new DoAllPlayersHaveCharacterService(inMemoryGameRooms);
+  const launchNewRoundService = new LaunchNewRoundService(inMemoryGameRooms);
   const choosePlayerCharacterController = new ChoosePlayerCharacterController(
     choosePlayerCharacterService,
-    doAllPlayersHaveCharacterService
+    doAllPlayersHaveCharacterService,
+    launchNewRoundService
   );
   choosePlayerCharacterController.choosePlayerCharacter(io);
 
