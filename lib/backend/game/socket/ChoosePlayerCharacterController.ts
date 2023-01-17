@@ -19,9 +19,7 @@ export class ChoosePlayerCharacterController {
 
   public choosePlayerCharacter(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('choosePlayerCharacter', (targetId, character) => {
-        const roomId = socket.data.joinedRoom ?? '';
-
+      socket.on('choosePlayerCharacter', (roomId, targetId, character) => {
         const updatedPlayer = this.choosePlayerCharacterService.choosePlayerCharacter(roomId, targetId, character);
         socket.broadcast.to(roomId).emit('updatePlayerCharacter', targetId, updatedPlayer.character);
 
@@ -31,11 +29,6 @@ export class ChoosePlayerCharacterController {
         this.launchNewRoundService.launchNewRound(roomId);
         socket.emit('launchFirstRound');
         socket.to(roomId).emit('launchFirstRound');
-
-        // ---------------- THIS CODE WILL BE USED BY ANOTHER CONTROLLER
-        // const roundNumber = this.launchNewRoundService.launchNewRound(roomId);
-        // socket.emit('newRound', roundNumber);
-        // socket.to(roomId).emit('newRound', roundNumber);
       });
     });
   }

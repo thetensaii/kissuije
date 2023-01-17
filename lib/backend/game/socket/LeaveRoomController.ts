@@ -9,12 +9,20 @@ export class LeaveRoomController {
   }
 
   public leaveRoom(io: CustomServer): void {
+    let roomId = '';
+
     io.on('connection', (socket) => {
+      socket.on('createRoom', (_, newRoom) => {
+        roomId = newRoom;
+      });
+      socket.on('joinRoom', (_, newRoom) => {
+        roomId = newRoom;
+      });
+
       socket.on('disconnecting', () => {
-        const roomId = socket.data.joinedRoom ?? '';
         const room = this.leaveRoomService.leaveRoom(roomId, socket.id);
 
-        if (room.getPlayers().getAll().length === 0) return;
+        if (room.isEmpty()) return;
 
         socket.broadcast.to(roomId).emit('newOwner', room.getOwnerId());
         socket.broadcast.to(roomId).emit('playerLeaveRoom', socket.id);

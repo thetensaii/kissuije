@@ -30,7 +30,7 @@ export interface ClientToServerEvents {
   joinRoom: (name: string, roomId: string, callback: (roomPlayers: SocketPlayerType[]) => void) => void;
   newPlayer: (name: string, roomId: string, callback: (players: SocketPlayerType[]) => void) => void;
   startGame: (roomId: string) => void;
-  choosePlayerCharacter: (targetId: string, character: string) => void;
-  askQuestion: (text: string) => void;
-  tryGuess: (text: string) => void;
+  choosePlayerCharacter: (roomId: string, targetId: string, character: string) => void;
+  askQuestion: (roomId: string, text: string) => void;
+  tryGuess: (roomId: string, text: string) => void;
 }

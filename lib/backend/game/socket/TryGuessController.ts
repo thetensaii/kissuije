@@ -14,8 +14,7 @@ export class TryGuessController {
 
   public tryGuess(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('tryGuess', (text) => {
-        const roomId = socket.data.joinedRoom ?? '';
+      socket.on('tryGuess', (roomId, text) => {
         const playerId = socket.id;
 
         this.tryGuessService.tryGuess(roomId, playerId, text);

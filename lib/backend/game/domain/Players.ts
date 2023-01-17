@@ -17,6 +17,10 @@ export class Players {
     return player;
   }
 
+  public isEmpty(): boolean {
+    return this.playersArray.length === 0;
+  }
+
   public getAll(): Player[] {
     return this.playersArray;
   }

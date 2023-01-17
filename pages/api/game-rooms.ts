@@ -3,7 +3,7 @@ import type { Server as HTTPServer } from 'http';
 import type { Socket as NetSocket } from 'net';
 import { Server as IOServer } from 'socket.io';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
-import { CustomServer, InterServerEvents, SocketData } from 'lib/backend/game/socket/socketTypes';
+import { CustomServer } from 'lib/backend/game/socket/socketTypes';
 import { CreateRoomController } from 'lib/backend/game/socket/CreateRoomController';
 import { CreateRoomService } from 'lib/backend/game/app-service/CreateRoomService';
 import { InMemoryGameRooms } from 'lib/backend/game/infrastructure/InMemoryGameRooms';
@@ -43,9 +43,7 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
     return;
   }
 
-  const io: CustomServer = new IOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(
-    res.socket.server
-  );
+  const io: CustomServer = new IOServer<ClientToServerEvents, ServerToClientEvents>(res.socket.server);
 
   res.socket.server.io = io;
 
