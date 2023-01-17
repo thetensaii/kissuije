@@ -1,4 +1,5 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
+import { Answer } from './Answer';
 import { Attempt } from './Attempt';
 import { Attempts } from './Attempts';
 import { GameHasNotStartedError } from './errors/GameHasNotStartedError';
@@ -105,6 +106,12 @@ export class GameRoom {
     if (!allPlayersAttempted) return false;
 
     return actualRoundAttempts.getAllAttempts();
+  }
+
+  public answerAttempt(askerId: Player['id'], answer: Answer): void {
+    const actualRoundAttempts = this.getActualRoundAttempts();
+
+    actualRoundAttempts.answerAttempt(askerId, answer);
   }
 
   private getActualRoundAttempts(): Attempts {
