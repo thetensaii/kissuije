@@ -4,8 +4,8 @@ import { Player } from '../domain/Player';
 import { RoomNotFoundError } from '../domain/errors/RoomNotFoundError';
 import { PlayerBindToPlayerType } from '../domain/Players';
 import { Question } from '../domain/Question';
-import { Attempt } from '../domain/Attempt';
 import { Answer } from '../domain/Answer';
+import { Attempts } from '../domain/Attempts';
 export class InMemoryGameRooms extends GameRooms {
   private gameRooms: Map<GameRoom['id'], GameRoom>;
 
@@ -85,7 +85,7 @@ export class InMemoryGameRooms extends GameRooms {
     room.tryGuess(playerId, text);
   }
 
-  public doAllPlayersAttempted(roomId: GameRoom['id']): false | Attempt[] {
+  public doAllPlayersAttempted(roomId: GameRoom['id']): false | Attempts {
     const room = this.getRoom(roomId);
 
     return room.doAllPlayersAttempted();
@@ -95,6 +95,12 @@ export class InMemoryGameRooms extends GameRooms {
     const room = this.getRoom(roomId);
 
     room.answerAttempt(askerId, answer);
+  }
+
+  public doAllPlayersAnswered(roomId: GameRoom['id']): false | Attempts {
+    const room = this.getRoom(roomId);
+
+    return room.doAllPlayersAnswered();
   }
 
   private getRoom(roomId: GameRoom['id']): GameRoom {

@@ -1,14 +1,14 @@
-import { Attempt } from '../domain/Attempt';
+import { Attempts as DomainAttempts } from '../domain/Attempts';
 import { GameRoom as DomainGameRoom } from '../domain/GameRoom';
 import { GameRooms as DomainGameRooms } from '../domain/GameRooms';
 
-export class DoAllPlayersAttemptedService {
+export class DoAllPlayersAnsweredService {
   private gameRooms: DomainGameRooms;
   constructor(gameRooms: DomainGameRooms) {
     this.gameRooms = gameRooms;
   }
 
-  public doAllPlayersAttempted(roomId: DomainGameRoom['id']): false | Attempt[] {
-    return this.gameRooms.doAllPlayersAttempted(roomId);
+  public doAllPlayersAnswered(roomId: DomainGameRoom['id']): false | DomainAttempts {
+    return this.gameRooms.doAllPlayersAnswered(roomId);
   }
 }

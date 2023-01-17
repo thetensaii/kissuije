@@ -1,6 +1,6 @@
 import { SocketAttemptType } from 'lib/common/socketsTypes';
 import { AskQuestionService } from '../app-service/AskQuestionService';
-import { DoAllPlayersAttemptedService } from '../app-service/DoAllPlayersAttempted';
+import { DoAllPlayersAttemptedService } from '../app-service/DoAllPlayersAttemptedService';
 import { CustomServer } from './socketTypes';
 
 export class AskQuestionController {
@@ -25,7 +25,7 @@ export class AskQuestionController {
         const allPlayersAttempted = this.doAllPlayersAttemptedService.doAllPlayersAttempted(roomId);
         if (!allPlayersAttempted) return;
 
-        const socketPlayersAttempt = allPlayersAttempted.map<SocketAttemptType>((a) => ({
+        const socketPlayersAttempt = allPlayersAttempted.getAllAttempts().map<SocketAttemptType>((a) => ({
           type: a.type,
           askerId: a.askerId,
           text: a.text,
