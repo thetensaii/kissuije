@@ -48,6 +48,11 @@ export const useRoom = (): UseRoomReturnType => {
 
     socket = io();
 
+    socket.on('disconnect', () => {
+      if (!joinedRoom) return;
+      socket.emit('leaveRoom', joinedRoom);
+    });
+
     socket.on('newOwner', (playerId) => {
       setOwnerId(playerId);
     });

@@ -29,11 +29,6 @@ export class ChoosePlayerCharacterController {
         this.launchNewRoundService.launchNewRound(roomId);
         socket.emit('launchFirstRound');
         socket.to(roomId).emit('launchFirstRound');
-
-        // ---------------- THIS CODE WILL BE USED BY ANOTHER CONTROLLER
-        // const roundNumber = this.launchNewRoundService.launchNewRound(roomId);
-        // socket.emit('newRound', roundNumber);
-        // socket.to(roomId).emit('newRound', roundNumber);
       });
     });
   }
