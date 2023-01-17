@@ -26,7 +26,7 @@ export const Game = (): JSX.Element => {
           </>
         )
       ) : (
-        <AttemptsList players={players} attempts={attempts} />
+        <AttemptsList players={players} me={player} attempts={attempts} />
       )}
     </>
   );

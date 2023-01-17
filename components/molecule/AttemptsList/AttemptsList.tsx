@@ -9,20 +9,23 @@ import styles from './AttemptsList.module.scss';
 type Props = {
   attempts: AttemptType[];
   players: PlayerType[];
+  me: PlayerType;
 };
 
-export const AttemptsList = ({ attempts, players }: Props): JSX.Element => {
+export const AttemptsList = ({ attempts, players, me }: Props): JSX.Element => {
   return (
     <div className={styles.list}>
-      {attempts.map<JSX.Element>((attempt) => {
-        const asker = players.find((p) => p.id === attempt.askerId);
-        if (!asker) return <></>;
+      {attempts
+        .filter((attempt) => attempt.askerId !== me.id)
+        .map<JSX.Element>((attempt) => {
+          const asker = players.find((p) => p.id === attempt.askerId);
+          if (!asker) return <></>;
 
-        if (isQuestion(attempt)) return <Question key={asker.id} question={attempt} player={asker} />;
-        if (isGuess(attempt)) return <Guess key={asker.id} guess={attempt} player={asker} />;
+          if (isQuestion(attempt)) return <Question key={asker.id} question={attempt} player={asker} />;
+          if (isGuess(attempt)) return <Guess key={asker.id} guess={attempt} player={asker} />;
 
-        return <></>;
-      })}
+          return <></>;
+        })}
     </div>
   );
 };
