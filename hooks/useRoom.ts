@@ -166,7 +166,8 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   const validatePlayerCharacter: ValidatePlayerCharacterFn = (playerId: string, character: string): void => {
-    socket.emit('choosePlayerCharacter', playerId, character);
+    if (!joinedRoom) return;
+    socket.emit('choosePlayerCharacter', joinedRoom, playerId, character);
 
     setPlayers((players) =>
       players.map((player) => {
@@ -182,11 +183,13 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   const askQuestion: AskQuestionFn = (text: string): void => {
-    socket.emit('askQuestion', text);
+    if (!joinedRoom) return;
+    socket.emit('askQuestion', joinedRoom, text);
   };
 
   const tryGuess: TryGuessFn = (text: string): void => {
-    socket.emit('tryGuess', text);
+    if (!joinedRoom) return;
+    socket.emit('tryGuess', joinedRoom, text);
   };
 
   return {
