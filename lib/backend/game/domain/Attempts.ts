@@ -10,6 +10,10 @@ export class Attempts {
     this.attempts = [];
   }
 
+  public getAllAttempts(): Attempt[] {
+    return this.attempts;
+  }
+
   public doesPlayerAttemptExist(playerId: Player['id']): boolean {
     const playerAttempt = this.getPlayerAttempt(playerId);
 

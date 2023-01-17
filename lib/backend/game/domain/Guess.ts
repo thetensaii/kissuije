@@ -3,7 +3,7 @@ import { Player } from './Player';
 
 export class Guess extends Attempt {
   constructor(askerId: Player['id'], text: string) {
-    super(askerId, text);
+    super('guess', askerId, text);
     this.type = 'guess';
   }
 }

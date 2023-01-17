@@ -1,4 +1,5 @@
 import Button from 'components/atom/Button';
+import { Input } from 'components/atom/Input';
 import { useName } from 'hooks/useName';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
@@ -32,7 +33,7 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
       <h1>Kissuije</h1>
       <div>
         <label htmlFor="name">Pseudo :</label>
-        <input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
+        <Input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
       </div>
       {roomId && <Button onClick={joinPartyRoom}>Rejoindre partie</Button>}
       <Button onClick={createPartyRoom}>Créer une salle privée</Button>

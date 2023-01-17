@@ -1,4 +1,5 @@
 import Button from 'components/atom/Button';
+import { Input } from 'components/atom/Input';
 import { isStringEmpty } from 'lib/common/functions';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
@@ -24,7 +25,7 @@ export const ChooseCharacter = (): JSX.Element => {
     <>
       <h3>Choisissez le personnage de : {playerChoosed.name} </h3>
 
-      <input type="text" placeholder="Entrez un personnage" ref={characterInputRef} />
+      <Input type="text" placeholder="Entrez un personnage" ref={characterInputRef} />
 
       <Button onClick={validateCharacter}>Valider le personnage</Button>
     </>

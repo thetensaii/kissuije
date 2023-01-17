@@ -4,6 +4,12 @@ export type SocketPlayerType = {
   character: string;
 };
 
+export type SocketAttemptType = {
+  type: 'question' | 'guess';
+  askerId: SocketPlayerType['id'];
+  text: string;
+};
+
 export type SocketAnswerType = 'yes' | 'no' | 'idk';
 
 export interface ServerToClientEvents {
@@ -15,6 +21,7 @@ export interface ServerToClientEvents {
   launchFirstRound: () => void;
   newRound: (roundNumber: number) => void;
   playerAttempted: (playerId: string) => void;
+  allPlayersAttempted: (attempts: SocketAttemptType[]) => void;
 }
 
 export interface ClientToServerEvents {
