@@ -31,6 +31,10 @@ export class GameRoom {
     return this.ownerId;
   }
 
+  public isEmpty(): boolean {
+    return this.players.isEmpty();
+  }
+
   public addPlayer(player: Player): void {
     this.players.addPlayer(player);
   }
