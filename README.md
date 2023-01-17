@@ -52,9 +52,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - [x] Players are ordered in a random order
   
 - [ ] **Game logic**
-  - [ ] Every player ask a question or try to guess at the same time
-    - [ ] Ask a Question
-    - [ ] Try to Guess
+  - [x] Every player ask a question or try to guess at the same time
+    - [x] Ask a Question
+    - [x] Try to Guess
   - [ ] Every player answer every other players questions/guesses at the same time
     - [ ] If Question players choose between `yes`, `no`, and `i don't know` to answer
     - [ ] If Guess players choose between `yes` and `no` to answer
