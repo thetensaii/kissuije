@@ -17,4 +17,8 @@ export abstract class Attempt {
   }
 
   public abstract addAnswer(answer: Answer): void;
+
+  public countAnswers(): number {
+    return this.answers.length;
+  }
 }

@@ -107,6 +107,18 @@ export const useRoom = (): UseRoomReturnType => {
       const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
       setAttempts(attempts);
     });
+
+    socket.on('allPlayersAnswered', (socketAttempt) => {
+      const attempt = convertSocketAttemptToFrontendAttempt(socketAttempt);
+
+      setAttempts((attempts) => {
+        if (!attempts) return null;
+
+        return attempts.map((a) => (a.askerId === attempt.askerId ? attempt : a));
+      });
+
+      setSceneState(SceneState.ROUND_RESULT);
+    });
   }, [setSceneState]);
 
   useEffect(() => {

@@ -22,6 +22,7 @@ export interface ServerToClientEvents {
   newRound: (roundNumber: number) => void;
   playerAttempted: (playerId: string) => void;
   allPlayersAttempted: (attempts: SocketAttemptType[]) => void;
+  allPlayersAnswered: (playerAttempt: SocketAttemptType) => void;
 }
 
 export interface ClientToServerEvents {
