@@ -1,3 +1,4 @@
+import { Attempt } from './Attempt';
 import { GameRoom } from './GameRoom';
 import { Guess } from './Guess';
 import { Player } from './Player';
@@ -19,4 +20,5 @@ export abstract class GameRooms {
   public abstract launchNewRound(roomId: GameRoom['id']): NonNullable<GameRoom['actualRound']>;
   public abstract askQuestion(roomId: GameRoom['id'], playerId: Player['id'], text: Question['text']): void;
   public abstract tryGuess(roomId: GameRoom['id'], playerId: Player['id'], text: Guess['text']): void;
+  public abstract doAllPlayersAttempted(roomId: GameRoom['id']): false | Attempt[];
 }

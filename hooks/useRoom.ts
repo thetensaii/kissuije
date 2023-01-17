@@ -5,6 +5,7 @@ import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { convertSocketPlayerToFrontendPlayer, PlayerType } from 'lib/frontend/types/player';
 import { SceneState } from 'lib/frontend/types/sceneState';
+import { AttemptType, convertSocketAttemptToFrontendAttempt } from 'lib/frontend/types/attempt';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -24,6 +25,7 @@ export type UseRoomReturnType = {
   players: PlayerType[];
   playerChoosed: PlayerType | null;
   actualRound: number;
+  attempts: AttemptType[] | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -39,6 +41,7 @@ export const useRoom = (): UseRoomReturnType => {
   const [players, setPlayers] = useState<PlayerType[]>([]);
   const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
   const [actualRound, setActualRound] = useState<number>(0);
+  const [attempts, setAttempts] = useState<AttemptType[] | null>(null);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -97,6 +100,11 @@ export const useRoom = (): UseRoomReturnType => {
             : p
         );
       });
+    });
+
+    socket.on('allPlayersAttempted', (socketAttempts) => {
+      const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
+      setAttempts(attempts);
     });
   }, [setSceneState]);
 
@@ -189,6 +197,7 @@ export const useRoom = (): UseRoomReturnType => {
     players,
     playerChoosed,
     actualRound,
+    attempts,
     createRoom,
     joinRoom,
     startGame,
