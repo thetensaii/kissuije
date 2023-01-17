@@ -1,3 +1,4 @@
+import { Answer } from './Answer';
 import { Attempt } from './Attempt';
 import { Guess } from './Guess';
 import { Player } from './Player';
@@ -36,6 +37,14 @@ export class Attempts {
     this.attempts.push(attempt);
 
     return attempt;
+  }
+
+  public answerAttempt(askerId: Player['id'], answer: Answer): void {
+    const askerAttempt = this.getPlayerAttempt(askerId);
+
+    if (!askerAttempt) throw new Error('');
+
+    askerAttempt.addAnswer(answer);
   }
 
   private getPlayerAttempt(playerId: Player['id']): Attempt | undefined {
