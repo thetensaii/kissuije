@@ -23,6 +23,7 @@ import { AskQuestionService } from 'lib/backend/game/app-service/AskQuestionServ
 import { AskQuestionController } from 'lib/backend/game/socket/AskQuestionController';
 import { TryGuessService } from 'lib/backend/game/app-service/TryGuessService';
 import { TryGuessController } from 'lib/backend/game/socket/TryGuessController';
+import { DoAllPlayersAttemptedService } from 'lib/backend/game/app-service/DoAllPlayersAttempted';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -82,12 +83,14 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   );
   choosePlayerCharacterController.choosePlayerCharacter(io);
 
+  const doAllPlayersAttemptedService = new DoAllPlayersAttemptedService(inMemoryGameRooms);
+
   const askQuestionService = new AskQuestionService(inMemoryGameRooms);
-  const askQuestionController = new AskQuestionController(askQuestionService);
+  const askQuestionController = new AskQuestionController(askQuestionService, doAllPlayersAttemptedService);
   askQuestionController.askQuestion(io);
 
   const tryGuessService = new TryGuessService(inMemoryGameRooms);
-  const tryGuessController = new TryGuessController(tryGuessService);
+  const tryGuessController = new TryGuessController(tryGuessService, doAllPlayersAttemptedService);
   tryGuessController.tryGuess(io);
 
   res.end();

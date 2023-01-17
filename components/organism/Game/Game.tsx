@@ -3,9 +3,10 @@ import { PlayersList } from 'components/molecule/PlayersList';
 import { QuestionForm } from 'components/molecule/QuestionForm';
 import { GuessForm } from 'components/molecule/GuessForm';
 import { WaitForOthers } from 'components/molecule/WaitForOthers';
+import { AttemptsList } from 'components/molecule/AttemptsList';
 
 export const Game = (): JSX.Element => {
-  const { players, player, actualRound, askQuestion, tryGuess } = useGameRoomContext();
+  const { players, player, actualRound, attempts, askQuestion, tryGuess } = useGameRoomContext();
 
   if (!player) return <></>;
 
@@ -15,13 +16,17 @@ export const Game = (): JSX.Element => {
 
       <PlayersList player={player} players={players} />
 
-      {player.attempted ? (
-        <WaitForOthers />
+      {!attempts ? (
+        player.attempted ? (
+          <WaitForOthers />
+        ) : (
+          <>
+            <QuestionForm askQuestion={askQuestion} />
+            <GuessForm tryGuess={tryGuess} />
+          </>
+        )
       ) : (
-        <>
-          <QuestionForm askQuestion={askQuestion} />
-          <GuessForm tryGuess={tryGuess} />
-        </>
+        <AttemptsList players={players} attempts={attempts} />
       )}
     </>
   );
