@@ -4,9 +4,17 @@ import { QuestionForm } from 'components/molecule/QuestionForm';
 import { GuessForm } from 'components/molecule/GuessForm';
 import { WaitForOthers } from 'components/molecule/WaitForOthers';
 import { AttemptsList } from 'components/molecule/AttemptsList';
+import { useMemo } from 'react';
 
 export const Game = (): JSX.Element => {
-  const { players, player, actualRound, attempts, askQuestion, tryGuess } = useGameRoomContext();
+  const { players, player, actualRound, attempts, askQuestion, tryGuess, answerAttempt } = useGameRoomContext();
+
+  const areEveryAttemptAnswered = useMemo<boolean>(() => {
+    if (!attempts) return true;
+    if (!player) return true;
+
+    return attempts.every((a) => a.askerId === player.id || a.isAnswered);
+  }, [attempts, player]);
 
   if (!player) return <></>;
 
@@ -25,8 +33,10 @@ export const Game = (): JSX.Element => {
             <GuessForm tryGuess={tryGuess} />
           </>
         )
+      ) : areEveryAttemptAnswered ? (
+        <WaitForOthers />
       ) : (
-        <AttemptsList players={players} me={player} attempts={attempts} />
+        <AttemptsList answerAttempt={answerAttempt} players={players} me={player} attempts={attempts} />
       )}
     </>
   );

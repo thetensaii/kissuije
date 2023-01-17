@@ -15,7 +15,7 @@ type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 export type AskQuestionFn = (text: string) => void;
 export type TryGuessFn = (text: string) => void;
-export type AnswerQuestionFn = (answer: AnswerType) => void;
+export type AnswerAttemptFn = (askerId: string, answer: AnswerType) => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -32,6 +32,7 @@ export type UseRoomReturnType = {
   validatePlayerCharacter: ValidatePlayerCharacterFn;
   askQuestion: AskQuestionFn;
   tryGuess: TryGuessFn;
+  answerAttempt: AnswerAttemptFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -192,6 +193,17 @@ export const useRoom = (): UseRoomReturnType => {
     socket.emit('tryGuess', joinedRoom, text);
   };
 
+  const answerAttempt: AnswerAttemptFn = (askerId: string, answer: AnswerType) => {
+    if (!joinedRoom) return;
+    socket.emit('answerAttempt', joinedRoom, askerId, answer, () => {
+      setAttempts((attempts) => {
+        if (!attempts) return null;
+
+        return attempts.map<AttemptType>((a) => (a.askerId === askerId ? { ...a, isAnswered: true } : a));
+      });
+    });
+  };
+
   return {
     sceneState,
     player,
@@ -207,5 +219,6 @@ export const useRoom = (): UseRoomReturnType => {
     validatePlayerCharacter,
     askQuestion,
     tryGuess,
+    answerAttempt,
   };
 };

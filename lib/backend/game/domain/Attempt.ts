@@ -4,15 +4,17 @@ import { Player } from './Player';
 export type AttemptType = 'question' | 'guess';
 
 export abstract class Attempt {
+  public type: AttemptType;
   public askerId: Player['id'];
   public text: string;
   public answers: Answer[];
-  public type: AttemptType;
 
   constructor(type: AttemptType, askerId: Player['id'], text: string) {
+    this.type = type;
     this.askerId = askerId;
     this.text = text;
     this.answers = [];
-    this.type = type;
   }
+
+  public abstract addAnswer(answer: Answer): void;
 }
