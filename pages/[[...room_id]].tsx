@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { Home } from 'components/organism/Home';
@@ -6,7 +7,7 @@ import { JoinedRoom } from 'components/organism/JoinedRoom';
 import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitingRoom } from 'components/organism/WaitingRoom';
 import { Game } from 'components/organism/Game';
-import { useCallback, useMemo } from 'react';
+import { RoundResult } from 'components/organism/RoundResult';
 
 export default function Root(): JSX.Element {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function Root(): JSX.Element {
   if (sceneState === SceneState.CHOOSE_CHARACTER) return <ChooseCharacter />;
   if (sceneState === SceneState.WAITING_ROOM) return <WaitingRoom />;
   if (sceneState === SceneState.GAME) return <Game />;
+  if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
 
   return <h1>Erreur : Veuillez recharger la page</h1>;
 }

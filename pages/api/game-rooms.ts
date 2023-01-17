@@ -23,10 +23,11 @@ import { AskQuestionService } from 'lib/backend/game/app-service/AskQuestionServ
 import { AskQuestionController } from 'lib/backend/game/socket/AskQuestionController';
 import { TryGuessService } from 'lib/backend/game/app-service/TryGuessService';
 import { TryGuessController } from 'lib/backend/game/socket/TryGuessController';
-import { DoAllPlayersAttemptedService } from 'lib/backend/game/app-service/DoAllPlayersAttempted';
+import { DoAllPlayersAttemptedService } from 'lib/backend/game/app-service/DoAllPlayersAttemptedService';
 import { AnswerAttemptService } from 'lib/backend/game/app-service/AnswerAttemptService';
 import { AnswerAdapter } from 'lib/backend/game/socket/adapters/AnswerAdapter';
 import { AnswerAttemptController } from 'lib/backend/game/socket/AnswerAttemptController';
+import { DoAllPlayersAnsweredService } from 'lib/backend/game/app-service/DoAllPlayersAnsweredService';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -95,8 +96,13 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   tryGuessController.tryGuess(io);
 
   const answerAttemptService = new AnswerAttemptService(inMemoryGameRooms);
+  const doAllPlayersAnsweredService = new DoAllPlayersAnsweredService(inMemoryGameRooms);
   const answerAdapter = new AnswerAdapter();
-  const answerAttemptController = new AnswerAttemptController(answerAttemptService, answerAdapter);
+  const answerAttemptController = new AnswerAttemptController(
+    answerAttemptService,
+    doAllPlayersAnsweredService,
+    answerAdapter
+  );
   answerAttemptController.answerAttempt(io);
 
   res.end();

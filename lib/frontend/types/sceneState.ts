@@ -4,6 +4,7 @@ export const SceneState = {
   CHOOSE_CHARACTER: 'CHOOSE_CHARACTER',
   WAITING_ROOM: 'WAITING_ROOM',
   GAME: 'GAME',
+  ROUND_RESULT: 'ROUND_RESULT',
   END_GAME: 'END_GAME',
 } as const;
 

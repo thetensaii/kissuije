@@ -17,6 +17,10 @@ export class Players {
     return player;
   }
 
+  public countPlayers(): number {
+    return this.playersArray.length;
+  }
+
   public isEmpty(): boolean {
     return this.playersArray.length === 0;
   }
