@@ -12,7 +12,7 @@ export const Question = ({ player, question }: Props): JSX.Element => {
   return (
     <div className={styles.question}>
       <p>
-        <b>{player.name}</b> is <b>{player.character}</b>
+        <b>{player.name}</b> est <b>{player.character}</b>
       </p>
 
       <h2>{question.text}</h2>

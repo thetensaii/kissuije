@@ -11,7 +11,7 @@ export const Guess = ({ player, guess }: Props): JSX.Element => {
   return (
     <div className={styles.guess}>
       <p>
-        <b>{player.name}</b> is <b>{player.character}</b>
+        <b>{player.name}</b> est <b>{player.character}</b>
       </p>
       <p>a essayé de deviner</p>
 
