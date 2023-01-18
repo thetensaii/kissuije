@@ -1,0 +1,1 @@
+export { QuestionResultCard } from './QuestionResultCard';

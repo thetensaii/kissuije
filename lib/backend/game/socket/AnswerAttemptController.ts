@@ -1,21 +1,25 @@
 import { AnswerAttemptService } from '../app-service/AnswerAttemptService';
 import { DoAllPlayersAnsweredService } from '../app-service/DoAllPlayersAnsweredService';
 import { AnswerAdapter } from './adapters/AnswerAdapter';
+import { AttemptAdapter } from './adapters/AttemptAdapter';
 import { CustomServer } from './socketTypes';
 
 export class AnswerAttemptController {
   private answerAttemptService: AnswerAttemptService;
   private doAllPlayersAnsweredService: DoAllPlayersAnsweredService;
   private answerAdapter: AnswerAdapter;
+  private attemptAdapter: AttemptAdapter;
 
   constructor(
     answerAttemptService: AnswerAttemptService,
     doAllPlayersAnsweredService: DoAllPlayersAnsweredService,
-    answerAdapter: AnswerAdapter
+    answerAdapter: AnswerAdapter,
+    attemptAdapter: AttemptAdapter
   ) {
     this.answerAttemptService = answerAttemptService;
     this.doAllPlayersAnsweredService = doAllPlayersAnsweredService;
     this.answerAdapter = answerAdapter;
+    this.attemptAdapter = attemptAdapter;
   }
 
   public answerAttempt(io: CustomServer): void {
@@ -31,11 +35,12 @@ export class AnswerAttemptController {
         if (!attempts) return;
         const playerId = socket.id;
         attempts.getAllAttempts().forEach((attempt) => {
-          if (attempt.askerId === playerId) {
-            socket.emit('allPlayersAnswered', attempt);
+          const socketAttempt = this.attemptAdapter.toSocket(attempt);
+          if (socketAttempt.askerId === playerId) {
+            socket.emit('allPlayersAnswered', socketAttempt);
             return;
           }
-          socket.to(attempt.askerId).emit('allPlayersAnswered', attempt);
+          socket.to(socketAttempt.askerId).emit('allPlayersAnswered', socketAttempt);
         });
       });
     });
