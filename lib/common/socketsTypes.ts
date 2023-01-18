@@ -3,14 +3,13 @@ export type SocketPlayerType = {
   name: string;
   character: string;
 };
-
+export type SocketAnswerType = 'yes' | 'no' | 'idk';
 export type SocketAttemptType = {
   type: 'question' | 'guess';
   askerId: SocketPlayerType['id'];
   text: string;
+  answers: SocketAnswerType[];
 };
-
-export type SocketAnswerType = 'yes' | 'no' | 'idk';
 
 export interface ServerToClientEvents {
   newOwner: (id: string) => void;

@@ -7,4 +7,10 @@ export class AnswerAdapter {
     if (answer === 'no') return 'NO';
     else return 'IDK';
   }
+
+  public toSocket(answer: DomainAnswer): SocketAnswerType {
+    if (answer === 'YES') return 'yes';
+    if (answer === 'NO') return 'no';
+    else return 'idk';
+  }
 }

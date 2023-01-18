@@ -25,6 +25,7 @@ export type UseRoomReturnType = {
   players: PlayerType[];
   playerChoosed: PlayerType | null;
   actualRound: number;
+  attempt: AttemptType | null;
   attempts: AttemptType[] | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
@@ -143,8 +144,17 @@ export const useRoom = (): UseRoomReturnType => {
     return player;
   }, [playerChoosedId, players]);
 
+  const attempt: AttemptType | null = useMemo(() => {
+    if (!socket) return null;
+    if (!player) return null;
+    if (!attempts) return null;
+
+    return attempts.find((a) => a.askerId === player.id) ?? null;
+  }, [attempts, player]);
+
   const createRoom: CreateRoomFn = (name: string): string => {
     const roomID = generateRoomId();
+
     socket.emit('createRoom', name, roomID, (owner) => {
       setPlayers([convertSocketPlayerToFrontendPlayer(owner)]);
       setJoinedRoom(roomID);
@@ -224,6 +234,7 @@ export const useRoom = (): UseRoomReturnType => {
     players,
     playerChoosed,
     actualRound,
+    attempt,
     attempts,
     createRoom,
     joinRoom,
