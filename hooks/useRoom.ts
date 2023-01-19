@@ -16,6 +16,7 @@ type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 export type AskQuestionFn = (text: string) => void;
 export type TryGuessFn = (text: string) => void;
 export type AnswerAttemptFn = (askerId: string, answer: AnswerType) => void;
+type ContinueToNextRoundFn = () => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -34,6 +35,7 @@ export type UseRoomReturnType = {
   askQuestion: AskQuestionFn;
   tryGuess: TryGuessFn;
   answerAttempt: AnswerAttemptFn;
+  continueToNextRound: ContinueToNextRoundFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -55,13 +57,7 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('playerJoinRoom', (player) => {
-      setPlayers((players) => [
-        ...players,
-        {
-          ...player,
-          attempted: false,
-        },
-      ]);
+      setPlayers((players) => [...players, convertSocketPlayerToFrontendPlayer(player)]);
     });
 
     socket.on('playerLeaveRoom', (id) => {
@@ -87,8 +83,7 @@ export const useRoom = (): UseRoomReturnType => {
 
     socket.on('launchFirstRound', () => {
       setPlayerChoosedId(null);
-      setActualRound(1);
-      setSceneState(SceneState.GAME);
+      launchNewRound(1);
     });
 
     socket.on('playerAttempted', (playerId) => {
@@ -119,6 +114,10 @@ export const useRoom = (): UseRoomReturnType => {
       });
 
       setSceneState(SceneState.ROUND_RESULT);
+    });
+
+    socket.on('newRound', (roundNumber) => {
+      launchNewRound(roundNumber);
     });
   }, [setSceneState]);
 
@@ -226,6 +225,36 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
+  const continueToNextRound: ContinueToNextRoundFn = (): void => {
+    if (!joinedRoom) return;
+    if (!player) return;
+
+    socket.emit('continueToNextRound', joinedRoom, (): void => {
+      setPlayers((players) =>
+        players.map<PlayerType>((p) =>
+          p.id === player.id
+            ? {
+                ...p,
+                wantsToContinue: true,
+              }
+            : p
+        )
+      );
+    });
+  };
+
+  const launchNewRound = (roundNumber: number): void => {
+    setPlayers((players) =>
+      players.map((p) => ({
+        ...p,
+        wantsToContinue: false,
+        attempted: false,
+      }))
+    );
+    setActualRound(roundNumber);
+    setAttempts(null);
+    setSceneState(SceneState.GAME);
+  };
   return {
     sceneState,
     player,
@@ -243,5 +272,6 @@ export const useRoom = (): UseRoomReturnType => {
     askQuestion,
     tryGuess,
     answerAttempt,
+    continueToNextRound,
   };
 };
