@@ -13,10 +13,13 @@ const initialStats: QuestionResultStats = {
 };
 
 export const QuestionResultCard = ({ question }: Props): JSX.Element => {
-  const stats: QuestionResultStats = question.answers.reduce((acc, a) => {
-    acc[a] = acc[a] + 1;
-    return acc;
-  }, initialStats);
+  const stats: QuestionResultStats = question.answers.reduce(
+    (acc, a) => {
+      acc[a] = acc[a] + 1;
+      return acc;
+    },
+    { ...initialStats }
+  );
 
   return (
     <div className={styles.questionResultCard}>

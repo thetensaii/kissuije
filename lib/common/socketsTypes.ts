@@ -34,4 +34,5 @@ export interface ClientToServerEvents {
   askQuestion: (roomId: string, text: string) => void;
   tryGuess: (roomId: string, text: string) => void;
   answerAttempt: (roomId: string, askerId: string, answer: SocketAnswerType, cb: () => void) => void;
+  continueToNextRound: (roomId: string, cb: () => void) => void;
 }
