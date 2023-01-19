@@ -13,7 +13,6 @@ export class GameRoom {
   private id: string;
   private players: Players;
   private ownerId: Player['id'];
-
   private whoPickCharacterForWho: PlayerBindToPlayerType;
   private actualRound: number | null;
   private gameAttempts: Map<NonNullable<GameRoom['actualRound']>, Attempts>;

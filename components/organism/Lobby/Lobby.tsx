@@ -2,23 +2,23 @@ import Button from 'components/atom/Button';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useCallback } from 'react';
 
-export const JoinedRoom = (): JSX.Element => {
-  const { player, joinedRoom, ownerId, players, startGame } = useGameRoomContext();
+export const Lobby = (): JSX.Element => {
+  const { player, roomId, ownerId, players, startGame } = useGameRoomContext();
 
   const copyRoomLink = useCallback(() => {
-    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_HOST + '/' + joinedRoom);
-  }, [joinedRoom]);
+    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_HOST + '/' + roomId);
+  }, [roomId]);
 
-  if (!joinedRoom) return <></>;
+  if (!roomId) return <></>;
 
   if (!player) return <></>;
 
   return (
     <>
-      <h1>{joinedRoom}</h1>
+      <h1>{roomId}</h1>
 
       {player.id === ownerId && players.length > 1 && (
-        <Button onClick={(): void => startGame(joinedRoom)}>Lancer la partie</Button>
+        <Button onClick={(): void => startGame(roomId)}>Lancer la partie</Button>
       )}
 
       <h3>Liste des participants</h3>
