@@ -14,4 +14,20 @@ export class Guess extends Attempt {
 
     this.answers.push(answer);
   }
+
+  public areAnswersPositive(): boolean {
+    return this.countYesAnswers() >= this.countNoAnswers();
+  }
+
+  private countYesAnswers(): number {
+    return this.answers.filter((a) => a === 'YES').length;
+  }
+
+  private countNoAnswers(): number {
+    return this.answers.filter((a) => a === 'NO').length;
+  }
+}
+
+export function isGuess(a: Attempt): a is Guess {
+  return a.type === 'guess';
 }
