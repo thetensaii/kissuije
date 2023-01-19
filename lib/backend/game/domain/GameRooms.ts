@@ -26,4 +26,5 @@ export abstract class GameRooms {
   public abstract doAllPlayersAnswered(roomId: GameRoom['id']): false | Attempts;
   public abstract continueToNextRound(roomId: GameRoom['id'], playerId: Player['id']): void;
   public abstract doAllPlayersWantToContinueToNextRound(roomId: GameRoom['id']): boolean;
+  public abstract doPlayersWon(roomId: GameRoom['id']): false | Player['id'][];
 }

@@ -6,6 +6,7 @@ export const SceneState = {
   GAME: 'GAME',
   ROUND_RESULT: 'ROUND_RESULT',
   END_GAME: 'END_GAME',
+  RANKING: 'RANKING',
 } as const;
 
 export type SceneState = keyof typeof SceneState;

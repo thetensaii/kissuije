@@ -32,6 +32,7 @@ import { AttemptAdapter } from 'lib/backend/game/socket/adapters/AttemptAdapter'
 import { ContinueToNextRoundService } from 'lib/backend/game/app-service/ContinueToNextRoundService';
 import { ContinueToNextRoundController } from 'lib/backend/game/socket/ContinueToNextRoundController';
 import { DoAllPlayersWantToContinueToNextRoundService } from 'lib/backend/game/app-service/DoAllPlayersWantToContinueToNextRoundService';
+import { DoPlayersWonService } from 'lib/backend/game/app-service/DoPlayersWonService';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -106,10 +107,12 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
 
   const answerAttemptService = new AnswerAttemptService(inMemoryGameRooms);
   const doAllPlayersAnsweredService = new DoAllPlayersAnsweredService(inMemoryGameRooms);
+  const doPlayersWonService = new DoPlayersWonService(inMemoryGameRooms);
   const answerAdapter = new AnswerAdapter();
   const answerAttemptController = new AnswerAttemptController(
     answerAttemptService,
     doAllPlayersAnsweredService,
+    doPlayersWonService,
     answerAdapter,
     attemptAdapter
   );

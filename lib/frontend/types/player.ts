@@ -6,6 +6,7 @@ export type PlayerType = {
   character: string;
   attempted: boolean;
   wantsToContinue: boolean;
+  hasWon: boolean;
 };
 
 export const convertSocketPlayerToFrontendPlayer = (socketPlayer: SocketPlayerType): PlayerType => {
@@ -13,5 +14,6 @@ export const convertSocketPlayerToFrontendPlayer = (socketPlayer: SocketPlayerTy
     ...socketPlayer,
     attempted: false,
     wantsToContinue: false,
+    hasWon: false,
   };
 };

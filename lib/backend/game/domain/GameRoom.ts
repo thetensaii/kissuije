@@ -136,6 +136,9 @@ export class GameRoom {
     return this.players.getAll().every((p) => this.playersWhoWantToContinue.includes(p.id));
   }
 
+  public doPlayersWon(): false | Player['id'][] {
+    return this.getActualRoundAttempts().doPlayersWon();
+  }
   private getActualRoundAttempts(): Attempts {
     if (!this.actualRound) throw new GameHasNotStartedError();
 

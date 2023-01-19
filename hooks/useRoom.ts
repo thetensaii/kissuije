@@ -17,6 +17,7 @@ export type AskQuestionFn = (text: string) => void;
 export type TryGuessFn = (text: string) => void;
 export type AnswerAttemptFn = (askerId: string, answer: AnswerType) => void;
 type ContinueToNextRoundFn = () => void;
+type MoveToRankingPageFn = () => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -36,6 +37,7 @@ export type UseRoomReturnType = {
   tryGuess: TryGuessFn;
   answerAttempt: AnswerAttemptFn;
   continueToNextRound: ContinueToNextRoundFn;
+  moveToRankingPage: MoveToRankingPageFn;
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -118,6 +120,12 @@ export const useRoom = (): UseRoomReturnType => {
 
     socket.on('newRound', (roundNumber) => {
       launchNewRound(roundNumber);
+    });
+
+    socket.on('playersWon', (playerIds) => {
+      setPlayers((players) => players.map((p) => (playerIds.includes(p.id) ? { ...p, hasWon: true } : p)));
+
+      setSceneState(SceneState.END_GAME);
     });
   }, [setSceneState]);
 
@@ -255,6 +263,10 @@ export const useRoom = (): UseRoomReturnType => {
     setAttempts(null);
     setSceneState(SceneState.GAME);
   };
+
+  const moveToRankingPage: MoveToRankingPageFn = (): void => {
+    setSceneState(SceneState.RANKING);
+  };
   return {
     sceneState,
     player,
@@ -273,5 +285,6 @@ export const useRoom = (): UseRoomReturnType => {
     tryGuess,
     answerAttempt,
     continueToNextRound,
+    moveToRankingPage,
   };
 };
