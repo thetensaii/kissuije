@@ -8,6 +8,8 @@ import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitingRoom } from 'components/organism/WaitingRoom';
 import { Game } from 'components/organism/Game';
 import { RoundResult } from 'components/organism/RoundResult';
+import { EndGame } from 'components/organism/EndGame';
+import { Ranking } from 'components/organism/Ranking';
 
 export default function Root(): JSX.Element {
   const router = useRouter();
@@ -33,6 +35,8 @@ export default function Root(): JSX.Element {
   if (sceneState === SceneState.WAITING_ROOM) return <WaitingRoom />;
   if (sceneState === SceneState.GAME) return <Game />;
   if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
+  if (sceneState === SceneState.END_GAME) return <EndGame />;
+  if (sceneState === SceneState.RANKING) return <Ranking />;
 
   return <h1>Erreur : Veuillez recharger la page</h1>;
 }

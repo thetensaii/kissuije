@@ -1,6 +1,6 @@
 import { Answer } from './Answer';
 import { Attempt } from './Attempt';
-import { Guess } from './Guess';
+import { Guess, isGuess } from './Guess';
 import { Player } from './Player';
 import { Question } from './Question';
 
@@ -45,6 +45,17 @@ export class Attempts {
     if (!askerAttempt) throw new Error('');
 
     askerAttempt.addAnswer(answer);
+  }
+
+  public doPlayersWon(): false | Player['id'][] {
+    const winners = this.attempts
+      .filter(isGuess)
+      .filter((a) => a.areAnswersPositive())
+      .map((a) => a.askerId);
+
+    if (winners.length === 0) return false;
+
+    return winners;
   }
 
   private getPlayerAttempt(playerId: Player['id']): Attempt | undefined {
