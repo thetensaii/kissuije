@@ -103,6 +103,18 @@ export class InMemoryGameRooms extends GameRooms {
     return room.doAllPlayersAnswered();
   }
 
+  public continueToNextRound(roomId: GameRoom['id'], playerId: Player['id']): void {
+    const room = this.getRoom(roomId);
+
+    room.continueToNextRound(playerId);
+  }
+
+  public doAllPlayersWantToContinueToNextRound(roomId: GameRoom['id']): boolean {
+    const room = this.getRoom(roomId);
+
+    return room.doAllPlayersWantToContinueToNextRound();
+  }
+
   private getRoom(roomId: GameRoom['id']): GameRoom {
     const room = this.gameRooms.get(roomId);
     if (!room) throw new RoomNotFoundError();

@@ -17,6 +17,7 @@ export class GameRoom {
   private whoPickCharacterForWho: PlayerBindToPlayerType;
   private actualRound: number | null;
   private gameAttempts: Map<NonNullable<GameRoom['actualRound']>, Attempts>;
+  private playersWhoWantToContinue: Player['id'][];
 
   constructor(id: GameRoom['id'], owner: Player) {
     this.id = id;
@@ -25,6 +26,7 @@ export class GameRoom {
     this.whoPickCharacterForWho = {};
     this.actualRound = null;
     this.gameAttempts = new Map<NonNullable<GameRoom['actualRound']>, Attempts>();
+    this.playersWhoWantToContinue = [];
   }
 
   public getOwnerId(): Player['id'] {
@@ -74,6 +76,8 @@ export class GameRoom {
   }
 
   public launchNewRound(): NonNullable<GameRoom['actualRound']> {
+    this.playersWhoWantToContinue = [];
+
     if (this.actualRound === null) this.actualRound = 1;
     else this.actualRound += 1;
 
@@ -123,6 +127,15 @@ export class GameRoom {
 
     return actualRoundAttempts;
   }
+
+  public continueToNextRound(playerId: Player['id']): void {
+    this.playersWhoWantToContinue.push(playerId);
+  }
+
+  public doAllPlayersWantToContinueToNextRound(): boolean {
+    return this.players.getAll().every((p) => this.playersWhoWantToContinue.includes(p.id));
+  }
+
   private getActualRoundAttempts(): Attempts {
     if (!this.actualRound) throw new GameHasNotStartedError();
 

@@ -8,9 +8,11 @@ import { isQuestion } from 'lib/frontend/types/question';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 
 export const RoundResult = (): JSX.Element => {
-  const { attempt, player } = useGameRoomContext();
+  const { attempt, player, continueToNextRound } = useGameRoomContext();
 
   if (!player) return <></>;
+
+  if (player.wantsToContinue) return <WaitForOthers />;
 
   const yesAnswersCount = attempt?.answers.filter((a) => a === 'yes').length ?? 0;
   const noAnswersCount = attempt?.answers.filter((a) => a === 'no').length ?? 0;
@@ -27,7 +29,7 @@ export const RoundResult = (): JSX.Element => {
         <WrongGuessResult />
       )}
 
-      <Button>Continuer</Button>
+      <Button onClick={(): void => continueToNextRound()}>Continuer</Button>
     </>
   );
 };

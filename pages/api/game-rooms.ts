@@ -29,6 +29,9 @@ import { AnswerAdapter } from 'lib/backend/game/socket/adapters/AnswerAdapter';
 import { AnswerAttemptController } from 'lib/backend/game/socket/AnswerAttemptController';
 import { DoAllPlayersAnsweredService } from 'lib/backend/game/app-service/DoAllPlayersAnsweredService';
 import { AttemptAdapter } from 'lib/backend/game/socket/adapters/AttemptAdapter';
+import { ContinueToNextRoundService } from 'lib/backend/game/app-service/ContinueToNextRoundService';
+import { ContinueToNextRoundController } from 'lib/backend/game/socket/ContinueToNextRoundController';
+import { DoAllPlayersWantToContinueToNextRoundService } from 'lib/backend/game/app-service/DoAllPlayersWantToContinueToNextRoundService';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -111,6 +114,17 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
     attemptAdapter
   );
   answerAttemptController.answerAttempt(io);
+
+  const continueToNextRoundService = new ContinueToNextRoundService(inMemoryGameRooms);
+  const doAllPlayersWantToContinueToNextRoundService = new DoAllPlayersWantToContinueToNextRoundService(
+    inMemoryGameRooms
+  );
+  const continueToNextRoundController = new ContinueToNextRoundController(
+    continueToNextRoundService,
+    doAllPlayersWantToContinueToNextRoundService,
+    launchNewRoundService
+  );
+  continueToNextRoundController.continueToNextRound(io);
 
   res.end();
 }
