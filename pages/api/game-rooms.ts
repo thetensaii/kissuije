@@ -33,6 +33,7 @@ import { ContinueToNextRoundService } from 'lib/backend/game/app-service/Continu
 import { ContinueToNextRoundController } from 'lib/backend/game/socket/ContinueToNextRoundController';
 import { DoAllPlayersWantToContinueToNextRoundService } from 'lib/backend/game/app-service/DoAllPlayersWantToContinueToNextRoundService';
 import { DoPlayersWonService } from 'lib/backend/game/app-service/DoPlayersWonService';
+import { DeleteRoomService } from 'lib/backend/game/app-service/DeleteRoomService';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -109,12 +110,15 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   const doAllPlayersAnsweredService = new DoAllPlayersAnsweredService(inMemoryGameRooms);
   const doPlayersWonService = new DoPlayersWonService(inMemoryGameRooms);
   const answerAdapter = new AnswerAdapter();
+  const deleteRoomService = new DeleteRoomService(inMemoryGameRooms);
   const answerAttemptController = new AnswerAttemptController(
     answerAttemptService,
     doAllPlayersAnsweredService,
     doPlayersWonService,
     answerAdapter,
-    attemptAdapter
+    attemptAdapter,
+    checkRoomService,
+    deleteRoomService
   );
   answerAttemptController.answerAttempt(io);
 

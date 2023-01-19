@@ -8,6 +8,7 @@ import { Question } from './Question';
 
 export abstract class GameRooms {
   public abstract createRoom(roomId: GameRoom['id'], owner: Player): void;
+  public abstract deleteRoom(roomId: GameRoom['id']): void;
   public abstract joinRoom(roomId: GameRoom['id'], owner: Player): GameRoom;
   public abstract leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom;
   public abstract doesRoomExist(roomId: GameRoom['id']): boolean;

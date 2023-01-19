@@ -1,4 +1,7 @@
+import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { AnswerAttemptService } from '../app-service/AnswerAttemptService';
+import { CheckRoomService } from '../app-service/CheckRoomService';
+import { DeleteRoomService } from '../app-service/DeleteRoomService';
 import { DoAllPlayersAnsweredService } from '../app-service/DoAllPlayersAnsweredService';
 import { DoPlayersWonService } from '../app-service/DoPlayersWonService';
 import { AnswerAdapter } from './adapters/AnswerAdapter';
@@ -11,19 +14,25 @@ export class AnswerAttemptController {
   private doPlayersWonService: DoPlayersWonService;
   private answerAdapter: AnswerAdapter;
   private attemptAdapter: AttemptAdapter;
+  private checkRoomService: CheckRoomService;
+  private deleteRoomService: DeleteRoomService;
 
   constructor(
     answerAttemptService: AnswerAttemptService,
     doAllPlayersAnsweredService: DoAllPlayersAnsweredService,
     doAPlayerWonService: DoPlayersWonService,
     answerAdapter: AnswerAdapter,
-    attemptAdapter: AttemptAdapter
+    attemptAdapter: AttemptAdapter,
+    checkRoomService: CheckRoomService,
+    deleteRoomService: DeleteRoomService
   ) {
     this.answerAttemptService = answerAttemptService;
     this.doAllPlayersAnsweredService = doAllPlayersAnsweredService;
     this.doPlayersWonService = doAPlayerWonService;
     this.answerAdapter = answerAdapter;
     this.attemptAdapter = attemptAdapter;
+    this.checkRoomService = checkRoomService;
+    this.deleteRoomService = deleteRoomService;
   }
 
   public answerAttempt(io: CustomServer): void {
@@ -39,9 +48,17 @@ export class AnswerAttemptController {
         if (!attempts) return;
 
         const winners = this.doPlayersWonService.doPlayersWon(roomId);
+
         if (winners) {
-          socket.emit('playersWon', winners);
-          socket.to(roomId).emit('playersWon', winners);
+          let nextRoomId;
+          do {
+            nextRoomId = generateRoomId();
+          } while (this.checkRoomService.doesRoomExist(nextRoomId));
+
+          socket.emit('gameFinish', winners, nextRoomId);
+          socket.to(roomId).emit('gameFinish', winners, nextRoomId);
+          socket.to(roomId).socketsLeave(roomId);
+          this.deleteRoomService.deleteRoom(roomId);
           return;
         }
 

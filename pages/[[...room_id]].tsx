@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { Home } from 'components/organism/Home';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
-import { JoinedRoom } from 'components/organism/JoinedRoom';
+import { Lobby } from 'components/organism/Lobby';
 import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitingRoom } from 'components/organism/WaitingRoom';
 import { Game } from 'components/organism/Game';
@@ -30,7 +30,7 @@ export default function Root(): JSX.Element {
   );
 
   if (sceneState === SceneState.HOME) return <Home roomId={roomId} redirectToRoom={redirectToRoom} />;
-  if (sceneState === SceneState.JOINED_ROOM) return <JoinedRoom />;
+  if (sceneState === SceneState.LOBBY) return <Lobby />;
   if (sceneState === SceneState.CHOOSE_CHARACTER) return <ChooseCharacter />;
   if (sceneState === SceneState.WAITING_ROOM) return <WaitingRoom />;
   if (sceneState === SceneState.GAME) return <Game />;
