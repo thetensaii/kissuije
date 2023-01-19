@@ -11,14 +11,14 @@ export class JoinRoomController {
   public joinRoom(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('joinRoom', (name, roomId, callback) => {
-        const { player, players } = this.joinRoomService.joinRoom(roomId, socket.id, name);
+        const { ownerId, player, players } = this.joinRoomService.joinRoom(roomId, socket.id, name);
 
         socket.join(roomId);
         socket.data.joinedRoom = roomId;
 
         socket.broadcast.to(roomId).emit('playerJoinRoom', player);
 
-        callback(players);
+        callback(ownerId, players);
       });
     });
   }

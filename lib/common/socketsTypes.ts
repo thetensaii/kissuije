@@ -22,13 +22,17 @@ export interface ServerToClientEvents {
   playerAttempted: (playerId: string) => void;
   allPlayersAttempted: (attempts: SocketAttemptType[]) => void;
   allPlayersAnswered: (playerAttempt: SocketAttemptType) => void;
-  playersWon: (playerId: string[]) => void;
+  gameFinish: (winnerIds: string[], nextRoomId: string) => void;
 }
 
 export interface ClientToServerEvents {
   doesRoomExist: (room: string, callback: (doesExist: boolean) => void) => void;
   createRoom: (name: string, roomId: string, callback: (owner: SocketPlayerType) => void) => void;
-  joinRoom: (name: string, roomId: string, callback: (roomPlayers: SocketPlayerType[]) => void) => void;
+  joinRoom: (
+    name: string,
+    roomId: string,
+    callback: (ownerId: string, roomPlayers: SocketPlayerType[]) => void
+  ) => void;
   newPlayer: (name: string, roomId: string, callback: (players: SocketPlayerType[]) => void) => void;
   startGame: (roomId: string) => void;
   choosePlayerCharacter: (roomId: string, targetId: string, character: string) => void;

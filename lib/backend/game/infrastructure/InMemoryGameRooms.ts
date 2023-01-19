@@ -21,6 +21,10 @@ export class InMemoryGameRooms extends GameRooms {
     this.gameRooms.set(roomId, newRoom);
   }
 
+  public deleteRoom(roomId: string): void {
+    this.gameRooms.delete(roomId);
+  }
+
   public joinRoom(roomId: GameRoom['id'], player: Player): GameRoom {
     const room = this.getRoom(roomId);
 
