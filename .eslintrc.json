@@ -1,6 +1,7 @@
 {
   "extends": [
     "next/core-web-vitals",
+    "plugin:storybook/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:prettier/recommended"
