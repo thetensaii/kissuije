@@ -1,4 +1,4 @@
-// Each Avatar types correspond to the name of a svg file stored in the folder public/boring=avatars/
+// Each Avatar types correspond to the name of a svg file stored in the folder public/boring-avatars/
 
 export const AvatarType = {
   Lora: 'Lora',
