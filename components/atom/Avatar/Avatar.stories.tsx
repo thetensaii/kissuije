@@ -19,7 +19,7 @@ const meta: Meta<typeof Avatar> = {
 export default meta;
 type Story = StoryObj<typeof Avatar>;
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
     type: AvatarType.Emile,
   },
