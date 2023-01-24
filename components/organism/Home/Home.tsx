@@ -3,15 +3,13 @@ import { Input } from 'components/atom/Input';
 import { useName } from 'hooks/useName';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
-// import Lora from 'public/boring-avatars/Lora.svg';
-import Image from 'next/image';
+import { Avatar } from 'components/atom/Avatar';
+import { AvatarType } from 'lib/frontend/types/avatar';
 
 interface Props {
   roomId: string | undefined;
   redirectToRoom: (roomId: string) => void;
 }
-
-const LoraUrl = '/boring-avatars/Lora.svg';
 
 export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +33,7 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
   return (
     <>
       <h1>Kissuije</h1>
-      <Image src={LoraUrl} alt="Lora Avatar" width={60} height={60} />
+      <Avatar type={AvatarType.Joshua} />
       <div>
         <label htmlFor="name">Pseudo :</label>
         <Input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
