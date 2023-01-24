@@ -1,0 +1,10 @@
+.svgButton {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
