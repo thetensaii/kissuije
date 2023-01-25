@@ -31,7 +31,6 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
 
   return (
     <>
-      <h1>Kissuije</h1>
       <SelectAvatar />
       <div>
         <label htmlFor="name">Pseudo :</label>
