@@ -1,6 +1,15 @@
+@import 'colors';
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: 'Rubik', Roboto, sans-serif;
+}
+
+body {
+  background-color: $dark-blue;
+  background-image: url('../public/pattern.png');
+  background-repeat: repeat;
+  color: white;
 }
