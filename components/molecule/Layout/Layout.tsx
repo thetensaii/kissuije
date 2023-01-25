@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Header } from '../Header';
 import styles from './Layout.module.scss';
 
 interface Props {
@@ -16,7 +17,7 @@ export const Layout = ({ children }: Props): JSX.Element => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Header />
       <main className={styles.container}>{children}</main>
     </>
   );
