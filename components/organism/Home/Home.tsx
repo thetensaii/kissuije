@@ -4,6 +4,7 @@ import { useName } from 'hooks/useName';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { useRef } from 'react';
 import { SelectAvatar } from 'components/molecule/SelectAvatar';
+import { Label } from 'components/atom/Label';
 
 interface Props {
   roomId: string | undefined;
@@ -32,12 +33,10 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
   return (
     <>
       <SelectAvatar />
-      <div>
-        <label htmlFor="name">Pseudo :</label>
-        <Input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
-      </div>
+      <Label htmlFor="name">Choisis ton pseudo</Label>
+      <Input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
       {roomId && <Button onClick={joinPartyRoom}>Rejoindre partie</Button>}
-      <Button onClick={createPartyRoom}>Créer une salle privée</Button>
+      <Button onClick={createPartyRoom}>Créer une partie</Button>
     </>
   );
 }
