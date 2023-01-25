@@ -1,11 +1,13 @@
 import { ReactElement } from 'react';
 import styles from './Button.module.scss';
+type ButtonType = 'primary' | 'secondary' | 'ternary';
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  buttonType?: ButtonType;
+}
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-export function Button({ children, ...props }: Props): ReactElement {
+export function Button({ children, buttonType = 'primary', ...props }: Props): ReactElement {
   return (
-    <button className={styles.button} {...props}>
+    <button className={`${styles.button} ${styles[buttonType]}`} {...props}>
       {children}
     </button>
   );

@@ -1,4 +1,30 @@
+@import '../../../styles/colors';
+
 .button {
+  border: none;
   font-size: 1rem;
-  padding: 0.5rem;
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  width: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.primary {
+  background-color: $primary;
+  color: $white
+}
+
+.secondary {
+  background-color: $secondary;
+  color: $white;
+}
+
+.ternary {
+  background-color: transparent;
+  border: 1px solid $primary;
+  color: $primary;
 }
