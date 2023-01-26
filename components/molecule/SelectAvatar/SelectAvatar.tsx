@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Avatar } from 'components/atom/Avatar';
-import { SvgButton } from 'components/atom/SvgButton';
-import { AvatarList } from 'lib/frontend/types/avatar';
+import { AvatarList } from 'lib/frontend/types/svg';
 import styles from './SelectAvatar.module.scss';
+import { Svg } from 'components/atom/Svg';
+import { TransparentButton } from 'components/atom/TransparentButton';
 
 export const SelectAvatar = (): JSX.Element => {
   const [avatarIndex, setAvatarIndex] = useState<number>(0);
@@ -19,21 +19,13 @@ export const SelectAvatar = (): JSX.Element => {
 
   return (
     <div className={styles.selectAvatar}>
-      <SvgButton
-        onClick={handleLeftChevronClick}
-        src="/svgs/ChevronLeft.svg"
-        alt="Chevron Gauche"
-        svgWidth={20}
-        svgHeight={35}
-      />
-      <Avatar type={avatar} width={80} height={80} />
-      <SvgButton
-        onClick={handleRightChevronClick}
-        src="/svgs/ChevronRight.svg"
-        alt="Chevron Droite"
-        svgWidth={20}
-        svgHeight={35}
-      />
+      <TransparentButton onClick={handleLeftChevronClick}>
+        <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={35} />
+      </TransparentButton>
+      <Svg type={avatar} alt={avatar} width={80} height={80} />
+      <TransparentButton onClick={handleRightChevronClick}>
+        <Svg type="ChevronRight" alt="Chevron Droite" width={20} height={35} />
+      </TransparentButton>
     </div>
   );
 };

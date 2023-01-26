@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SelectAvatar } from './SelectAvatar';
 
 const meta: Meta<typeof SelectAvatar> = {
-  title: 'SelectAvatar',
+  title: 'Molecule/SelectAvatar',
   component: SelectAvatar,
 };
 
