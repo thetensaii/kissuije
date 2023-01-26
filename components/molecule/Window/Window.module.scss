@@ -1,0 +1,24 @@
+@import '../../../styles/colors';
+
+.window {
+  background-color: $blue-dark;
+  border-radius: 8px;
+  border: 1px solid rgba($color: $white, $alpha: 0.62);
+
+  & > header {
+    background-color: $blue-header;
+    display: flex;
+    border-radius: 8px 8px 0px 0px;
+    padding: 1rem;
+    min-height: 64px;
+  }
+}
+
+.backButton {
+  font-weight: 600;
+  gap: 0.5rem;
+}
+
+.content {
+  padding: 40px 32px;
+}
