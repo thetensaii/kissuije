@@ -1,1 +1,0 @@
-export { SvgButton } from './SvgButton';
