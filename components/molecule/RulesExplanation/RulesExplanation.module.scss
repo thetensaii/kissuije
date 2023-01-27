@@ -1,0 +1,14 @@
+.rulesExplanation {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  & > h2 {
+    text-align: center;
+  }
+
+  & > div {
+    display: flex;
+    justify-content: space-around;
+  }
+}
