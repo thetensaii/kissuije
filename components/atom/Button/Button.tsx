@@ -5,9 +5,15 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType?: ButtonType;
 }
 
-export function Button({ children, buttonType = 'primary', ...props }: Props): ReactElement {
+export function Button({
+  children,
+  type = 'button',
+  buttonType = 'primary',
+  className,
+  ...props
+}: Props): ReactElement {
   return (
-    <button className={`${styles.button} ${styles[buttonType]}`} {...props}>
+    <button type={type} className={`${styles.button} ${styles[buttonType]} ${className}`} {...props}>
       {children}
     </button>
   );

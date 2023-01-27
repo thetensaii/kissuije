@@ -12,5 +12,5 @@ export default meta;
 type Story = StoryObj<typeof SelectAvatar>;
 
 export const Default: Story = {
-  render: () => <SelectAvatar />,
+  render: () => <SelectAvatar onChange={(): void => undefined} />,
 };
