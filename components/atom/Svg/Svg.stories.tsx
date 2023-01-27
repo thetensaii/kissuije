@@ -22,6 +22,7 @@ type Story = StoryObj<typeof Svg>;
 export const Default: Story = {
   args: {
     type: SvgType.ChevronLeft,
+    alt: 'Texte Alternatif',
     width: 60,
     height: 60,
   },

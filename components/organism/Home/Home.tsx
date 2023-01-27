@@ -1,10 +1,6 @@
-import Button from 'components/atom/Button';
-import { Input } from 'components/atom/Input';
 import { useName } from 'hooks/useName';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
-import { useRef } from 'react';
-import { SelectAvatar } from 'components/molecule/SelectAvatar';
-import { Label } from 'components/atom/Label';
+import { PlayerForm } from 'components/molecule/PlayerForm';
 
 interface Props {
   roomId: string | undefined;
@@ -12,19 +8,18 @@ interface Props {
 }
 
 export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
-  const nameInputRef = useRef<HTMLInputElement>(null);
   const { name, storeNewName } = useName();
   const { createRoom, joinRoom } = useGameRoomContext();
 
-  const createPartyRoom = (): void => {
-    const newName = storeNewName(nameInputRef.current?.value);
+  const createGameRoom = (name: string): void => {
+    const newName = storeNewName(name);
 
     const newRoomID = createRoom(newName);
     redirectToRoom(newRoomID);
   };
 
-  const joinPartyRoom = async (): Promise<void> => {
-    const newName = storeNewName(nameInputRef.current?.value);
+  const joinPartyRoom = async (name: string): Promise<void> => {
+    const newName = storeNewName(name);
 
     const joinedRoomID = await joinRoom(newName, roomId ?? '');
     redirectToRoom(joinedRoomID);
@@ -32,11 +27,11 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
 
   return (
     <>
-      <SelectAvatar />
-      <Label htmlFor="name">Choisis ton pseudo</Label>
-      <Input type="text" id="name" ref={nameInputRef} defaultValue={name} placeholder="Entre ton pseudo" />
-      {roomId && <Button onClick={joinPartyRoom}>Rejoindre partie</Button>}
-      <Button onClick={createPartyRoom}>Créer une partie</Button>
+      {roomId ? (
+        <PlayerForm initialName={name} type="joinRoom" createGameRoom={createGameRoom} joinGameRoom={joinPartyRoom} />
+      ) : (
+        <PlayerForm initialName={name} type="createRoom" createGameRoom={createGameRoom} />
+      )}
     </>
   );
 }
