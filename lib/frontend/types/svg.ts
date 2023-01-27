@@ -14,6 +14,7 @@ export const AvatarList: AvatarType[] = Object.entries(AvatarType).map(([, value
 export const SvgType = {
   ChevronLeft: 'ChevronLeft',
   ChevronRight: 'ChevronRight',
+  Crown: 'Crown',
   ...AvatarType,
 } as const;
 export type SvgType = typeof SvgType[keyof typeof SvgType];
