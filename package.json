@@ -27,6 +27,7 @@
     "postcss-loader": "^7.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.42.1",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
