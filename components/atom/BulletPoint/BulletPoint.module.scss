@@ -1,0 +1,17 @@
+@import '../../../styles/colors';
+
+.bulletPoint {
+  background-color: $white;
+  color: $black;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 3rem;
+
+  width: 81px;
+  height: 81px;
+  border-radius: 50%;
+}
