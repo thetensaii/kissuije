@@ -7,7 +7,12 @@
   border-radius: 6px;
   width: 100%;
   
-  &::placeholder{
+  &::placeholder {
     color: $gray-dark;
+  }
+
+  &:disabled {
+    background-color: $gray-light;
+    opacity: 1;
   }
 }
