@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AvatarList, AvatarType } from 'lib/frontend/types/svg';
 import styles from './SelectAvatar.module.scss';
 import { Svg } from 'components/atom/Svg';
-import { TransparentButton } from 'components/atom/TransparentButton';
+import Button from 'components/atom/Button';
 
 type Props = {
   initialAvatar?: AvatarType;
@@ -30,13 +30,13 @@ export const SelectAvatar = ({ initialAvatar, onChange }: Props): JSX.Element =>
 
   return (
     <div className={styles.selectAvatar}>
-      <TransparentButton onClick={handleLeftChevronClick}>
+      <Button buttonType="transparent" onClick={handleLeftChevronClick}>
         <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={35} />
-      </TransparentButton>
+      </Button>
       <Svg type={avatar} alt={avatar} width={80} height={80} />
-      <TransparentButton onClick={handleRightChevronClick}>
+      <Button buttonType="transparent" onClick={handleRightChevronClick}>
         <Svg type="ChevronRight" alt="Chevron Droite" width={20} height={35} />
-      </TransparentButton>
+      </Button>
     </div>
   );
 };

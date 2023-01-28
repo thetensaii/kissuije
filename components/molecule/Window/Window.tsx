@@ -1,5 +1,5 @@
+import Button from 'components/atom/Button';
 import { Svg } from 'components/atom/Svg';
-import { TransparentButton } from 'components/atom/TransparentButton';
 import styles from './Window.module.scss';
 
 type Props = {
@@ -12,9 +12,9 @@ export const Window = ({ onBackButtonClick, children }: Props): JSX.Element => {
     <section className={styles.window}>
       <header>
         {onBackButtonClick && (
-          <TransparentButton className={styles.backButton} onClick={onBackButtonClick}>
+          <Button buttonType="transparent" className={styles.backButton} onClick={onBackButtonClick}>
             <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={16} /> RETOUR
-          </TransparentButton>
+          </Button>
         )}
       </header>
       <div className={styles.content}>{children}</div>
