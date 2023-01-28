@@ -1,1 +1,0 @@
-export { TransparentButton } from './TransparentButton';
