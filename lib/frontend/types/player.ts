@@ -13,12 +13,16 @@ export type PlayerType = {
   hasWon: boolean;
 };
 
-export const convertSocketPlayerToFrontendPlayer = (socketPlayer: SocketPlayerType): PlayerType => {
+export const convertSocketPlayerToFrontendPlayer = (
+  socketPlayer: SocketPlayerType,
+  isOwner = false,
+  isPlayer = false
+): PlayerType => {
   return {
     ...socketPlayer,
     avatar: AvatarType.AvatarHello,
-    isOwner: false,
-    isPlayer: false,
+    isOwner: isOwner,
+    isPlayer: isPlayer,
     attempted: false,
     wantsToContinue: false,
     hasWon: false,
