@@ -20,21 +20,9 @@ export function Button({
 }: Props): ReactElement {
   return (
     <button type={type} className={`${styles.button} ${styles[buttonType]} ${className}`} {...props}>
-      {leftIcon ? (
-        <span className={styles.leftIcon}>
-          <Svg type={leftIcon} alt={leftIcon} width={25} height={25} />
-        </span>
-      ) : (
-        <span></span>
-      )}
+      <span>{leftIcon && <Svg type={leftIcon} alt={leftIcon} width={25} height={25} />}</span>
       <div className={styles.buttonContent}>{children}</div>
-      {rightIcon ? (
-        <span className={styles.rightIcon}>
-          <Svg type={rightIcon} alt={rightIcon} width={25} height={25} />
-        </span>
-      ) : (
-        <span></span>
-      )}
+      <span>{rightIcon && <Svg type={rightIcon} alt={rightIcon} width={25} height={25} />}</span>
     </button>
   );
 }
