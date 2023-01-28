@@ -1,41 +1,37 @@
 import Button from 'components/atom/Button';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
-import { useCallback } from 'react';
+import { ContentWindow } from 'components/molecule/ContentWindow';
+import { LobbyPlayersList } from 'components/molecule/LobbyPlayersList';
+import { LobbyInvitation } from 'components/molecule/LobbyInvitation';
+import styles from './Lobby.module.scss';
 
 export const Lobby = (): JSX.Element => {
-  const { player, roomId, ownerId, players, startGame } = useGameRoomContext();
+  const { player, roomId, players, startGame } = useGameRoomContext();
 
-  const copyRoomLink = useCallback(() => {
-    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_HOST + '/' + roomId);
-  }, [roomId]);
+  if (!roomId) throw new Error('No Room');
+  if (!player) throw new Error('No Player');
 
-  if (!roomId) return <></>;
+  const roomLink = process.env.NEXT_PUBLIC_HOST + '/' + roomId;
 
-  if (!player) return <></>;
+  const redirectHome = (): void => {
+    window.location.href = process.env.NEXT_PUBLIC_HOST ?? '';
+  };
 
   return (
     <>
-      <h1>{roomId}</h1>
-
-      {player.id === ownerId && players.length > 1 && (
-        <Button onClick={(): void => startGame(roomId)}>Lancer la partie</Button>
-      )}
-
-      <h3>Liste des participants</h3>
-      <ul>
-        <li>{player.name} (moi)</li>
-        {players
-          .filter((p) => p.id !== player.id)
-          .map((player) => (
-            <li key={player.id}>{player.name}</li>
-          ))}
-      </ul>
-
-      <Button onClick={copyRoomLink}>Copier le lien d'invitation</Button>
-
-      <a href="/">
-        <Button>Retour à l'accueil</Button>
-      </a>
+      <ContentWindow onBackButtonClick={redirectHome}>
+        <div className={styles.windowContent}>
+          <div className={styles.invitationContainer}>
+            <LobbyPlayersList players={players} />
+            <LobbyInvitation invitationLink={roomLink} />
+          </div>
+          {player.isOwner && players.length > 1 && (
+            <Button rightIcon="ArrowRight" onClick={(): void => startGame(roomId)} className={styles.startGameButton}>
+              Démarrer la partie
+            </Button>
+          )}
+        </div>
+      </ContentWindow>
     </>
   );
 };

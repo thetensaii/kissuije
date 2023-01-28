@@ -1,13 +1,13 @@
 import Button from 'components/atom/Button';
 import { Svg } from 'components/atom/Svg';
-import styles from './Window.module.scss';
+import styles from './ContentWindow.module.scss';
 
 type Props = {
   onBackButtonClick?: () => void;
   children: React.ReactNode;
 };
 
-export const Window = ({ onBackButtonClick, children }: Props): JSX.Element => {
+export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Element => {
   return (
     <section className={styles.window}>
       <header>
