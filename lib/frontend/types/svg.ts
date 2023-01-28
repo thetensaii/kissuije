@@ -16,6 +16,7 @@ export const SvgType = {
   ChevronRight: 'ChevronRight',
   Crown: 'Crown',
   Link: 'Link',
+  ArrowRight: 'ArrowRight',
   ...AvatarType,
 } as const;
 export type SvgType = typeof SvgType[keyof typeof SvgType];

@@ -1,0 +1,16 @@
+.windowContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.invitationContainer {
+  display: flex;
+  align-items: center;
+  gap: 4.5rem;
+}
+
+.startGameButton {
+  width: 24rem;
+}

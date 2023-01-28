@@ -62,7 +62,7 @@ export const useRoom = (): UseRoomReturnType => {
     });
 
     socket.on('playerJoinRoom', (player) => {
-      setPlayers((players) => [...players, convertSocketPlayerToFrontendPlayer(player)]);
+      setPlayers((players) => [...players, convertSocketPlayerToFrontendPlayer(player, false, false)]);
     });
 
     socket.on('playerLeaveRoom', (id) => {
@@ -166,7 +166,7 @@ export const useRoom = (): UseRoomReturnType => {
     const newRoomId = roomId ?? generateRoomId();
 
     socket.emit('createRoom', name, newRoomId, (owner) => {
-      setPlayers([convertSocketPlayerToFrontendPlayer(owner)]);
+      setPlayers([convertSocketPlayerToFrontendPlayer(owner, true, true)]);
       setRoomId(newRoomId);
       setOwnerId(owner.id);
       setSceneState(SceneState.LOBBY);
@@ -188,7 +188,9 @@ export const useRoom = (): UseRoomReturnType => {
     if (!roomExist) return createRoom(name);
 
     socket.emit('joinRoom', name, roomID, (ownerId, players) => {
-      const frontendTypePlayers = players.map<PlayerType>(convertSocketPlayerToFrontendPlayer);
+      const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => {
+        return convertSocketPlayerToFrontendPlayer(p, ownerId === p.id, socket.id === p.id);
+      });
       setPlayers(frontendTypePlayers);
       setRoomId(roomID);
       setOwnerId(ownerId);
