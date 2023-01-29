@@ -1,12 +1,11 @@
 @import '../../../styles/colors';
 
 .window {
-  background-color: $blue-dark;
+  background-color: $green;
   border-radius: 8px;
-  border: 1px solid rgba($color: $white, $alpha: 0.62);
 
   & > header {
-    background-color: $blue-header;
+    background-color: $green-dark;
     display: flex;
     border-radius: 8px 8px 0px 0px;
     padding: 1rem;

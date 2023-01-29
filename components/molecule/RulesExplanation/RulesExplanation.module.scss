@@ -1,6 +1,13 @@
+@import '../../../styles/colors';
+
 .rulesExplanation {
+  background-color: $green;
+
   display: flex;
   flex-direction: column;
+
+  border-radius: 0.5rem;
+  padding: 3rem 1.5rem;
   gap: 2rem;
 
   & > h2 {
@@ -9,6 +16,8 @@
 
   & > div {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    
+    gap: 1.5rem;
   }
 }
