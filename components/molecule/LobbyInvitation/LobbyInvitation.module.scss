@@ -1,7 +1,14 @@
+@import '../../../styles/colors';
+
 .lobbyInvitation {
   display: flex;
   flex-direction: column;
   align-items: center;
 
   gap: 1rem;
+}
+
+.copyLinkButton {
+  background-color: #A9FFE4;
+  color: $green-dark;
 }
