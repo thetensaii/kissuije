@@ -9,8 +9,8 @@ type Props = {
 export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Element => {
   return (
     <section>
-      <header className={styles.windowHeader}>
-        {onBackButtonClick && (
+      {onBackButtonClick && (
+        <header className={styles.windowHeader}>
           <Button
             buttonType="transparent"
             className={styles.backButton}
@@ -19,8 +19,8 @@ export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Eleme
           >
             RETOUR
           </Button>
-        )}
-      </header>
+        </header>
+      )}
       <div className={styles.content}>{children}</div>
     </section>
   );

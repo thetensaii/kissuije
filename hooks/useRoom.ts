@@ -19,6 +19,8 @@ export type AnswerAttemptFn = (askerId: string, answer: AnswerType) => void;
 type ContinueToNextRoundFn = () => void;
 type MoveToRankingPageFn = () => void;
 type RestartFn = () => void;
+type RedirectToTryGuessSceneFn = () => void;
+type RedirectToAskQuestionSceneFn = () => void;
 
 export type UseRoomReturnType = {
   sceneState: SceneState;
@@ -35,6 +37,8 @@ export type UseRoomReturnType = {
   startGame: StartGameFn;
   validatePlayerCharacter: ValidatePlayerCharacterFn;
   askQuestion: AskQuestionFn;
+  redirectToTryGuessScene: RedirectToTryGuessSceneFn;
+  redirectToAskQuestionScene: RedirectToAskQuestionSceneFn;
   tryGuess: TryGuessFn;
   answerAttempt: AnswerAttemptFn;
   continueToNextRound: ContinueToNextRoundFn;
@@ -231,7 +235,9 @@ export const useRoom = (): UseRoomReturnType => {
 
   const tryGuess: TryGuessFn = (text: string): void => {
     if (!roomId) return;
-    socket.emit('tryGuess', roomId, text);
+    socket.emit('tryGuess', roomId, text, () => {
+      setSceneState(SceneState.WAIT_FOR_ATTEMPTS);
+    });
   };
 
   const answerAttempt: AnswerAttemptFn = (askerId: string, answer: AnswerType) => {
@@ -293,6 +299,14 @@ export const useRoom = (): UseRoomReturnType => {
     createRoom(player.name, nextRoomId);
   };
 
+  const redirectToTryGuessScene: RedirectToTryGuessSceneFn = (): void => {
+    setSceneState(SceneState.TRY_GUESS);
+  };
+
+  const redirectToAskQuestionScene: RedirectToAskQuestionSceneFn = (): void => {
+    setSceneState(SceneState.ASK_QUESTION);
+  };
+
   return {
     sceneState,
     player,
@@ -309,6 +323,8 @@ export const useRoom = (): UseRoomReturnType => {
     validatePlayerCharacter,
     askQuestion,
     tryGuess,
+    redirectToTryGuessScene,
+    redirectToAskQuestionScene,
     answerAttempt,
     continueToNextRound,
     moveToRankingPage,
