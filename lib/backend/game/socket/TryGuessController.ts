@@ -21,13 +21,14 @@ export class TryGuessController {
 
   public tryGuess(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('tryGuess', (roomId, text) => {
+      socket.on('tryGuess', (roomId, text, cb) => {
         const playerId = socket.id;
 
         this.tryGuessService.tryGuess(roomId, playerId, text);
 
         socket.emit('playerAttempted', socket.id);
         socket.to(roomId).emit('playerAttempted', socket.id);
+        cb();
 
         const allPlayersAttempted = this.doAllPlayersAttemptedService.doAllPlayersAttempted(roomId);
         if (!allPlayersAttempted) return;
