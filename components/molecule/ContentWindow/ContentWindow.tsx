@@ -1,5 +1,4 @@
 import Button from 'components/atom/Button';
-import { Svg } from 'components/atom/Svg';
 import styles from './ContentWindow.module.scss';
 
 type Props = {
@@ -9,11 +8,16 @@ type Props = {
 
 export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Element => {
   return (
-    <section className={styles.window}>
-      <header>
+    <section>
+      <header className={styles.windowHeader}>
         {onBackButtonClick && (
-          <Button buttonType="transparent" className={styles.backButton} onClick={onBackButtonClick}>
-            <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={16} /> RETOUR
+          <Button
+            buttonType="transparent"
+            className={styles.backButton}
+            onClick={onBackButtonClick}
+            leftIcon={'ChevronLeft'}
+          >
+            RETOUR
           </Button>
         )}
       </header>
