@@ -10,6 +10,8 @@ import { Game } from 'components/organism/Game';
 import { RoundResult } from 'components/organism/RoundResult';
 import { EndGame } from 'components/organism/EndGame';
 import { Ranking } from 'components/organism/Ranking';
+import { AskQuestion } from 'components/organism/AskQuestion';
+import { WaitForAttempts } from 'components/organism/WaitForAttempts';
 
 export default function Root(): JSX.Element {
   const router = useRouter();
@@ -33,6 +35,8 @@ export default function Root(): JSX.Element {
   if (sceneState === SceneState.LOBBY) return <Lobby />;
   if (sceneState === SceneState.CHOOSE_CHARACTER) return <ChooseCharacter />;
   if (sceneState === SceneState.WAITING_ROOM) return <WaitingRoom />;
+  if (sceneState === SceneState.ASK_QUESTION) return <AskQuestion />;
+  if (sceneState === SceneState.WAIT_FOR_ATTEMPTS) return <WaitForAttempts />;
   if (sceneState === SceneState.GAME) return <Game />;
   if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
   if (sceneState === SceneState.END_GAME) return <EndGame />;

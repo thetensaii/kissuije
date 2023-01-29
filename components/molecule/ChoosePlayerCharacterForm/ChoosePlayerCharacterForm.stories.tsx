@@ -4,7 +4,7 @@ import { PlayerType } from 'lib/frontend/types/player';
 import { ChoosePlayerCharacterForm } from './ChoosePlayerCharacterForm';
 
 const meta: Meta<typeof ChoosePlayerCharacterForm> = {
-  title: 'Molecule/ChoosePlayerCharacterForm',
+  title: 'Molecule/Forms/ChoosePlayerCharacterForm',
   component: ChoosePlayerCharacterForm,
 };
 

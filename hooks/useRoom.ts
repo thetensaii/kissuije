@@ -89,6 +89,7 @@ export const useRoom = (): UseRoomReturnType => {
     socket.on('launchFirstRound', () => {
       setPlayerChoosedId(null);
       launchNewRound(1);
+      setSceneState(SceneState.ASK_QUESTION);
     });
 
     socket.on('playerAttempted', (playerId) => {
@@ -223,7 +224,9 @@ export const useRoom = (): UseRoomReturnType => {
 
   const askQuestion: AskQuestionFn = (text: string): void => {
     if (!roomId) return;
-    socket.emit('askQuestion', roomId, text);
+    socket.emit('askQuestion', roomId, text, () => {
+      setSceneState(SceneState.WAIT_FOR_ATTEMPTS);
+    });
   };
 
   const tryGuess: TryGuessFn = (text: string): void => {

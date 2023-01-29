@@ -1,6 +1,6 @@
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { PlayersList } from 'components/molecule/PlayersList';
-import { QuestionForm } from 'components/molecule/QuestionForm';
+import { AskQuestionForm } from 'components/molecule/AskQuestionForm';
 import { GuessForm } from 'components/molecule/GuessForm';
 import { WaitForOthers } from 'components/molecule/WaitForOthers';
 import { AttemptsList } from 'components/molecule/AttemptsList';
@@ -29,7 +29,7 @@ export const Game = (): JSX.Element => {
           <WaitForOthers />
         ) : (
           <>
-            <QuestionForm askQuestion={askQuestion} />
+            <AskQuestionForm askQuestion={askQuestion} />
             <GuessForm tryGuess={tryGuess} />
           </>
         )
