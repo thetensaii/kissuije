@@ -1,0 +1,1 @@
+export { DidYouKnowCard } from './DidYouKnowCard';

@@ -36,7 +36,7 @@ export interface ClientToServerEvents {
   newPlayer: (name: string, roomId: string, callback: (players: SocketPlayerType[]) => void) => void;
   startGame: (roomId: string) => void;
   choosePlayerCharacter: (roomId: string, targetId: string, character: string) => void;
-  askQuestion: (roomId: string, text: string) => void;
+  askQuestion: (roomId: string, text: string, cb: () => void) => void;
   tryGuess: (roomId: string, text: string) => void;
   answerAttempt: (roomId: string, askerId: string, answer: SocketAnswerType, cb: () => void) => void;
   continueToNextRound: (roomId: string, cb: () => void) => void;

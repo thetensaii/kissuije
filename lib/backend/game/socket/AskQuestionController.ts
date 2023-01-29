@@ -21,13 +21,14 @@ export class AskQuestionController {
 
   public askQuestion(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('askQuestion', (roomId, text) => {
+      socket.on('askQuestion', (roomId, text, cb) => {
         const playerId = socket.id;
 
         this.askQuestionService.askQuestion(roomId, playerId, text);
 
         socket.emit('playerAttempted', socket.id);
         socket.to(roomId).emit('playerAttempted', socket.id);
+        cb();
 
         const allPlayersAttempted = this.doAllPlayersAttemptedService.doAllPlayersAttempted(roomId);
         if (!allPlayersAttempted) return;
