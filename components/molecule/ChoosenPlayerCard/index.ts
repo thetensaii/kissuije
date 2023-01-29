@@ -1,0 +1,1 @@
+export { ChoosenPlayerCard } from './ChoosenPlayerCard';
