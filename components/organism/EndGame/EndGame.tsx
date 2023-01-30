@@ -1,17 +1,23 @@
 import Button from 'components/atom/Button';
-import { Loser } from 'components/molecule/Loser/Loser';
-import { Winner } from 'components/molecule/Winner';
+import { LoserCard } from 'components/molecule/LoserCard/LoserCard';
+import { WinnerCard } from 'components/molecule/WinnerCard';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
+import styles from './EndGame.module.scss';
 
 export const EndGame = (): JSX.Element => {
-  const { player, moveToRankingPage } = useGameRoomContext();
+  const { player, attempt, moveToRankingPage } = useGameRoomContext();
 
-  if (!player) return <></>;
+  if (!player) throw new Error('No player');
+  if (!attempt) throw new Error('No Attempt');
 
   return (
     <>
-      {player.hasWon ? <Winner player={player} /> : <Loser player={player} />}
-      <Button onClick={moveToRankingPage}>Continuer</Button>
+      <div className={styles.card}>
+        {player.hasWon ? <WinnerCard player={player} attempt={attempt} /> : <LoserCard player={player} />}
+      </div>
+      <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={moveToRankingPage}>
+        Continuer
+      </Button>
     </>
   );
 };

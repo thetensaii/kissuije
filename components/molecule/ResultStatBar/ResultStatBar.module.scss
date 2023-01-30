@@ -1,0 +1,46 @@
+@import '../../../styles/colors';
+
+.container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  
+  & > :first-child {
+    border-radius: 8px 0 0 8px;
+  }
+  
+  & > :last-child {
+    border-radius: 0 8px 8px 0;
+  }
+
+  & > :only-child {
+    border-radius: 8px;
+  }
+  
+  & > * {
+    padding: 1rem;
+    flex: 1 1 0px;
+  }
+
+  .yes {
+    background-color: $green-primary;
+    color: $white;
+  }
+  
+  .no {
+    background-color: $green-lightest;
+    color: $black;
+  }
+
+  .idk {
+    background-color: $green-ternary;
+    color: $white;
+  }
+
+  @for $i from 1 through 100 {
+    .grow-#{$i} {
+      flex-grow: $i;
+    }
+  }
+}
