@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { Input } from 'components/atom/Input';
+import { InputText } from 'components/atom/InputText';
 import { AskQuestionFn } from 'hooks/useRoom';
 import { isStringEmpty } from 'lib/common/functions';
 import { useEffect } from 'react';
@@ -36,7 +36,7 @@ export const AskQuestionForm = ({ askQuestion }: Props): JSX.Element => {
       <p className={styles.text}>
         Ecrivez une question et les participants répondront par oui, non ou “je ne sais pas”.
       </p>
-      <Input {...register('question')} type="text" required />
+      <InputText {...register('question')} type="text" required />
       <Button type="submit">Poser la question</Button>
     </form>
   );

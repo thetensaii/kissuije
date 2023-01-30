@@ -112,6 +112,7 @@ export const useRoom = (): UseRoomReturnType => {
     socket.on('allPlayersAttempted', (socketAttempts) => {
       const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
       setAttempts(attempts);
+      setSceneState(SceneState.ANSWER_ATTEMPTS);
     });
 
     socket.on('allPlayersAnswered', (socketAttempt) => {

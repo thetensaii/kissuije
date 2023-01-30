@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { Input } from 'components/atom/Input';
+import { InputText } from 'components/atom/InputText';
 import { TryGuessFn } from 'hooks/useRoom';
 import { isStringEmpty } from 'lib/common/functions';
 import { useRef } from 'react';
@@ -23,7 +23,7 @@ export const GuessForm = ({ tryGuess }: Props): JSX.Element => {
 
   return (
     <div>
-      <Input type="text" ref={guessInputRef} />
+      <InputText type="text" ref={guessInputRef} />
       <Button onClick={handleGuessForm}>Deviner son personnage</Button>
     </div>
   );
