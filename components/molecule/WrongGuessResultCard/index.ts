@@ -1,0 +1,1 @@
+export { WrongGuessResultCard } from './WrongGuessResultCard';

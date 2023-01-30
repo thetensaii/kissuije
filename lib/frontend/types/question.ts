@@ -1,7 +1,7 @@
-import { AttemptType } from './attempt';
+import { AttemptType, BaseAttemptType } from './attempt';
 
-export interface QuestionType extends AttemptType {
+export type QuestionType = BaseAttemptType & {
   type: 'question';
-}
+};
 
 export const isQuestion = (attempt: AttemptType): attempt is QuestionType => attempt.type === 'question';

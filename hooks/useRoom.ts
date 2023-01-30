@@ -111,8 +111,7 @@ export const useRoom = (): UseRoomReturnType => {
 
     socket.on('allPlayersAttempted', (socketAttempts) => {
       const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
-      const attemptsWithoutPlayerAttempt = attempts.filter((a) => a.askerId !== socket.id);
-      setAttempts(attemptsWithoutPlayerAttempt);
+      setAttempts(attempts);
       setSceneState(SceneState.ANSWER_ATTEMPTS);
     });
 
@@ -251,7 +250,8 @@ export const useRoom = (): UseRoomReturnType => {
           a.askerId === askerId ? { ...a, isAnswered: true } : a
         );
 
-        if (updatedAttempts.every((a) => a.isAnswered)) setSceneState(SceneState.WAIT_FOR_ANSWERS);
+        if (updatedAttempts.filter((a) => a.askerId !== socket.id).every((a) => a.isAnswered))
+          setSceneState(SceneState.WAIT_FOR_ANSWERS);
         return updatedAttempts;
       });
     });
