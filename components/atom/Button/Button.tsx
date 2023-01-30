@@ -2,7 +2,7 @@ import { SvgType } from 'lib/frontend/types/svg';
 import { ReactElement } from 'react';
 import { Svg } from '../Svg';
 import styles from './Button.module.scss';
-type ButtonType = 'primary' | 'secondary' | 'ternary' | 'transparent';
+type ButtonType = 'primary' | 'secondary' | 'ternary' | 'transparent' | 'true' | 'false';
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType?: ButtonType;
   leftIcon?: SvgType;

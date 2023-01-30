@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { Input } from 'components/atom/Input';
+import { InputText } from 'components/atom/InputText';
 import { PlayerType } from 'lib/frontend/types/player';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,7 @@ export const ChoosePlayerCharacterForm = ({ playerChoosed, onSubmit }: Props): J
     <div className={styles.container}>
       <ChoosenPlayerCard player={playerChoosed} />
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <Input {...register('character')} type="text" required placeholder="Saisir le nom du personnage" />
+        <InputText {...register('character')} type="text" required placeholder="Saisir le nom du personnage" />
         <Button type="submit">Valider</Button>
       </form>
     </div>

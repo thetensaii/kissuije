@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { Input } from 'components/atom/Input';
+import { InputText } from 'components/atom/InputText';
 import { TryGuessFn } from 'hooks/useRoom';
 import { isStringEmpty } from 'lib/common/functions';
 import { useEffect } from 'react';
@@ -34,7 +34,7 @@ export const TryGuessForm = ({ tryGuess }: Props): JSX.Element => {
     <form className={styles.container} onSubmit={handleSubmit(handleQuestionForm)}>
       <p className={styles.title}>Devine ton personnage</p>
       <p className={styles.text}>Essayez de deviner votre personnage</p>
-      <Input {...register('guess')} type="text" required />
+      <InputText {...register('guess')} type="text" required />
       <Button type="submit">Deviner son personnage</Button>
     </form>
   );
