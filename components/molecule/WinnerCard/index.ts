@@ -1,0 +1,1 @@
+export { WinnerCard } from './WinnerCard';

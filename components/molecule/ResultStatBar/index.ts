@@ -1,0 +1,1 @@
+export { ResultStatBar } from './ResultStatBar';

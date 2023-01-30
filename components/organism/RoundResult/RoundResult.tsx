@@ -1,35 +1,31 @@
 import Button from 'components/atom/Button';
 import { QuestionResultCard } from 'components/molecule/QuestionResultCard';
-import { WaitForOthers } from 'components/molecule/WaitForOthers';
-import { WinResult } from 'components/molecule/WinResult';
-import { WrongGuessResult } from 'components/molecule/WrongGuessResult';
-import { isGuess } from 'lib/frontend/types/guess';
+import { WrongGuessResultCard } from 'components/molecule/WrongGuessResultCard';
 import { isQuestion } from 'lib/frontend/types/question';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
+import styles from './RoundResult.module.scss';
 
 export const RoundResult = (): JSX.Element => {
   const { attempt, player, continueToNextRound } = useGameRoomContext();
 
-  if (!player) return <></>;
-
-  if (player.wantsToContinue) return <WaitForOthers />;
-
-  const yesAnswersCount = attempt?.answers.filter((a) => a === 'yes').length ?? 0;
-  const noAnswersCount = attempt?.answers.filter((a) => a === 'no').length ?? 0;
+  if (!player) throw new Error('No player');
+  if (!attempt) throw new Error('No Answer');
 
   return (
     <>
-      {!attempt ? (
-        <WaitForOthers />
-      ) : isQuestion(attempt) ? (
-        <QuestionResultCard question={attempt} />
-      ) : isGuess(attempt) && yesAnswersCount >= noAnswersCount ? (
-        <WinResult character={player.character} />
+      {isQuestion(attempt) ? (
+        <div className={styles.questionResultCard}>
+          <QuestionResultCard question={attempt} />
+        </div>
       ) : (
-        <WrongGuessResult />
+        <div className={styles.wrongGuessResultCard}>
+          <WrongGuessResultCard guess={attempt} />
+        </div>
       )}
 
-      <Button onClick={(): void => continueToNextRound()}>Continuer</Button>
+      <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={continueToNextRound}>
+        Continuer
+      </Button>
     </>
   );
 };
