@@ -1,5 +1,5 @@
 import Button from 'components/atom/Button';
-import { Input } from 'components/atom/Input';
+import { InputText } from 'components/atom/InputText';
 import { Label } from 'components/atom/Label';
 import { AvatarType } from 'lib/frontend/types/svg';
 import { useEffect, useState } from 'react';
@@ -62,7 +62,7 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
         </fieldset>
         <fieldset>
           <Label htmlFor="name">Choisis ton pseudo</Label>
-          <Input type="text" {...register('name')} placeholder="Entre ton pseudo" />
+          <InputText type="text" {...register('name')} placeholder="Entre ton pseudo" />
           {type === 'createRoom' ? (
             <Button type="submit">Créer une partie</Button>
           ) : (
