@@ -26,13 +26,7 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   args: {
-    asker: {
-      name: 'Player1',
-      character: 'Marylin Monroe',
-    } as PlayerType,
-    guess: {
-      text: 'Sean Paul',
-    } as GuessType,
+    ...Default.args,
     disabled: true,
   },
 };
