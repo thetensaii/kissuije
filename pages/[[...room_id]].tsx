@@ -14,6 +14,7 @@ import { AskQuestion } from 'components/organism/AskQuestion';
 import { WaitForAttempts } from 'components/organism/WaitForAttempts';
 import { TryGuess } from 'components/organism/TryGuess';
 import { AnswerAttempts } from 'components/organism/AnswerAttempts';
+import { WaitForAnswers } from 'components/organism/WaitForAnswers';
 
 export default function Root(): JSX.Element {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function Root(): JSX.Element {
   if (sceneState === SceneState.TRY_GUESS) return <TryGuess />;
   if (sceneState === SceneState.WAIT_FOR_ATTEMPTS) return <WaitForAttempts />;
   if (sceneState === SceneState.ANSWER_ATTEMPTS) return <AnswerAttempts />;
+  if (sceneState === SceneState.WAIT_FOR_ANSWERS) return <WaitForAnswers />;
   if (sceneState === SceneState.GAME) return <Game />;
   if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
   if (sceneState === SceneState.END_GAME) return <EndGame />;
