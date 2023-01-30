@@ -111,7 +111,8 @@ export const useRoom = (): UseRoomReturnType => {
 
     socket.on('allPlayersAttempted', (socketAttempts) => {
       const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
-      setAttempts(attempts);
+      const attemptsWithoutPlayerAttempt = attempts.filter((a) => a.askerId !== socket.id);
+      setAttempts(attemptsWithoutPlayerAttempt);
       setSceneState(SceneState.ANSWER_ATTEMPTS);
     });
 
@@ -246,8 +247,12 @@ export const useRoom = (): UseRoomReturnType => {
     socket.emit('answerAttempt', roomId, askerId, answer, () => {
       setAttempts((attempts) => {
         if (!attempts) return null;
+        const updatedAttempts = attempts.map<AttemptType>((a) =>
+          a.askerId === askerId ? { ...a, isAnswered: true } : a
+        );
 
-        return attempts.map<AttemptType>((a) => (a.askerId === askerId ? { ...a, isAnswered: true } : a));
+        if (updatedAttempts.every((a) => a.isAnswered)) setSceneState(SceneState.WAIT_FOR_ANSWERS);
+        return updatedAttempts;
       });
     });
   };
