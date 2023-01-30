@@ -4,7 +4,7 @@ import { isGuess } from 'lib/frontend/types/guess';
 import { PlayerType } from 'lib/frontend/types/player';
 import { isQuestion } from 'lib/frontend/types/question';
 import { AnswerGuessForm } from '../AnswerGuessForm';
-import { AnswerQuestion } from '../AnswerQuestion';
+import { AnswerQuestionForm } from '../AnswerQuestionForm';
 import styles from './AttemptsList.module.scss';
 
 type Props = {
@@ -24,7 +24,16 @@ export const AttemptsList = ({ attempts, players, me, answerAttempt }: Props): J
           if (!asker) return <></>;
 
           if (isQuestion(attempt))
-            return <AnswerQuestion key={asker.id} question={attempt} player={asker} answerQuestion={answerAttempt} />;
+            return (
+              <AnswerQuestionForm
+                key={asker.id}
+                question={attempt}
+                asker={asker}
+                answerQuestion={answerAttempt}
+                disabled={idx !== 0}
+              />
+            );
+
           if (isGuess(attempt))
             return (
               <AnswerGuessForm
