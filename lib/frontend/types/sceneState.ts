@@ -11,7 +11,7 @@ export const SceneState = {
   ROUND_RESULT: 'ROUND_RESULT',
   WAIT_FOR_CONTINUE: 'WAIT_FOR_CONTINUE',
   END_GAME: 'END_GAME',
-  RANKING: 'RANKING',
+  FINAL_RESULTS: 'FINAL_RESULTS',
 } as const;
 
 export type SceneState = typeof SceneState[keyof typeof SceneState];

@@ -1,0 +1,1 @@
+export { FinalLoserCard } from './FinalLoserCard';

@@ -13,6 +13,17 @@ export type PlayerType = {
   hasWon: boolean;
 };
 
+export type WinnerType = PlayerType & {
+  hasWon: true;
+};
+
+export type LoserType = PlayerType & {
+  hasWon: false;
+};
+
+export const isWinner = (player: PlayerType): player is WinnerType => player.hasWon;
+export const isLoser = (player: PlayerType): player is LoserType => !player.hasWon;
+
 export const convertSocketPlayerToFrontendPlayer = (
   socketPlayer: SocketPlayerType,
   isOwner = false,

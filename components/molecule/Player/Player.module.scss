@@ -1,12 +1,19 @@
+@import '../../../styles/colors';
+
 .player {
+  color: $black;
+
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
+  white-space: nowrap;
 
-  & > b,span {
+  min-width: 0;
+  min-height: 0;
+
+  .playerName {
     text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
   }
 }

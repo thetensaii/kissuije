@@ -1,19 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SvgType, SvgList, AvatarList, AvatarType } from 'lib/frontend/types/svg';
+import { SvgType, AvatarList, AvatarType } from 'lib/frontend/types/svg';
 
 import { Svg } from './Svg';
 
 const meta: Meta<typeof Svg> = {
   title: 'Atom/Svg',
   component: Svg,
-  argTypes: {
-    type: {
-      options: SvgList,
-      control: {
-        type: 'select',
-      },
-    },
-  },
 };
 
 export default meta;
