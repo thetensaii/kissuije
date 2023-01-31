@@ -272,6 +272,7 @@ export const useRoom = (): UseRoomReturnType => {
             : p
         )
       );
+      setSceneState(SceneState.WAIT_FOR_CONTINUE);
     });
   };
 
@@ -285,7 +286,7 @@ export const useRoom = (): UseRoomReturnType => {
     );
     setActualRound(roundNumber);
     setAttempts(null);
-    setSceneState(SceneState.GAME);
+    setSceneState(SceneState.ASK_QUESTION);
   };
 
   const moveToRankingPage: MoveToRankingPageFn = (): void => {
