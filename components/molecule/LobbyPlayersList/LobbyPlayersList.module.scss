@@ -6,7 +6,6 @@
 
   display: flex;
   flex-direction: column;
-  width: fit-content;
 
   border-radius: 0.5rem;
   padding: 2rem;
@@ -17,16 +16,17 @@
     font-weight: 500;
     font-size: 20px;
   }
-}
-
-.playersGrid {
-  display: grid;
-  grid-template-columns: 10rem 10rem 10rem;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  gap: 1rem 2rem;
-}
-
-.playersInLobby {
-  margin-left: auto;
-  color: $gray;
+  
+  .playersGrid {
+    display: grid;
+  
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 1rem 2rem;
+  }
+  
+  .playersInLobby {
+    margin-left: auto;
+    color: $gray;
+  }
 }

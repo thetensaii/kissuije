@@ -8,7 +8,7 @@ import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitingRoom } from 'components/organism/WaitingRoom';
 import { RoundResult } from 'components/organism/RoundResult';
 import { EndGame } from 'components/organism/EndGame';
-import { Ranking } from 'components/organism/Ranking';
+import { FinalResults } from 'components/organism/FinalResults';
 import { AskQuestion } from 'components/organism/AskQuestion';
 import { WaitForAttempts } from 'components/organism/WaitForAttempts';
 import { TryGuess } from 'components/organism/TryGuess';
@@ -46,7 +46,7 @@ export default function Root(): JSX.Element {
   if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
   if (sceneState === SceneState.WAIT_FOR_CONTINUE) return <WaitForContinue />;
   if (sceneState === SceneState.END_GAME) return <EndGame />;
-  if (sceneState === SceneState.RANKING) return <Ranking />;
+  if (sceneState === SceneState.FINAL_RESULTS) return <FinalResults />;
 
   return <h1>Erreur : Veuillez recharger la page</h1>;
 }

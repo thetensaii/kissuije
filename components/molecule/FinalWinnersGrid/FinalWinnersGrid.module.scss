@@ -1,0 +1,28 @@
+.winnersGrid {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+  
+  gap: 1.5rem;
+
+  & > *:not(.fireworkIcon,.partyPopperIcon) {
+    max-width: 30%;
+    width: 100%;
+    min-width: 300px;
+  }
+
+  .fireworkIcon {
+    position: absolute;
+    left: -70px;
+    top: -20px;
+  }
+
+  .partyPopperIcon {
+    position: absolute;
+    right: -65px;
+    top: 0px;
+  }
+}

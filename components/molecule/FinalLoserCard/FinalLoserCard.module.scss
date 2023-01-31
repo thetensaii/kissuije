@@ -1,0 +1,16 @@
+@import '../../../styles/colors';
+
+.container {
+  background-color: $white;
+  color: $black;
+
+  padding: 1rem;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  min-width: 0;
+  min-height: 0;
+}
