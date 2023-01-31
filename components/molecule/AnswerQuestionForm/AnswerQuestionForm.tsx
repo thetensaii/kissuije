@@ -31,7 +31,7 @@ export const AnswerQuestionForm = ({ asker, question, answerQuestion, disabled }
         <InputButton value="Non" onClick={(): void => answerQuestion(question.askerId, 'no')} disabled={disabled} />
         <InputButton
           value="Je ne sais pas"
-          onClick={(): void => answerQuestion(question.askerId, 'no')}
+          onClick={(): void => answerQuestion(question.askerId, 'idk')}
           disabled={disabled}
         />
       </div>

@@ -6,7 +6,6 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { Lobby } from 'components/organism/Lobby';
 import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitingRoom } from 'components/organism/WaitingRoom';
-import { Game } from 'components/organism/Game';
 import { RoundResult } from 'components/organism/RoundResult';
 import { EndGame } from 'components/organism/EndGame';
 import { Ranking } from 'components/organism/Ranking';
@@ -15,6 +14,7 @@ import { WaitForAttempts } from 'components/organism/WaitForAttempts';
 import { TryGuess } from 'components/organism/TryGuess';
 import { AnswerAttempts } from 'components/organism/AnswerAttempts';
 import { WaitForAnswers } from 'components/organism/WaitForAnswers';
+import { WaitForContinue } from 'components/organism/WaitForContinue';
 
 export default function Root(): JSX.Element {
   const router = useRouter();
@@ -43,8 +43,8 @@ export default function Root(): JSX.Element {
   if (sceneState === SceneState.WAIT_FOR_ATTEMPTS) return <WaitForAttempts />;
   if (sceneState === SceneState.ANSWER_ATTEMPTS) return <AnswerAttempts />;
   if (sceneState === SceneState.WAIT_FOR_ANSWERS) return <WaitForAnswers />;
-  if (sceneState === SceneState.GAME) return <Game />;
   if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
+  if (sceneState === SceneState.WAIT_FOR_CONTINUE) return <WaitForContinue />;
   if (sceneState === SceneState.END_GAME) return <EndGame />;
   if (sceneState === SceneState.RANKING) return <Ranking />;
 
