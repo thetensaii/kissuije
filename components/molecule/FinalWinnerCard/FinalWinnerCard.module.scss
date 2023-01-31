@@ -1,0 +1,28 @@
+@import '../../../styles/colors';
+
+.container {
+  background-color: $white;
+  color: $black;
+
+  padding: 1.5rem;
+  border-radius: 8px;
+
+  .label {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .character {
+    background-color: $red;
+    color: $white;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: 600;
+  }
+}

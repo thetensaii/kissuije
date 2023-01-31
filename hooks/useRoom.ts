@@ -290,7 +290,7 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   const moveToRankingPage: MoveToRankingPageFn = (): void => {
-    setSceneState(SceneState.RANKING);
+    setSceneState(SceneState.FINAL_RESULTS);
   };
 
   const restart: RestartFn = async () => {

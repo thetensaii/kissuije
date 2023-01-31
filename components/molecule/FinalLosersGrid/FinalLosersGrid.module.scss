@@ -1,0 +1,17 @@
+.container{
+
+  
+  .title {
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .losersGrid {
+    display: grid;
+    
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem 2rem;
+  }
+}
