@@ -29,9 +29,13 @@ If some context data is updated, every component which subscribed to the context
 
 But, we'll see later.
 
-### 3) Api is not refreshed on save
+### 3) Api is not refreshed with fast-refresh
 
-### 4) Add storybook to NextJS x PNPM Project
+### 4) No NextJS v12 doc
+
+Since NextJS v13 I dont know where to find the v12 doc.
+
+### 5) Add storybook to NextJS x PNPM Project
 
 Currently, Pnpm support is still in the 7.0.0-beta version so we need no to install storybook with the `@next` version.
 
@@ -39,5 +43,11 @@ Currently, Pnpm support is still in the 7.0.0-beta version so we need no to inst
 pnpm dlx sb@next init
 ```
 
-[Storybook x NextJS](https://storybook.js.org/blog/integrate-nextjs-and-storybook-automatically/)
+[Storybook x NextJS](https://storybook.js.org/blog/integrate-nextjs-and-storybook-automatically/)   
 [Make Storybook support PNPM PR](https://github.com/storybookjs/storybook/pull/19425)
+
+### 6) Storybook not working on MacOS
+
+I've installed storybook on my **Windows WSL (Ubuntu 20.04)** as i said in the [5th point](#5-add-storybook-to-nextjs-x-pnpm-project) and it was working correctly.
+
+But on **MacOS** it didn't work, to fix it i had to install those dependencies : `css-loader postcss-loader resolve-url-loader sass-loader style-loader`
