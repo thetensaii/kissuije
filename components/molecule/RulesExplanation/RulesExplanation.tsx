@@ -4,9 +4,9 @@ import styles from './RulesExplanation.module.scss';
 
 export const RulesExplanation = (): JSX.Element => {
   return (
-    <div className={styles.rulesExplanation}>
+    <div className={styles.container}>
       <H1>Comment jouer ?</H1>
-      <div>
+      <div className={styles.rulesExplanation}>
         <RuleExplanation number={1}>
           <p>Chaque joueur choisis un personnage pour un autre joueur</p>
         </RuleExplanation>

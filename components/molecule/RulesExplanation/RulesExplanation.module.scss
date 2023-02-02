@@ -1,6 +1,6 @@
 @import '../../../styles/colors';
 
-.rulesExplanation {
+.container {
   background-color: $green;
 
   display: flex;
@@ -10,14 +10,21 @@
   padding: 3rem 1.5rem;
   gap: 2rem;
 
-  & > .title {
+  width: 100%;
+
+  .title {
     text-align: center;
   }
 
-  & > div {
+  .rulesExplanation {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     
     gap: 1.5rem;
+
+    & > * {
+      width: 20%;
+      flex: 1 1 0;
+    }
   }
 }

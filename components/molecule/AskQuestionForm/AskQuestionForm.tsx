@@ -1,5 +1,6 @@
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
+import { H1 } from 'components/atom/Typo/H1';
 import { AskQuestionFn } from 'hooks/useRoom';
 import { isStringEmpty } from 'lib/common/functions';
 import { useEffect } from 'react';
@@ -32,7 +33,7 @@ export const AskQuestionForm = ({ askQuestion }: Props): JSX.Element => {
 
   return (
     <form className={styles.container} onSubmit={handleSubmit(handleQuestionForm)}>
-      <p className={styles.title}>Posez une question</p>
+      <H1>Posez une question</H1>
       <p className={styles.text}>
         Ecrivez une question et les participants répondront par oui, non ou “je ne sais pas”.
       </p>

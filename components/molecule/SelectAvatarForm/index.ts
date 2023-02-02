@@ -1,0 +1,1 @@
+export { SelectAvatarForm } from './SelectAvatarForm';

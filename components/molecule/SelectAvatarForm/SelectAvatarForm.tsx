@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AvatarList, AvatarType } from 'lib/frontend/types/svg';
-import styles from './SelectAvatar.module.scss';
 import { Svg } from 'components/atom/Svg';
 import Button from 'components/atom/Button';
+import styles from './SelectAvatarForm.module.scss';
 
 type Props = {
   initialAvatar?: AvatarType;
   onChange: (avatar: AvatarType) => void;
 };
 
-export const SelectAvatar = ({ initialAvatar, onChange }: Props): JSX.Element => {
+export const SelectAvatarForm = ({ initialAvatar, onChange }: Props): JSX.Element => {
   const [avatarIndex, setAvatarIndex] = useState<number>(
     initialAvatar ? AvatarList.findIndex((a) => a === initialAvatar) : 0
   );

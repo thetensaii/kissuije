@@ -5,7 +5,7 @@ import { AvatarType } from 'lib/frontend/types/svg';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ContentWindow } from '../ContentWindow';
-import { SelectAvatar } from '../SelectAvatar';
+import { SelectAvatarForm } from '../SelectAvatarForm';
 import styles from './PlayerForm.module.scss';
 
 type PlayerFormType = 'createRoom' | 'joinRoom';
@@ -59,12 +59,12 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
     <section className={styles.container}>
       <ContentWindow>
         <form className={styles.playerForm} onSubmit={handleSubmit(handleFormSubmit)}>
-          <fieldset>
-            <SelectAvatar onChange={setAvatar} />
+          <fieldset className={styles.fieldset}>
+            <SelectAvatarForm onChange={setAvatar} />
           </fieldset>
-          <fieldset>
+          <fieldset className={styles.fieldset}>
             <Label htmlFor="name">Choisis ton pseudo</Label>
-            <InputText type="text" {...register('name')} placeholder="Entre ton pseudo" />
+            <InputText type="text" {...register('name')} placeholder="Saisir ton pseudo" />
             {type === 'createRoom' ? (
               <Button type="submit">Créer une partie</Button>
             ) : (
@@ -75,6 +75,7 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
           </fieldset>
         </form>
       </ContentWindow>
+
       {type === 'joinRoom' && (
         <Button variant="ternary" onClick={handleCreateRoomBtn} className={styles.alternativeCreateRoomBtn}>
           Créer une partie privée

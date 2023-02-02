@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { LobbyInvitation } from './LobbyInvitation';
 
 const meta: Meta<typeof LobbyInvitation> = {
-  title: 'Molecule/LobbyInvitation',
+  title: 'Molecule/Lobby/LobbyInvitation',
   component: LobbyInvitation,
 };
 
