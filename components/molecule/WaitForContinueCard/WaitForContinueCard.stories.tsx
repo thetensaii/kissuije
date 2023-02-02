@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { WaitForContinueCard } from './WaitForContinueCard';
 
 const meta: Meta<typeof WaitForContinueCard> = {
-  title: 'Molecule/WaitForContinueCard',
+  title: 'Molecule/WaitCard/WaitForContinueCard',
   component: WaitForContinueCard,
 };
 

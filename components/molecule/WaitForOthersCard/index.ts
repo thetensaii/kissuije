@@ -1,0 +1,1 @@
+export { WaitForOthersCard } from './WaitForOthersCard';

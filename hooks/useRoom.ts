@@ -224,7 +224,7 @@ export const useRoom = (): UseRoomReturnType => {
         };
       })
     );
-    setSceneState(SceneState.WAITING_ROOM);
+    setSceneState(SceneState.WAIT_FOR_CHARACTER);
   };
 
   const askQuestion: AskQuestionFn = (text: string): void => {
