@@ -56,8 +56,8 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
   };
 
   return (
-    <ContentWindow>
-      <section className={styles.container}>
+    <section className={styles.container}>
+      <ContentWindow>
         <form className={styles.playerForm} onSubmit={handleSubmit(handleFormSubmit)}>
           <fieldset>
             <SelectAvatar onChange={setAvatar} />
@@ -74,12 +74,12 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
             )}
           </fieldset>
         </form>
-        {type === 'joinRoom' && (
-          <Button variant="ternary" onClick={handleCreateRoomBtn} className={styles.alternativeCreateRoomBtn}>
-            Créer une partie privée
-          </Button>
-        )}
-      </section>
-    </ContentWindow>
+      </ContentWindow>
+      {type === 'joinRoom' && (
+        <Button variant="ternary" onClick={handleCreateRoomBtn} className={styles.alternativeCreateRoomBtn}>
+          Créer une partie privée
+        </Button>
+      )}
+    </section>
   );
 };

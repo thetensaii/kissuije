@@ -5,12 +5,5 @@ type Props = {
 };
 
 export const ButtonTypo = ({ children }: Props): JSX.Element => {
-  return (
-    <>
-      <div className={styles.container}>
-        <span className={styles.buttonTypo}>{children}</span>
-        <span className={styles.buttonTypo400}>{children}</span>
-      </div>
-    </>
-  );
+  return <span className={styles.buttonTypo}>{children}</span>;
 };
