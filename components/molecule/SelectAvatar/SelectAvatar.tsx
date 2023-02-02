@@ -30,11 +30,11 @@ export const SelectAvatar = ({ initialAvatar, onChange }: Props): JSX.Element =>
 
   return (
     <div className={styles.selectAvatar}>
-      <Button buttonType="transparent" onClick={handleLeftChevronClick}>
+      <Button variant="transparent" onClick={handleLeftChevronClick}>
         <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={35} />
       </Button>
       <Svg type={avatar} alt={avatar} width={80} height={80} />
-      <Button buttonType="transparent" onClick={handleRightChevronClick}>
+      <Button variant="transparent" onClick={handleRightChevronClick}>
         <Svg type="ChevronRight" alt="Chevron Droite" width={20} height={35} />
       </Button>
     </div>

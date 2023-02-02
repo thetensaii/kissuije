@@ -2,10 +2,9 @@
 
 .inputButton {
   border: none;
-  font-size: 18px;
-  font-weight: 500;
-  padding: 1rem 1.5rem;
   border-radius: 6px;
+  padding: 1rem 1.5rem;
+  
   width: 100%;
 
   &:hover {
@@ -13,27 +12,27 @@
   }
 }
 
-.vrai {
+.true {
   background-color: $white;
   color: $primary;
 }
 
-.faux {
+.false {
   background-color: $white;
   color: $green-light;
 }
 
-.oui {
+.yes {
   background-color: $green-primary;
   color: $white;
 }
 
-.non {
+.no {
   background-color: $green;
   color: $white;
 }
 
-.jnsp {
+.idk {
   background-color: $green-ternary;
   color: $white;
 }

@@ -16,7 +16,7 @@ export const LobbyInvitation = ({ invitationLink }: Props): JSX.Element => {
       <h2>Inviter des amis</h2>
       <p>Envoyez le lien d’invitation ci-dessous à vos amis afin qu’il puisse rejoindre la partie</p>
       <InputText disabled value={invitationLink} />
-      <Button buttonType="secondary" className={styles.copyLinkButton} rightIcon="Link" onClick={copyRoomLink}>
+      <Button variant="secondary" className={styles.copyLinkButton} rightIcon="Link" onClick={copyRoomLink}>
         Copier le lien d’invitation
       </Button>
     </div>

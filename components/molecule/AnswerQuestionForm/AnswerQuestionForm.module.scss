@@ -60,7 +60,8 @@
   & > .answers {
     display: flex;
     gap: 1.5rem;
-    width: 70%;
+
+    width: 100%;
   }
 
   
@@ -73,7 +74,6 @@
   .askerCard {
     opacity: 0.4;
   }
-
 
   .label {
     color:rgba($black, 0.40)

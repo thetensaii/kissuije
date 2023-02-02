@@ -12,7 +12,7 @@ export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Eleme
       {onBackButtonClick && (
         <header className={styles.windowHeader}>
           <Button
-            buttonType="transparent"
+            variant="transparent"
             className={styles.backButton}
             onClick={onBackButtonClick}
             leftIcon={'ChevronLeft'}

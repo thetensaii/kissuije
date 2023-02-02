@@ -4,6 +4,7 @@ import { Label } from 'components/atom/Label';
 import { AvatarType } from 'lib/frontend/types/svg';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { ContentWindow } from '../ContentWindow';
 import { SelectAvatar } from '../SelectAvatar';
 import styles from './PlayerForm.module.scss';
 
@@ -55,28 +56,30 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
   };
 
   return (
-    <section className={styles.container}>
-      <form className={styles.playerForm} onSubmit={handleSubmit(handleFormSubmit)}>
-        <fieldset>
-          <SelectAvatar onChange={setAvatar} />
-        </fieldset>
-        <fieldset>
-          <Label htmlFor="name">Choisis ton pseudo</Label>
-          <InputText type="text" {...register('name')} placeholder="Entre ton pseudo" />
-          {type === 'createRoom' ? (
-            <Button type="submit">Créer une partie</Button>
-          ) : (
-            <Button type="submit" buttonType="secondary">
-              Rejoindre la partie
-            </Button>
-          )}
-        </fieldset>
-      </form>
-      {type === 'joinRoom' && (
-        <Button buttonType="ternary" onClick={handleCreateRoomBtn} className={styles.alternativeCreateRoomBtn}>
-          Créer une partie privée
-        </Button>
-      )}
-    </section>
+    <ContentWindow>
+      <section className={styles.container}>
+        <form className={styles.playerForm} onSubmit={handleSubmit(handleFormSubmit)}>
+          <fieldset>
+            <SelectAvatar onChange={setAvatar} />
+          </fieldset>
+          <fieldset>
+            <Label htmlFor="name">Choisis ton pseudo</Label>
+            <InputText type="text" {...register('name')} placeholder="Entre ton pseudo" />
+            {type === 'createRoom' ? (
+              <Button type="submit">Créer une partie</Button>
+            ) : (
+              <Button type="submit" variant="secondary">
+                Rejoindre la partie
+              </Button>
+            )}
+          </fieldset>
+        </form>
+        {type === 'joinRoom' && (
+          <Button variant="ternary" onClick={handleCreateRoomBtn} className={styles.alternativeCreateRoomBtn}>
+            Créer une partie privée
+          </Button>
+        )}
+      </section>
+    </ContentWindow>
   );
 };

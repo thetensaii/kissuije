@@ -28,8 +28,12 @@ export const AnswerGuessForm = ({ asker, guess, answerGuess, disabled }: Props):
           <p className={styles.guessText}>"{guess.text}"</p>
         </div>
         <div className={styles.answers}>
-          <InputButton value="Vrai" onClick={(): void => answerGuess(guess.askerId, 'yes')} disabled={disabled} />
-          <InputButton value="Faux" onClick={(): void => answerGuess(guess.askerId, 'no')} disabled={disabled} />
+          <InputButton type="true" onClick={(): void => answerGuess(guess.askerId, 'yes')} disabled={disabled}>
+            Vrai
+          </InputButton>
+          <InputButton type="false" onClick={(): void => answerGuess(guess.askerId, 'no')} disabled={disabled}>
+            Faux
+          </InputButton>
         </div>
       </div>
     </form>
