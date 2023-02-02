@@ -1,1 +1,0 @@
-export { WaitingRoom } from './WaitingRoom';

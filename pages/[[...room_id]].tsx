@@ -5,7 +5,7 @@ import { Home } from 'components/organism/Home';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { Lobby } from 'components/organism/Lobby';
 import { ChooseCharacter } from 'components/organism/ChooseCharacter';
-import { WaitingRoom } from 'components/organism/WaitingRoom';
+import { WaitForCharacter } from 'components/organism/WaitForCharacter';
 import { RoundResult } from 'components/organism/RoundResult';
 import { EndGame } from 'components/organism/EndGame';
 import { FinalResults } from 'components/organism/FinalResults';
@@ -34,19 +34,35 @@ export default function Root(): JSX.Element {
     [router]
   );
 
-  if (sceneState === SceneState.HOME) return <Home roomId={roomId} redirectToRoom={redirectToRoom} />;
-  if (sceneState === SceneState.LOBBY) return <Lobby />;
-  if (sceneState === SceneState.CHOOSE_CHARACTER) return <ChooseCharacter />;
-  if (sceneState === SceneState.WAITING_ROOM) return <WaitingRoom />;
-  if (sceneState === SceneState.ASK_QUESTION) return <AskQuestion />;
-  if (sceneState === SceneState.TRY_GUESS) return <TryGuess />;
-  if (sceneState === SceneState.WAIT_FOR_ATTEMPTS) return <WaitForAttempts />;
-  if (sceneState === SceneState.ANSWER_ATTEMPTS) return <AnswerAttempts />;
-  if (sceneState === SceneState.WAIT_FOR_ANSWERS) return <WaitForAnswers />;
-  if (sceneState === SceneState.ROUND_RESULT) return <RoundResult />;
-  if (sceneState === SceneState.WAIT_FOR_CONTINUE) return <WaitForContinue />;
-  if (sceneState === SceneState.END_GAME) return <EndGame />;
-  if (sceneState === SceneState.FINAL_RESULTS) return <FinalResults />;
+  switch (sceneState) {
+    case SceneState.HOME:
+      return <Home roomId={roomId} redirectToRoom={redirectToRoom} />;
+    case SceneState.LOBBY:
+      return <Lobby />;
+    case SceneState.CHOOSE_CHARACTER:
+      return <ChooseCharacter />;
+    case SceneState.WAIT_FOR_CHARACTER:
+      return <WaitForCharacter />;
+    case SceneState.ASK_QUESTION:
+      return <AskQuestion />;
+    case SceneState.TRY_GUESS:
+      return <TryGuess />;
+    case SceneState.WAIT_FOR_ATTEMPTS:
+      return <WaitForAttempts />;
+    case SceneState.ANSWER_ATTEMPTS:
+      return <AnswerAttempts />;
+    case SceneState.WAIT_FOR_ANSWERS:
+      return <WaitForAnswers />;
+    case SceneState.ROUND_RESULT:
+      return <RoundResult />;
+    case SceneState.WAIT_FOR_CONTINUE:
+      return <WaitForContinue />;
+    case SceneState.END_GAME:
+      return <EndGame />;
+    case SceneState.FINAL_RESULTS:
+      return <FinalResults />;
 
-  return <h1>Erreur : Veuillez recharger la page</h1>;
+    default:
+      throw new Error('SCENE DOES NOT EXIST');
+  }
 }
