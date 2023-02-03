@@ -1,9 +1,7 @@
 import styles from './H2.module.scss';
 
-type Props = {
-  children: React.ReactNode;
-};
+type Props = React.ButtonHTMLAttributes<HTMLHeadingElement>;
 
-export const H2 = ({ children }: Props): JSX.Element => {
-  return <h2 className={styles.h2}>{children}</h2>;
+export const H2 = ({ className, ...props }: Props): JSX.Element => {
+  return <h2 className={`${className} ${styles.h2}`} {...props} />;
 };
