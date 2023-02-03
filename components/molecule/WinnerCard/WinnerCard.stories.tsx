@@ -4,7 +4,7 @@ import { PlayerType } from 'lib/frontend/types/player';
 import { WinnerCard } from './WinnerCard';
 
 const meta: Meta<typeof WinnerCard> = {
-  title: 'Molecule/WinnerCard',
+  title: 'Molecule/AttemptResult/WinnerCard',
   component: WinnerCard,
 };
 

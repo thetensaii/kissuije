@@ -29,7 +29,7 @@ export const FinalResults = (): JSX.Element => {
       )}
 
       <div className={styles.buttons}>
-        <Button buttonType="ternary" onClick={redirectHome}>
+        <Button variant="ternary" onClick={redirectHome}>
           Retour à l'accueil
         </Button>
         <Button onClick={restart}>Rejouer</Button>

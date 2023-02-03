@@ -1,16 +1,22 @@
-.windowContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2.5rem;
-}
-
-.invitationContainer {
-  display: flex;
-  align-items: center;
-  gap: 4.5rem;
-}
-
-.startGameButton {
-  width: 24rem;
+.container {
+  width: 80%;
+  
+  .windowContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    
+    .lobbyInfoContainer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 2rem;
+    }
+    
+    .startGameButton {
+      width: 30%;
+    }
+  }
 }

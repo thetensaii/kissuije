@@ -5,19 +5,11 @@
   background: rgba($white, 0.07);
   border: 1px solid rgba($white, 0.58);
   border-radius: 8px;
-
-  max-width: 30rem;
-}
-
-.title {
-  font-weight: 600;
-  font-size: 20px;
+  
   text-align: center;
-  margin-bottom: 0.5rem;
+  
+  .title {
+    margin-bottom: 0.5rem;
+  }
 }
 
-.text {
-  font-weight: 400;
-  font-size: 16px;
-  text-align: center;
-}

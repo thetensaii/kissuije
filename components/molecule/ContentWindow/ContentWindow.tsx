@@ -8,11 +8,11 @@ type Props = {
 
 export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Element => {
   return (
-    <section>
+    <section className={styles.container}>
       {onBackButtonClick && (
         <header className={styles.windowHeader}>
           <Button
-            buttonType="transparent"
+            variant="transparent"
             className={styles.backButton}
             onClick={onBackButtonClick}
             leftIcon={'ChevronLeft'}

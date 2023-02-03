@@ -10,7 +10,9 @@ export const TryGuess = (): JSX.Element => {
   return (
     <div className={styles.container}>
       <ContentWindow onBackButtonClick={redirectToAskQuestionScene}>
-        <TryGuessForm tryGuess={tryGuess} />
+        <div className={styles.formContainer}>
+          <TryGuessForm tryGuess={tryGuess} />
+        </div>
       </ContentWindow>
     </div>
   );

@@ -8,7 +8,7 @@ const meta: Meta<typeof Button> = {
   title: 'Atom/Button',
   component: Button,
   argTypes: {
-    buttonType: {
+    variant: {
       options: ['primary', 'secondary', 'ternary', 'transparent'],
       control: {
         type: 'select',
@@ -29,28 +29,28 @@ export const Default: Story = {
 
 export const Primary: Story = {
   args: {
-    buttonType: 'primary',
+    variant: 'primary',
     children: 'Primary Button',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    buttonType: 'secondary',
+    variant: 'secondary',
     children: 'Secondary Button',
   },
 };
 
 export const Ternary: Story = {
   args: {
-    buttonType: 'ternary',
+    variant: 'ternary',
     children: 'Ternary Button',
   },
 };
 
 export const Transparent: Story = {
   args: {
-    buttonType: 'transparent',
+    variant: 'transparent',
     children: (
       <>
         TransparentButton

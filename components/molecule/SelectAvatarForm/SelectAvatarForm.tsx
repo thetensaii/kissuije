@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AvatarList, AvatarType } from 'lib/frontend/types/svg';
-import styles from './SelectAvatar.module.scss';
 import { Svg } from 'components/atom/Svg';
 import Button from 'components/atom/Button';
+import styles from './SelectAvatarForm.module.scss';
 
 type Props = {
   initialAvatar?: AvatarType;
   onChange: (avatar: AvatarType) => void;
 };
 
-export const SelectAvatar = ({ initialAvatar, onChange }: Props): JSX.Element => {
+export const SelectAvatarForm = ({ initialAvatar, onChange }: Props): JSX.Element => {
   const [avatarIndex, setAvatarIndex] = useState<number>(
     initialAvatar ? AvatarList.findIndex((a) => a === initialAvatar) : 0
   );
@@ -30,11 +30,11 @@ export const SelectAvatar = ({ initialAvatar, onChange }: Props): JSX.Element =>
 
   return (
     <div className={styles.selectAvatar}>
-      <Button buttonType="transparent" onClick={handleLeftChevronClick}>
+      <Button variant="transparent" onClick={handleLeftChevronClick}>
         <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={35} />
       </Button>
       <Svg type={avatar} alt={avatar} width={80} height={80} />
-      <Button buttonType="transparent" onClick={handleRightChevronClick}>
+      <Button variant="transparent" onClick={handleRightChevronClick}>
         <Svg type="ChevronRight" alt="Chevron Droite" width={20} height={35} />
       </Button>
     </div>

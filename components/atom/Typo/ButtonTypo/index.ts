@@ -1,0 +1,1 @@
+export { ButtonTypo } from './ButtonTypo';

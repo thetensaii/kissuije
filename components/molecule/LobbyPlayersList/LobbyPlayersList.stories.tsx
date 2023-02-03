@@ -5,7 +5,7 @@ import { AvatarType } from 'lib/frontend/types/svg';
 import { LobbyPlayersList } from './LobbyPlayersList';
 
 const meta: Meta<typeof LobbyPlayersList> = {
-  title: 'Molecule/LobbyPlayersList',
+  title: 'Molecule/Lobby/LobbyPlayersList',
   component: LobbyPlayersList,
 };
 

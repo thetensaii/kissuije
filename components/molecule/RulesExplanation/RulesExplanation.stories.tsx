@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { RulesExplanation } from './RulesExplanation';
 
 const meta: Meta<typeof RulesExplanation> = {
-  title: 'Molecule/RulesExplanation',
+  title: 'Molecule/Rules/RulesExplanation',
   component: RulesExplanation,
 };
 

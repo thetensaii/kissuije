@@ -13,30 +13,35 @@ type Story = StoryObj<typeof InputButton>;
 
 export const Oui: Story = {
   args: {
-    value: 'Oui',
+    type: 'yes',
+    children: 'Oui',
   },
 };
 
 export const Non: Story = {
   args: {
-    value: 'Non',
+    type: 'no',
+    children: 'Non',
   },
 };
 
 export const JeNeSaisPas: Story = {
   args: {
-    value: 'Je ne sais pas',
+    type: 'idk',
+    children: 'Je ne sais pas',
   },
 };
 
 export const Vrai: Story = {
   args: {
-    value: 'Vrai',
+    type: 'true',
+    children: 'Vrai',
   },
 };
 
 export const Faux: Story = {
   args: {
-    value: 'Faux',
+    type: 'false',
+    children: 'Faux',
   },
 };

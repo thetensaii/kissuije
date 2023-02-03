@@ -3,6 +3,8 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import { PlayerForm } from 'components/molecule/PlayerForm';
 import { RulesExplanation } from 'components/molecule/RulesExplanation';
 
+import styles from './Home.module.scss';
+
 interface Props {
   roomId: string | undefined;
   redirectToRoom: (roomId: string) => void;
@@ -28,13 +30,17 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
 
   return (
     <>
-      {roomId ? (
-        <PlayerForm initialName={name} type="joinRoom" createGameRoom={createGameRoom} joinGameRoom={joinPartyRoom} />
-      ) : (
-        <PlayerForm initialName={name} type="createRoom" createGameRoom={createGameRoom} />
-      )}
+      <div className={styles.formContainer}>
+        {roomId ? (
+          <PlayerForm initialName={name} type="joinRoom" createGameRoom={createGameRoom} joinGameRoom={joinPartyRoom} />
+        ) : (
+          <PlayerForm initialName={name} type="createRoom" createGameRoom={createGameRoom} />
+        )}
+      </div>
 
-      <RulesExplanation />
+      <div className={styles.rulesContainer}>
+        <RulesExplanation />
+      </div>
     </>
   );
 }

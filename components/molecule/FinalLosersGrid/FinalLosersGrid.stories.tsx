@@ -3,7 +3,7 @@ import { LoserType } from 'lib/frontend/types/player';
 import { FinalLosersGrid } from './FinalLosersGrid';
 
 const meta: Meta<typeof FinalLosersGrid> = {
-  title: 'Molecule/FinalLosersGrid',
+  title: 'Molecule/Final/FinalLosersGrid',
   component: FinalLosersGrid,
 };
 

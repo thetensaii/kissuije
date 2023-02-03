@@ -3,7 +3,7 @@ import { WinnerType } from 'lib/frontend/types/player';
 import { FinalWinnerCard } from './FinalWinnerCard';
 
 const meta: Meta<typeof FinalWinnerCard> = {
-  title: 'Molecule/FinalWinnerCard',
+  title: 'Molecule/Final/FinalWinnerCard',
   component: FinalWinnerCard,
 };
 
