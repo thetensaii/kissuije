@@ -3,6 +3,8 @@ import { ContentWindow } from 'components/molecule/ContentWindow';
 import { isStringEmpty } from 'lib/common/functions';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 
+import styles from './ChooseCharacter.module.scss';
+
 export const ChooseCharacter = (): JSX.Element => {
   const { playerChoosed, validatePlayerCharacter } = useGameRoomContext();
 
@@ -18,8 +20,12 @@ export const ChooseCharacter = (): JSX.Element => {
   };
 
   return (
-    <ContentWindow>
-      <ChoosePlayerCharacterForm playerChoosed={playerChoosed} onSubmit={validateCharacter} />
-    </ContentWindow>
+    <div className={styles.container}>
+      <ContentWindow>
+        <div className={styles.formContainer}>
+          <ChoosePlayerCharacterForm playerChoosed={playerChoosed} onSubmit={validateCharacter} />
+        </div>
+      </ContentWindow>
+    </div>
   );
 };

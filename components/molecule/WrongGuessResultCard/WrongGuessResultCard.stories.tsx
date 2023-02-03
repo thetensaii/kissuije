@@ -3,7 +3,7 @@ import { GuessType } from 'lib/frontend/types/guess';
 import { WrongGuessResultCard } from './WrongGuessResultCard';
 
 const meta: Meta<typeof WrongGuessResultCard> = {
-  title: 'Molecule/WrongGuessResultCard',
+  title: 'Molecule/AttemptResult/WrongGuessResultCard',
   component: WrongGuessResultCard,
 };
 

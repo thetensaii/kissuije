@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ResultStatBar } from './ResultStatBar';
 
 const meta: Meta<typeof ResultStatBar> = {
-  title: 'Molecule/ResultStatBar',
+  title: 'Molecule/AttemptResult/ResultStatBar',
   component: ResultStatBar,
 };
 

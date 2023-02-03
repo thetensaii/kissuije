@@ -1,15 +1,23 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 3rem;
-}
-
-.guessCharacterButtonContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 80%;
   
-  gap: 0.5rem;
+  .choiceContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    gap: 3rem;
+    
+    margin: auto;
+    width: 80%;
+  
+    .guessCharacterButtonContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      gap: 0.5rem;
+    }
+  }
 }
+
