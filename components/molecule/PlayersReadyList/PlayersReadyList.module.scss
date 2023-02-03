@@ -1,0 +1,27 @@
+@import '../../../styles/colors';
+
+.container{
+  background-color: $white;
+  color: $black;
+
+  border-radius: 8px;
+  box-shadow: inset 8px 8px 0px $shadow-color;
+
+  padding: 1.5rem;
+  
+  .title {
+    margin-bottom: 1.5rem;
+  }
+  
+  .playersList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    overflow:scroll;
+
+    & > * {
+      flex-shrink: 0;
+    }
+  }
+}

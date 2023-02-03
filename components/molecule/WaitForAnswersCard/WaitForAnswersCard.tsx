@@ -1,10 +1,10 @@
 import { Svg } from 'components/atom/Svg';
-import { ContentWindow } from 'components/molecule/ContentWindow';
+import { Card } from 'components/molecule/Card';
 import styles from './WaitForAnswersCard.module.scss';
 
 export const WaitForAnswersCard = (): JSX.Element => {
   return (
-    <ContentWindow>
+    <Card>
       <div className={styles.container}>
         <h2>Répondez aux questions</h2>
         <p>
@@ -13,6 +13,6 @@ export const WaitForAnswersCard = (): JSX.Element => {
         <Svg type="Checked" alt="Checked" width={72} height={72} />
         <p className={styles.waitingText}>En attente des autres joueurs...</p>
       </div>
-    </ContentWindow>
+    </Card>
   );
 };

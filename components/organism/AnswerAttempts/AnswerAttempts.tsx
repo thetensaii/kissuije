@@ -1,5 +1,5 @@
 import { AttemptsList } from 'components/molecule/AttemptsList';
-import { ContentWindow } from 'components/molecule/ContentWindow';
+import { Card } from 'components/molecule/Card';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './AnswerAttempts.module.scss';
 
@@ -12,14 +12,14 @@ export const AnswerAttempts = (): JSX.Element => {
   return (
     <>
       <div className={styles.labelWindow}>
-        <ContentWindow>
+        <Card>
           <div className={styles.windowContent}>
             <h2>Répondez aux questions</h2>
             <p>
               Choisissez une réponse à chacune des questions afin d’aiguiller les participants à trouver leur personnage
             </p>
           </div>
-        </ContentWindow>
+        </Card>
       </div>
       <AttemptsList answerAttempt={answerAttempt} players={players} me={player} attempts={attempts} />
     </>

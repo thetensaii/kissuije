@@ -4,7 +4,7 @@ import { Label } from 'components/atom/Label';
 import { AvatarType } from 'lib/frontend/types/svg';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ContentWindow } from '../ContentWindow';
+import { Card } from '../Card';
 import { SelectAvatarForm } from '../SelectAvatarForm';
 import styles from './PlayerForm.module.scss';
 
@@ -57,7 +57,7 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
 
   return (
     <section className={styles.container}>
-      <ContentWindow>
+      <Card>
         <form className={styles.playerForm} onSubmit={handleSubmit(handleFormSubmit)}>
           <fieldset className={styles.fieldset}>
             <SelectAvatarForm onChange={setAvatar} />
@@ -74,7 +74,7 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
             )}
           </fieldset>
         </form>
-      </ContentWindow>
+      </Card>
 
       {type === 'joinRoom' && (
         <Button variant="ternary" onClick={handleCreateRoomBtn} className={styles.alternativeCreateRoomBtn}>

@@ -1,6 +1,6 @@
 import Button from 'components/atom/Button';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
-import { ContentWindow } from 'components/molecule/ContentWindow';
+import { Card } from 'components/molecule/Card';
 import { LobbyPlayersList } from 'components/molecule/LobbyPlayersList';
 import { LobbyInvitation } from 'components/molecule/LobbyInvitation';
 import styles from './Lobby.module.scss';
@@ -20,7 +20,7 @@ export const Lobby = (): JSX.Element => {
   return (
     <>
       <div className={styles.container}>
-        <ContentWindow onBackButtonClick={redirectHome}>
+        <Card onBackButtonClick={redirectHome}>
           <div className={styles.windowContent}>
             <div className={styles.lobbyInfoContainer}>
               <LobbyPlayersList players={players} />
@@ -32,7 +32,7 @@ export const Lobby = (): JSX.Element => {
               </Button>
             )}
           </div>
-        </ContentWindow>
+        </Card>
       </div>
     </>
   );

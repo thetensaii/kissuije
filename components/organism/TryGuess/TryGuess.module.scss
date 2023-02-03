@@ -1,8 +1,16 @@
 .container {
   width: 80%;
-}
 
-.formContainer {
-  margin: auto;
-  width: 70%;
+
+  .contentContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    
+    gap: 2rem;
+  
+    .formContainer {
+      margin: auto;
+      width: 70%;
+    }
+  }
 }
