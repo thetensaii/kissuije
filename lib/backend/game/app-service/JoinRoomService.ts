@@ -11,9 +11,10 @@ export class JoinRoomService {
   public joinRoom(
     roomId: DomainGameRoom['id'],
     playerId: DomainPlayer['id'],
-    name: DomainPlayer['name']
+    name: DomainPlayer['name'],
+    avatar: DomainPlayer['avatar']
   ): { players: DomainPlayer[]; player: DomainPlayer; ownerId: DomainGameRoom['ownerId'] } {
-    const player = new DomainPlayer(playerId, name);
+    const player = new DomainPlayer(playerId, name, avatar);
 
     const joinedRoom = this.gameRooms.joinRoom(roomId, player);
     const players = joinedRoom.getPlayers();

@@ -11,9 +11,10 @@ export class CreateRoomService {
   public createRoom(
     roomId: DomainGameRoom['id'],
     playerId: DomainPlayer['name'],
-    name: DomainPlayer['id']
+    name: DomainPlayer['id'],
+    avatar: DomainPlayer['avatar']
   ): DomainPlayer {
-    const owner = new DomainPlayer(playerId, name);
+    const owner = new DomainPlayer(playerId, name, avatar);
 
     this.gameRooms.createRoom(roomId, owner);
 

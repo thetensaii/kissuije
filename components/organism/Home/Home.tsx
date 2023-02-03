@@ -4,6 +4,7 @@ import { PlayerForm } from 'components/molecule/PlayerForm';
 import { RulesExplanation } from 'components/molecule/RulesExplanation';
 
 import styles from './Home.module.scss';
+import { AvatarType } from 'lib/frontend/types/svg';
 
 interface Props {
   roomId: string | undefined;
@@ -14,17 +15,17 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
   const { name, storeNewName } = useName();
   const { createRoom, joinRoom } = useGameRoomContext();
 
-  const createGameRoom = (name: string): void => {
+  const createGameRoom = (name: string, avatar: AvatarType): void => {
     const newName = storeNewName(name);
 
-    const newRoomID = createRoom(newName);
+    const newRoomID = createRoom(newName, avatar);
     redirectToRoom(newRoomID);
   };
 
-  const joinPartyRoom = async (name: string): Promise<void> => {
+  const joinPartyRoom = async (name: string, avatar: AvatarType): Promise<void> => {
     const newName = storeNewName(name);
 
-    const joinedRoomID = await joinRoom(newName, roomId ?? '');
+    const joinedRoomID = await joinRoom(newName, avatar, roomId ?? '');
     redirectToRoom(joinedRoomID);
   };
 

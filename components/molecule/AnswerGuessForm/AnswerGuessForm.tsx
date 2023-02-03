@@ -15,7 +15,7 @@ export const AnswerGuessForm = ({ asker, guess, answerGuess, disabled }: Props):
   return (
     <form className={`${styles.container} ${disabled ? styles.disabled : ''}`}>
       <p className={styles.askerCard}>
-        <Svg type="AvatarLora" alt="AvatarLora" width={32} height={32} />
+        <Svg type={asker.avatar} alt={asker.avatar} width={32} height={32} />
         <span className={styles.askerText}>
           <span className={styles.askerName}>{asker.name}</span>
           <span>est</span>

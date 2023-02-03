@@ -6,11 +6,12 @@ import { AnswerType } from 'lib/frontend/types/answer';
 import { convertSocketPlayerToFrontendPlayer, PlayerType } from 'lib/frontend/types/player';
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { AttemptType, convertSocketAttemptToFrontendAttempt } from 'lib/frontend/types/attempt';
+import { AvatarType } from 'lib/frontend/types/svg';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-type CreateRoomFn = (name: string, roomId?: string) => string;
-type JoinRoomFn = (name: string, roomID: string) => Promise<string>;
+type CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string) => string;
+type JoinRoomFn = (name: string, avatar: AvatarType, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
 export type AskQuestionFn = (text: string) => void;
@@ -168,10 +169,10 @@ export const useRoom = (): UseRoomReturnType => {
     return attempts.find((a) => a.askerId === player.id) ?? null;
   }, [attempts, player]);
 
-  const createRoom: CreateRoomFn = (name: string, roomId?: string): string => {
+  const createRoom: CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string): string => {
     const newRoomId = roomId ?? generateRoomId();
 
-    socket.emit('createRoom', name, newRoomId, (owner) => {
+    socket.emit('createRoom', name, avatar, newRoomId, (owner) => {
       setPlayers([convertSocketPlayerToFrontendPlayer(owner, true, true)]);
       setRoomId(newRoomId);
       setOwnerId(owner.id);
@@ -189,11 +190,11 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
-  const joinRoom: JoinRoomFn = async (name: string, roomID: string): Promise<string> => {
+  const joinRoom: JoinRoomFn = async (name: string, avatar: AvatarType, roomID: string): Promise<string> => {
     const roomExist: boolean = await doesRoomExist(roomID);
-    if (!roomExist) return createRoom(name);
+    if (!roomExist) return createRoom(name, avatar);
 
-    socket.emit('joinRoom', name, roomID, (ownerId, players) => {
+    socket.emit('joinRoom', name, avatar, roomID, (ownerId, players) => {
       const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => {
         return convertSocketPlayerToFrontendPlayer(p, ownerId === p.id, socket.id === p.id);
       });
@@ -299,11 +300,11 @@ export const useRoom = (): UseRoomReturnType => {
     const roomAlreadyCreated = await doesRoomExist(nextRoomId);
 
     if (roomAlreadyCreated) {
-      joinRoom(player.name, nextRoomId);
+      joinRoom(player.name, player.avatar, nextRoomId);
       return;
     }
 
-    createRoom(player.name, nextRoomId);
+    createRoom(player.name, player.avatar, nextRoomId);
   };
 
   const redirectToTryGuessScene: RedirectToTryGuessSceneFn = (): void => {
