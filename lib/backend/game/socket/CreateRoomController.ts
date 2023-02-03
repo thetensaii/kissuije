@@ -9,8 +9,8 @@ export class CreateRoomController {
 
   public createRoom(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('createRoom', (name, roomId, callback) => {
-        const owner = this.createRoomService.createRoom(roomId, socket.id, name);
+      socket.on('createRoom', (name, avatar, roomId, callback) => {
+        const owner = this.createRoomService.createRoom(roomId, socket.id, name, avatar);
 
         socket.join(roomId);
         socket.data.joinedRoom = roomId;

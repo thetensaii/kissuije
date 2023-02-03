@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AvatarList, AvatarType } from 'lib/frontend/types/svg';
+import { avatarList, AvatarType } from 'lib/frontend/types/svg';
 import { Svg } from 'components/atom/Svg';
 import Button from 'components/atom/Button';
 import styles from './SelectAvatarForm.module.scss';
@@ -11,21 +11,21 @@ type Props = {
 
 export const SelectAvatarForm = ({ initialAvatar, onChange }: Props): JSX.Element => {
   const [avatarIndex, setAvatarIndex] = useState<number>(
-    initialAvatar ? AvatarList.findIndex((a) => a === initialAvatar) : 0
+    initialAvatar ? avatarList.findIndex((a) => a === initialAvatar) : 0
   );
 
-  const avatar = AvatarList[avatarIndex];
+  const avatar = avatarList[avatarIndex];
 
   useEffect(() => {
     onChange(avatar);
   }, [avatar, onChange]);
 
   const handleRightChevronClick = (): void => {
-    setAvatarIndex((index) => (index === AvatarList.length - 1 ? 0 : index + 1));
+    setAvatarIndex((index) => (index === avatarList.length - 1 ? 0 : index + 1));
   };
 
   const handleLeftChevronClick = (): void => {
-    setAvatarIndex((index) => (index === 0 ? AvatarList.length - 1 : index - 1));
+    setAvatarIndex((index) => (index === 0 ? avatarList.length - 1 : index - 1));
   };
 
   return (

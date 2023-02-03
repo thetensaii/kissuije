@@ -2,6 +2,7 @@ export type SocketPlayerType = {
   id: string;
   name: string;
   character: string;
+  avatar: string;
 };
 export type SocketAnswerType = 'yes' | 'no' | 'idk';
 export type SocketAttemptType = {
@@ -27,9 +28,10 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   doesRoomExist: (room: string, callback: (doesExist: boolean) => void) => void;
-  createRoom: (name: string, roomId: string, callback: (owner: SocketPlayerType) => void) => void;
+  createRoom: (name: string, avatar: string, roomId: string, callback: (owner: SocketPlayerType) => void) => void;
   joinRoom: (
     name: string,
+    avatar: string,
     roomId: string,
     callback: (ownerId: string, roomPlayers: SocketPlayerType[]) => void
   ) => void;

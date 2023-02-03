@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SvgType, AvatarList, AvatarType } from 'lib/frontend/types/svg';
+import { SvgType, avatarList, AvatarType } from 'lib/frontend/types/svg';
 
 import { Svg } from './Svg';
 
@@ -27,7 +27,7 @@ export const Avatar: Story = {
   },
   argTypes: {
     type: {
-      options: AvatarList,
+      options: avatarList,
       control: {
         type: 'select',
       },

@@ -15,13 +15,13 @@ type Props = {
 } & (
   | {
       type: 'createRoom';
-      createGameRoom: (name: string) => void;
+      createGameRoom: (name: string, avatar: AvatarType) => void;
       joinGameRoom?: undefined;
     }
   | {
       type: 'joinRoom';
-      joinGameRoom: (name: string) => void;
-      createGameRoom: (name: string) => void;
+      joinGameRoom: (name: string, avatar: AvatarType) => void;
+      createGameRoom: (name: string, avatar: AvatarType) => void;
     }
 );
 
@@ -46,13 +46,13 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
     // eslint-disable-next-line no-console
     console.log('Avatar :', avatar);
 
-    if (type === 'createRoom') createGameRoom(name);
-    else joinGameRoom(name);
+    if (type === 'createRoom') createGameRoom(name, avatar);
+    else joinGameRoom(name, avatar);
   };
 
   const handleCreateRoomBtn = (): void => {
     const name = watch('name');
-    createGameRoom(name);
+    createGameRoom(name, avatar);
   };
 
   return (
