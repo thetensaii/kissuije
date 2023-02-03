@@ -1,1 +1,0 @@
-export { SelectAvatar } from './SelectAvatar';

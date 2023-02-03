@@ -3,7 +3,7 @@ import { WinnerType } from 'lib/frontend/types/player';
 import { FinalWinnersGrid } from './FinalWinnersGrid';
 
 const meta: Meta<typeof FinalWinnersGrid> = {
-  title: 'Molecule/FinalWinnersGrid',
+  title: 'Molecule/Final/FinalWinnersGrid',
   component: FinalWinnersGrid,
 };
 

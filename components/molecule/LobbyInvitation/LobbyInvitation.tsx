@@ -1,5 +1,6 @@
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
+import { H2 } from 'components/atom/Typo/H2';
 import styles from './LobbyInvitation.module.scss';
 
 type Props = {
@@ -13,10 +14,10 @@ export const LobbyInvitation = ({ invitationLink }: Props): JSX.Element => {
 
   return (
     <div className={styles.lobbyInvitation}>
-      <h2>Inviter des amis</h2>
+      <H2>Inviter des amis</H2>
       <p>Envoyez le lien d’invitation ci-dessous à vos amis afin qu’il puisse rejoindre la partie</p>
       <InputText disabled value={invitationLink} />
-      <Button buttonType="secondary" className={styles.copyLinkButton} rightIcon="Link" onClick={copyRoomLink}>
+      <Button variant="secondary" className={styles.copyLinkButton} rightIcon="Link" onClick={copyRoomLink}>
         Copier le lien d’invitation
       </Button>
     </div>

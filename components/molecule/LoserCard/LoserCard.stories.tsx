@@ -3,7 +3,7 @@ import { PlayerType } from 'lib/frontend/types/player';
 import { LoserCard } from './LoserCard';
 
 const meta: Meta<typeof LoserCard> = {
-  title: 'Molecule/LoserCard',
+  title: 'Molecule/AttemptResult/LoserCard',
   component: LoserCard,
 };
 

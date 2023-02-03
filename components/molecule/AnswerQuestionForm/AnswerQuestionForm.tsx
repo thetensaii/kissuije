@@ -27,13 +27,15 @@ export const AnswerQuestionForm = ({ asker, question, answerQuestion, disabled }
         <p className={styles.guessText}>"{question.text}"</p>
       </div>
       <div className={styles.answers}>
-        <InputButton value="Oui" onClick={(): void => answerQuestion(question.askerId, 'yes')} disabled={disabled} />
-        <InputButton value="Non" onClick={(): void => answerQuestion(question.askerId, 'no')} disabled={disabled} />
-        <InputButton
-          value="Je ne sais pas"
-          onClick={(): void => answerQuestion(question.askerId, 'idk')}
-          disabled={disabled}
-        />
+        <InputButton type="yes" onClick={(): void => answerQuestion(question.askerId, 'yes')} disabled={disabled}>
+          Oui
+        </InputButton>
+        <InputButton type="no" onClick={(): void => answerQuestion(question.askerId, 'no')} disabled={disabled}>
+          Non
+        </InputButton>
+        <InputButton type="idk" onClick={(): void => answerQuestion(question.askerId, 'idk')} disabled={disabled}>
+          Je ne sais pas
+        </InputButton>
       </div>
     </form>
   );

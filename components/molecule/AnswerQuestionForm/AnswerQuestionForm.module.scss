@@ -30,7 +30,6 @@
 
       & > .askerName {
         font-weight: 500;
-        font-size: 16px;
       }
       
       & > .askerCharacter {
@@ -52,7 +51,6 @@
 
     & > .guessText {
       font-style: italic;
-      font-weight: 400;
       font-size: 1.5rem;
     }
   }
@@ -60,7 +58,8 @@
   & > .answers {
     display: flex;
     gap: 1.5rem;
-    width: 70%;
+
+    width: 100%;
   }
 
   
@@ -73,7 +72,6 @@
   .askerCard {
     opacity: 0.4;
   }
-
 
   .label {
     color:rgba($black, 0.40)

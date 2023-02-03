@@ -1,28 +1,32 @@
 @import '../../../styles/colors';
 
-.windowHeader {
-  background-color: $green-dark;
-  display: flex;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  min-height: 64px;
+.container {
+  width: 100%;
+
+  .windowHeader {
+    background-color: $green-dark;
+    display: flex;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    min-height: 64px;
+    
+    box-shadow: 10px 10px 0px $shadow-color;
+    
+    .backButton {
+      font-weight: 600;
+      gap: 0.5rem;
+      background: rgba($white, 0.26);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+  }
   
-  box-shadow: 10px 10px 0px $shadow-color;
-}
-
-.backButton {
-  font-weight: 600;
-  gap: 0.5rem;
-  background: rgba($white, 0.26);
-  border-radius: 8px;
-  padding: 0.5rem;
-}
-
-.content {
-  background-color: $green;
-  border-radius: 8px;
-  padding: 40px 32px;
-
-  box-shadow: 10px 10px 0px $shadow-color;
+  .content {
+    background-color: $green;
+    border-radius: 8px;
+    padding: 40px 32px;
+  
+    box-shadow: 10px 10px 0px $shadow-color;
+  }
 }

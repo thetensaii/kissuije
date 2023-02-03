@@ -1,5 +1,7 @@
 import { PlayerType } from 'lib/frontend/types/player';
 import { Player } from '../Player';
+import { H2 } from 'components/atom/Typo/H2';
+
 import styles from './LobbyPlayersList.module.scss';
 
 type Props = {
@@ -14,7 +16,7 @@ export const LobbyPlayersList = ({ players }: Props): JSX.Element => {
 
   return (
     <section className={styles.container}>
-      <h2>Liste des joueurs connectés</h2>
+      <H2>Liste des joueurs connectés</H2>
       <div>
         <div className={styles.playersGrid}>
           <Player avatar={owner.avatar} name={owner.name} isPlayer={owner.isPlayer} isOwner={true} />

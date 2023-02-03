@@ -19,19 +19,21 @@ export const Lobby = (): JSX.Element => {
 
   return (
     <>
-      <ContentWindow onBackButtonClick={redirectHome}>
-        <div className={styles.windowContent}>
-          <div className={styles.invitationContainer}>
-            <LobbyPlayersList players={players} />
-            <LobbyInvitation invitationLink={roomLink} />
+      <div className={styles.container}>
+        <ContentWindow onBackButtonClick={redirectHome}>
+          <div className={styles.windowContent}>
+            <div className={styles.lobbyInfoContainer}>
+              <LobbyPlayersList players={players} />
+              <LobbyInvitation invitationLink={roomLink} />
+            </div>
+            {player.isOwner && players.length > 1 && (
+              <Button rightIcon="ArrowRight" onClick={(): void => startGame(roomId)} className={styles.startGameButton}>
+                Démarrer la partie
+              </Button>
+            )}
           </div>
-          {player.isOwner && players.length > 1 && (
-            <Button rightIcon="ArrowRight" onClick={(): void => startGame(roomId)} className={styles.startGameButton}>
-              Démarrer la partie
-            </Button>
-          )}
-        </div>
-      </ContentWindow>
+        </ContentWindow>
+      </div>
     </>
   );
 };

@@ -1,22 +1,25 @@
+import Button from '../Button';
+import { ButtonTypo } from '../Typo/ButtonTypo';
 import styles from './InputButton.module.scss';
 
-export type InputButtonValue = 'Oui' | 'Non' | 'Je ne sais pas' | 'Vrai' | 'Faux';
+export type InputButtonType = 'yes' | 'no' | 'idk' | 'true' | 'false';
 
-type Props = Omit<
-  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-  'type' | 'value'
-> & {
-  value: InputButtonValue;
+type Props = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
+  type: InputButtonType;
 };
 
-const valueStyleMap: Record<InputButtonValue, typeof styles[keyof typeof styles]> = {
-  Vrai: styles.vrai,
-  Faux: styles.faux,
-  Oui: styles.oui,
-  Non: styles.non,
-  'Je ne sais pas': styles.jnsp,
+const valueStyleMap: Record<InputButtonType, typeof styles[keyof typeof styles]> = {
+  true: styles.true,
+  false: styles.false,
+  yes: styles.yes,
+  no: styles.no,
+  idk: styles.idk,
 };
 
-export const InputButton = ({ value, ...props }: Props): JSX.Element => {
-  return <input type="button" className={`${styles.inputButton} ${valueStyleMap[value]}`} value={value} {...props} />;
+export const InputButton = ({ type, children, ...props }: Props): JSX.Element => {
+  return (
+    <Button type="button" className={`${styles.inputButton} ${valueStyleMap[type]}`} {...props}>
+      <ButtonTypo>{children}</ButtonTypo>
+    </Button>
+  );
 };

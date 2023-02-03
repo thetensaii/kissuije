@@ -3,7 +3,7 @@ import { QuestionType } from 'lib/frontend/types/question';
 import { QuestionResultCard } from './QuestionResultCard';
 
 const meta: Meta<typeof QuestionResultCard> = {
-  title: 'Molecule/QuestionResultCard',
+  title: 'Molecule/AttemptResult/QuestionResultCard',
   component: QuestionResultCard,
 };
 
