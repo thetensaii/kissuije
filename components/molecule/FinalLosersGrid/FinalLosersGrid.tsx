@@ -1,5 +1,5 @@
 import { LoserType } from 'lib/frontend/types/player';
-import { ContentWindow } from '../ContentWindow';
+import { Card } from '../Card';
 import { FinalLoserCard } from '../FinalLoserCard';
 
 import styles from './FinalLosersGrid.module.scss';
@@ -10,7 +10,7 @@ type Props = {
 
 export const FinalLosersGrid = ({ losers }: Props): JSX.Element => {
   return (
-    <ContentWindow>
+    <Card>
       <div className={styles.container}>
         <h2 className={styles.title}>Réponses</h2>
         <div className={styles.losersGrid}>
@@ -19,6 +19,6 @@ export const FinalLosersGrid = ({ losers }: Props): JSX.Element => {
           ))}
         </div>
       </div>
-    </ContentWindow>
+    </Card>
   );
 };

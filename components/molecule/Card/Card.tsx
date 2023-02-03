@@ -1,12 +1,12 @@
 import Button from 'components/atom/Button';
-import styles from './ContentWindow.module.scss';
+import styles from './Card.module.scss';
 
 type Props = {
   onBackButtonClick?: () => void;
   children: React.ReactNode;
 };
 
-export const ContentWindow = ({ onBackButtonClick, children }: Props): JSX.Element => {
+export const Card = ({ onBackButtonClick, children }: Props): JSX.Element => {
   return (
     <section className={styles.container}>
       {onBackButtonClick && (

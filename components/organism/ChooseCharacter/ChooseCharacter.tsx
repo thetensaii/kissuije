@@ -1,5 +1,5 @@
 import { ChoosePlayerCharacterForm } from 'components/molecule/ChoosePlayerCharacterForm';
-import { ContentWindow } from 'components/molecule/ContentWindow';
+import { Card } from 'components/molecule/Card';
 import { isStringEmpty } from 'lib/common/functions';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 
@@ -21,11 +21,11 @@ export const ChooseCharacter = (): JSX.Element => {
 
   return (
     <div className={styles.container}>
-      <ContentWindow>
+      <Card>
         <div className={styles.formContainer}>
           <ChoosePlayerCharacterForm playerChoosed={playerChoosed} onSubmit={validateCharacter} />
         </div>
-      </ContentWindow>
+      </Card>
     </div>
   );
 };

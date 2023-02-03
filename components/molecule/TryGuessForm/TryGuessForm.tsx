@@ -34,7 +34,7 @@ export const TryGuessForm = ({ tryGuess }: Props): JSX.Element => {
     <form className={styles.container} onSubmit={handleSubmit(handleQuestionForm)}>
       <p className={styles.title}>Devine ton personnage</p>
       <p>Essayez de deviner votre personnage</p>
-      <InputText {...register('guess')} type="text" required />
+      <InputText {...register('guess')} type="text" placeholder="Ecrivez votre guess" required />
       <Button type="submit">Deviner son personnage</Button>
     </form>
   );

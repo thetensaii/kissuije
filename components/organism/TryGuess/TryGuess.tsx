@@ -1,19 +1,25 @@
-import { ContentWindow } from 'components/molecule/ContentWindow';
+import { Card } from 'components/molecule/Card';
+import { PlayersReadyList } from 'components/molecule/PlayersReadyList';
 import { TryGuessForm } from 'components/molecule/TryGuessForm';
+import { PlayerType } from 'lib/frontend/types/player';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 
 import styles from './TryGuess.module.scss';
 
 export const TryGuess = (): JSX.Element => {
-  const { tryGuess, redirectToAskQuestionScene } = useGameRoomContext();
+  const { players, tryGuess, redirectToAskQuestionScene } = useGameRoomContext();
 
   return (
     <div className={styles.container}>
-      <ContentWindow onBackButtonClick={redirectToAskQuestionScene}>
-        <div className={styles.formContainer}>
-          <TryGuessForm tryGuess={tryGuess} />
+      <Card onBackButtonClick={redirectToAskQuestionScene}>
+        <div className={styles.contentContainer}>
+          <div className={styles.formContainer}>
+            <TryGuessForm tryGuess={tryGuess} />
+          </div>
+
+          <PlayersReadyList players={players} checkPlayerReady={(p: PlayerType): boolean => p.attempted} />
         </div>
-      </ContentWindow>
+      </Card>
     </div>
   );
 };

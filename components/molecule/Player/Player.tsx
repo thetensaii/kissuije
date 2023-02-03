@@ -5,12 +5,12 @@ import styles from './Player.module.scss';
 type Props = {
   avatar: PlayerType['avatar'];
   name: PlayerType['name'];
-  isPlayer: PlayerType['isPlayer'];
+  isPlayer?: PlayerType['isPlayer'];
   isOwner?: PlayerType['isOwner'];
   afterSpanText?: React.ReactNode;
 };
 
-export const Player = ({ avatar, name, isPlayer, isOwner = false, afterSpanText }: Props): JSX.Element => {
+export const Player = ({ avatar, name, isPlayer = false, isOwner = false, afterSpanText }: Props): JSX.Element => {
   return (
     <div className={styles.player}>
       <Svg type={avatar} alt={avatar} width={32} height={32} />
