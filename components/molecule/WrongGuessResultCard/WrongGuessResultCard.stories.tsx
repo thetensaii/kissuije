@@ -15,7 +15,7 @@ export const Default: Story = {
   args: {
     guess: {
       text: 'Marylin Monroe',
-      answers: ['yes', 'yes', 'yes', 'no', 'no', 'idk'],
+      answers: ['yes', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no'],
     } as GuessType,
   },
 };
