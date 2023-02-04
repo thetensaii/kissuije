@@ -5,11 +5,11 @@ type GameRoomContextType = UseRoomReturnType;
 const GameRoomContext = createContext<GameRoomContextType | null>(null);
 
 export const useGameRoomContext = (): GameRoomContextType => {
-  const socketContext = useContext(GameRoomContext);
+  const gameRoomContext = useContext(GameRoomContext);
 
-  if (socketContext === null) throw new Error('useRoomSocket must be within RoomSocketProvider');
+  if (gameRoomContext === null) throw new Error('useRoom must be within GameRoomProvider');
 
-  return socketContext;
+  return gameRoomContext;
 };
 
 interface Props {
