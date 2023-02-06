@@ -2,6 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Kissuije (backend)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev"
+    },
+    {
       "name": "Kissuije (webapp)",
       "type": "chrome",
       "request": "launch",
