@@ -191,6 +191,7 @@ export const gameRoomReducer: GameRoomReducerFn = (state: GameRoomState, action:
       return {
         ...state,
         ownerId: ownerId,
+        players: state.players.map((p) => ({ ...p, isOwner: p.id === ownerId })),
       };
     }
     case GameRoomActionsType.PLAYER_JOIN_ROOM: {
