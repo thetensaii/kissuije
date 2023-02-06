@@ -6,20 +6,20 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './RoundResult.module.scss';
 
 export const RoundResult = (): JSX.Element => {
-  const { attempt, player, continueToNextRound } = useGameRoomContext();
+  const { myAttempt, player, continueToNextRound } = useGameRoomContext();
 
   if (!player) throw new Error('No player');
-  if (!attempt) throw new Error('No Answer');
+  if (!myAttempt) throw new Error('No Answer');
 
   return (
     <>
-      {isQuestion(attempt) ? (
+      {isQuestion(myAttempt) ? (
         <div className={styles.questionResultCard}>
-          <QuestionResultCard question={attempt} />
+          <QuestionResultCard question={myAttempt} />
         </div>
       ) : (
         <div className={styles.wrongGuessResultCard}>
-          <WrongGuessResultCard guess={attempt} />
+          <WrongGuessResultCard guess={myAttempt} />
         </div>
       )}
 

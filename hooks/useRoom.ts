@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTypes';
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
@@ -7,6 +7,7 @@ import { convertSocketPlayerToFrontendPlayer, PlayerType } from 'lib/frontend/ty
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { AttemptType, convertSocketAttemptToFrontendAttempt } from 'lib/frontend/types/attempt';
 import { AvatarType } from 'lib/frontend/types/svg';
+import { gameRoomReducer, initialGameRoomState } from 'reducers/gameRoomReducer';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -26,12 +27,12 @@ type RedirectToAskQuestionSceneFn = () => void;
 export type UseRoomReturnType = {
   sceneState: SceneState;
   player: PlayerType | null;
-  roomId: false | string;
+  roomId: null | string;
   ownerId: string;
   players: PlayerType[];
   playerChoosed: PlayerType | null;
   actualRound: number;
-  attempt: AttemptType | null;
+  myAttempt: AttemptType | null;
   attempts: AttemptType[] | null;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
@@ -48,14 +49,7 @@ export type UseRoomReturnType = {
 };
 
 export const useRoom = (): UseRoomReturnType => {
-  const [sceneState, setSceneState] = useState<SceneState>(SceneState.HOME);
-  const [roomId, setRoomId] = useState<false | string>(false);
-  const [ownerId, setOwnerId] = useState<string>('');
-  const [players, setPlayers] = useState<PlayerType[]>([]);
-  const [playerChoosedId, setPlayerChoosedId] = useState<string | null>(null);
-  const [actualRound, setActualRound] = useState<number>(0);
-  const [attempts, setAttempts] = useState<AttemptType[] | null>(null);
-  const [nextRoomId, setNextRoomId] = useState<string>('');
+  const [state, dispatch] = useReducer(gameRoomReducer, initialGameRoomState);
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -63,81 +57,110 @@ export const useRoom = (): UseRoomReturnType => {
     socket = io();
 
     socket.on('newOwner', (playerId) => {
-      setOwnerId(playerId);
+      dispatch({
+        type: 'NEW_OWNER',
+        payload: {
+          ownerId: playerId,
+        },
+      });
     });
 
     socket.on('playerJoinRoom', (player) => {
-      setPlayers((players) => [...players, convertSocketPlayerToFrontendPlayer(player, false, false)]);
+      dispatch({
+        type: 'PLAYER_JOIN_ROOM',
+        payload: {
+          player: convertSocketPlayerToFrontendPlayer(player),
+        },
+      });
     });
 
     socket.on('playerLeaveRoom', (id) => {
-      setPlayers((players) => players.filter((player) => player.id !== id));
+      dispatch({
+        type: 'PLAYER_LEAVE_ROOM',
+        payload: {
+          playerId: id,
+        },
+      });
     });
 
     socket.on('choosePlayerCharacter', (id) => {
-      setPlayerChoosedId(id);
-      setSceneState(SceneState.CHOOSE_CHARACTER);
+      dispatch({
+        type: 'MOVE_TO_CHOOSE_CHARACTER_SCENE',
+        payload: {
+          choosedPlayerId: id,
+        },
+      });
     });
 
     socket.on('updatePlayerCharacter', (id, character) => {
-      setPlayers((players) =>
-        players.map((p) => {
-          if (p.id !== id) return p;
-          return {
-            ...p,
-            character,
-          };
-        })
-      );
+      dispatch({
+        type: 'UPDATE_PLAYER_CHARACTER',
+        payload: {
+          playerId: id,
+          character: character,
+        },
+      });
     });
 
     socket.on('launchFirstRound', () => {
-      setPlayerChoosedId(null);
-      launchNewRound(1);
-      setSceneState(SceneState.ASK_QUESTION);
+      dispatch({
+        type: 'LAUNCH_NEW_ROUND',
+        payload: {
+          roundNumber: 1,
+        },
+      });
     });
 
     socket.on('playerAttempted', (playerId) => {
-      setPlayers((players) => {
-        return players.map<PlayerType>((p) =>
-          p.id === playerId
-            ? {
-                ...p,
-                attempted: true,
-              }
-            : p
-        );
+      dispatch({
+        type: 'UPDATE_PLAYER_ATTEMPTED',
+        payload: {
+          playerId: playerId,
+        },
       });
     });
 
     socket.on('allPlayersAttempted', (socketAttempts) => {
       const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
-      setAttempts(attempts);
-      setSceneState(SceneState.ANSWER_ATTEMPTS);
+
+      dispatch({
+        type: 'MOVE_TO_ANSWER_ATTEMPTS_SCENE',
+        payload: {
+          attempts: attempts,
+        },
+      });
     });
 
     socket.on('allPlayersAnswered', (socketAttempt) => {
       const attempt = convertSocketAttemptToFrontendAttempt(socketAttempt);
 
-      setAttempts((attempts) => {
-        if (!attempts) return null;
-
-        return attempts.map((a) => (a.askerId === attempt.askerId ? attempt : a));
+      dispatch({
+        type: 'MOVE_TO_ROUND_RESULT',
+        payload: {
+          myAttemptWithAnswers: attempt,
+        },
       });
-
-      setSceneState(SceneState.ROUND_RESULT);
     });
 
     socket.on('newRound', (roundNumber) => {
-      launchNewRound(roundNumber);
+      dispatch({
+        type: 'LAUNCH_NEW_ROUND',
+        payload: {
+          roundNumber: roundNumber,
+        },
+      });
     });
 
     socket.on('gameFinish', (winnerIds, nextRoomId) => {
-      setPlayers((players) => players.map((p) => (winnerIds.includes(p.id) ? { ...p, hasWon: true } : p)));
-      setNextRoomId(nextRoomId);
-      setSceneState(SceneState.END_GAME);
+      dispatch({
+        type: 'GAME_FINISH',
+        payload: {
+          winnerIds: winnerIds,
+          nextRoomId: nextRoomId,
+        },
+      });
     });
-  }, [setSceneState]);
+  }, []);
 
   useEffect(() => {
     socketInitializer();
@@ -148,35 +171,39 @@ export const useRoom = (): UseRoomReturnType => {
   }, [socketInitializer]);
 
   const player: PlayerType | null = useMemo(() => {
-    if (!socket) return null;
-    return players.find((p) => p.id === socket.id) ?? null;
-  }, [players]);
+    const { players, playerId } = state;
+    return players.find((p) => p.id === playerId) ?? null;
+  }, [state]);
 
   const playerChoosed = useMemo(() => {
-    if (!playerChoosedId) return null;
+    const { choosedPlayerId, players } = state;
+    if (!choosedPlayerId) return null;
 
-    const player = players.find((player) => player.id === playerChoosedId);
+    const player = players.find((player) => player.id === choosedPlayerId);
     if (!player) throw new Error('No matching player found !');
 
     return player;
-  }, [playerChoosedId, players]);
+  }, [state]);
 
-  const attempt: AttemptType | null = useMemo(() => {
-    if (!socket) return null;
+  const myAttempt: AttemptType | null = useMemo(() => {
+    const { attempts } = state;
     if (!player) return null;
     if (!attempts) return null;
 
     return attempts.find((a) => a.askerId === player.id) ?? null;
-  }, [attempts, player]);
+  }, [state, player]);
 
   const createRoom: CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string): string => {
     const newRoomId = roomId ?? generateRoomId();
 
     socket.emit('createRoom', name, avatar, newRoomId, (owner) => {
-      setPlayers([convertSocketPlayerToFrontendPlayer(owner, true, true)]);
-      setRoomId(newRoomId);
-      setOwnerId(owner.id);
-      setSceneState(SceneState.LOBBY);
+      dispatch({
+        type: 'CREATE_ROOM',
+        payload: {
+          owner: convertSocketPlayerToFrontendPlayer(owner),
+          roomId: newRoomId,
+        },
+      });
     });
 
     return newRoomId;
@@ -190,21 +217,25 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
-  const joinRoom: JoinRoomFn = async (name: string, avatar: AvatarType, roomID: string): Promise<string> => {
-    const roomExist: boolean = await doesRoomExist(roomID);
+  const joinRoom: JoinRoomFn = async (name: string, avatar: AvatarType, roomId: string): Promise<string> => {
+    const roomExist: boolean = await doesRoomExist(roomId);
     if (!roomExist) return createRoom(name, avatar);
 
-    socket.emit('joinRoom', name, avatar, roomID, (ownerId, players) => {
-      const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => {
-        return convertSocketPlayerToFrontendPlayer(p, ownerId === p.id, socket.id === p.id);
+    socket.emit('joinRoom', name, avatar, roomId, (ownerId, players) => {
+      const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => convertSocketPlayerToFrontendPlayer(p));
+
+      dispatch({
+        type: 'JOIN_ROOM',
+        payload: {
+          roomId: roomId,
+          ownerId: ownerId,
+          playerId: socket.id,
+          players: frontendTypePlayers,
+        },
       });
-      setPlayers(frontendTypePlayers);
-      setRoomId(roomID);
-      setOwnerId(ownerId);
-      setSceneState(SceneState.LOBBY);
     });
 
-    return roomID;
+    return roomId;
   };
 
   const startGame: StartGameFn = (roomId: string): void => {
@@ -212,90 +243,67 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   const validatePlayerCharacter: ValidatePlayerCharacterFn = (playerId: string, character: string): void => {
-    if (!roomId) return;
-    socket.emit('choosePlayerCharacter', roomId, playerId, character);
+    if (!state.roomId) return;
+    socket.emit('choosePlayerCharacter', state.roomId, playerId, character);
 
-    setPlayers((players) =>
-      players.map((player) => {
-        if (player.id !== playerId) return player;
-
-        return {
-          ...player,
-          character,
-        };
-      })
-    );
-    setSceneState(SceneState.WAIT_FOR_CHARACTER);
+    dispatch({
+      type: 'CHOOSE_PLAYER_CHARACTER',
+      payload: {
+        character: character,
+      },
+    });
   };
 
   const askQuestion: AskQuestionFn = (text: string): void => {
-    if (!roomId) return;
-    socket.emit('askQuestion', roomId, text, () => {
-      setSceneState(SceneState.WAIT_FOR_ATTEMPTS);
+    if (!state.roomId) return;
+    socket.emit('askQuestion', state.roomId, text, () => {
+      dispatch({
+        type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
+      });
     });
   };
 
   const tryGuess: TryGuessFn = (text: string): void => {
-    if (!roomId) return;
-    socket.emit('tryGuess', roomId, text, () => {
-      setSceneState(SceneState.WAIT_FOR_ATTEMPTS);
+    if (!state.roomId) return;
+    socket.emit('tryGuess', state.roomId, text, () => {
+      dispatch({
+        type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
+      });
     });
   };
 
   const answerAttempt: AnswerAttemptFn = (askerId: string, answer: AnswerType) => {
-    if (!roomId) return;
-    socket.emit('answerAttempt', roomId, askerId, answer, () => {
-      setAttempts((attempts) => {
-        if (!attempts) return null;
-        const updatedAttempts = attempts.map<AttemptType>((a) =>
-          a.askerId === askerId ? { ...a, isAnswered: true } : a
-        );
-
-        if (updatedAttempts.filter((a) => a.askerId !== socket.id).every((a) => a.isAnswered))
-          setSceneState(SceneState.WAIT_FOR_ANSWERS);
-        return updatedAttempts;
+    if (!state.roomId) return;
+    socket.emit('answerAttempt', state.roomId, askerId, answer, () => {
+      dispatch({
+        type: 'ANSWER_ATTEMPT',
+        payload: {
+          askerId: askerId,
+        },
       });
     });
   };
 
   const continueToNextRound: ContinueToNextRoundFn = (): void => {
-    if (!roomId) return;
+    if (!state.roomId) return;
     if (!player) return;
 
-    socket.emit('continueToNextRound', roomId, (): void => {
-      setPlayers((players) =>
-        players.map<PlayerType>((p) =>
-          p.id === player.id
-            ? {
-                ...p,
-                wantsToContinue: true,
-              }
-            : p
-        )
-      );
-      setSceneState(SceneState.WAIT_FOR_CONTINUE);
+    socket.emit('continueToNextRound', state.roomId, (): void => {
+      dispatch({
+        type: 'CONTINUE_TO_NEXT_ROUND',
+      });
     });
   };
 
-  const launchNewRound = (roundNumber: number): void => {
-    setPlayers((players) =>
-      players.map((p) => ({
-        ...p,
-        wantsToContinue: false,
-        attempted: false,
-      }))
-    );
-    setActualRound(roundNumber);
-    setAttempts(null);
-    setSceneState(SceneState.ASK_QUESTION);
-  };
-
   const moveToRankingPage: MoveToRankingPageFn = (): void => {
-    setSceneState(SceneState.FINAL_RESULTS);
+    dispatch({
+      type: 'MOVE_TO_FINAL_RESULTS_SCENE',
+    });
   };
 
   const restart: RestartFn = async () => {
     if (!player) return;
+    const { nextRoomId } = state;
 
     const roomAlreadyCreated = await doesRoomExist(nextRoomId);
 
@@ -308,23 +316,27 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   const redirectToTryGuessScene: RedirectToTryGuessSceneFn = (): void => {
-    setSceneState(SceneState.TRY_GUESS);
+    dispatch({
+      type: 'REDIRECT_TO_TRY_GUESS_SCENE',
+    });
   };
 
   const redirectToAskQuestionScene: RedirectToAskQuestionSceneFn = (): void => {
-    setSceneState(SceneState.ASK_QUESTION);
+    dispatch({
+      type: 'REDIRECT_TO_ASK_QUESTION_SCENE',
+    });
   };
 
   return {
-    sceneState,
+    sceneState: state.scene,
     player,
-    roomId,
-    ownerId,
-    players,
+    roomId: state.roomId,
+    ownerId: state.ownerId,
+    players: state.players,
     playerChoosed,
-    actualRound,
-    attempt,
-    attempts,
+    actualRound: state.actualRound,
+    myAttempt,
+    attempts: state.attempts,
     createRoom,
     joinRoom,
     startGame,
