@@ -5,15 +5,15 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './EndGame.module.scss';
 
 export const EndGame = (): JSX.Element => {
-  const { player, attempt, moveToRankingPage } = useGameRoomContext();
+  const { player, myAttempt, moveToRankingPage } = useGameRoomContext();
 
   if (!player) throw new Error('No player');
-  if (!attempt) throw new Error('No Attempt');
+  if (!myAttempt) throw new Error('No Attempt');
 
   return (
     <>
       <div className={styles.card}>
-        {player.hasWon ? <WinnerCard player={player} attempt={attempt} /> : <LoserCard player={player} />}
+        {player.hasWon ? <WinnerCard player={player} attempt={myAttempt} /> : <LoserCard player={player} />}
       </div>
       <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={moveToRankingPage}>
         Continuer

@@ -41,7 +41,7 @@ export default function Root(): JSX.Element {
       return <Lobby />;
     case SceneState.CHOOSE_CHARACTER:
       return <ChooseCharacter />;
-    case SceneState.WAIT_FOR_CHARACTER:
+    case SceneState.WAIT_FOR_CHARACTERS:
       return <WaitForCharacter />;
     case SceneState.ASK_QUESTION:
       return <AskQuestion />;
