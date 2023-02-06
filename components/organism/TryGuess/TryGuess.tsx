@@ -7,14 +7,20 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './TryGuess.module.scss';
 
 export const TryGuess = (): JSX.Element => {
-  const { players, tryGuess, redirectToAskQuestionScene } = useGameRoomContext();
+  const { roomId, players, tryGuess, redirectToAskQuestionScene } = useGameRoomContext();
+
+  if (!roomId) throw new Error('No room');
+
+  const handleTryGuess = (text: string): void => {
+    tryGuess(roomId, text);
+  };
 
   return (
     <div className={styles.container}>
       <Card onBackButtonClick={redirectToAskQuestionScene}>
         <div className={styles.contentContainer}>
           <div className={styles.formContainer}>
-            <TryGuessForm tryGuess={tryGuess} />
+            <TryGuessForm tryGuess={handleTryGuess} />
           </div>
 
           <PlayersReadyList players={players} checkPlayerReady={(p: PlayerType): boolean => p.attempted} />

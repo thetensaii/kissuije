@@ -9,14 +9,20 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './AskQuestion.module.scss';
 
 export const AskQuestion = (): JSX.Element => {
-  const { players, askQuestion, redirectToTryGuessScene } = useGameRoomContext();
+  const { roomId, players, askQuestion, redirectToTryGuessScene } = useGameRoomContext();
+
+  if (!roomId) throw new Error('No Room');
+
+  const handleAskQuestion = (text: string): void => {
+    askQuestion(roomId, text);
+  };
 
   return (
     <div className={styles.container}>
       <Card>
         <div className={styles.contentContainer}>
           <div className={styles.choiceContainer}>
-            <AskQuestionForm askQuestion={askQuestion} />
+            <AskQuestionForm askQuestion={handleAskQuestion} />
             <H2>OU</H2>
             <Button onClick={redirectToTryGuessScene}>
               <div className={styles.guessCharacterButtonContent}>

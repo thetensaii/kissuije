@@ -1,13 +1,13 @@
 import { InputButton } from 'components/atom/InputButton';
 import { Svg } from 'components/atom/Svg';
-import { AnswerAttemptFn } from 'hooks/useRoom';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { GuessType } from 'lib/frontend/types/guess';
 import { PlayerType } from 'lib/frontend/types/player';
 import styles from './AnswerGuessForm.module.scss';
 export type Props = {
   asker: PlayerType;
   guess: GuessType;
-  answerGuess: AnswerAttemptFn;
+  answerGuess: (askerId: string, answer: AnswerType) => void;
   disabled: boolean;
 };
 

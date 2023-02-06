@@ -1,13 +1,19 @@
 import { AttemptsList } from 'components/molecule/AttemptsList';
 import { Card } from 'components/molecule/Card';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './AnswerAttempts.module.scss';
 
 export const AnswerAttempts = (): JSX.Element => {
-  const { players, player, attempts, answerAttempt } = useGameRoomContext();
+  const { roomId, players, player, attempts, answerAttempt } = useGameRoomContext();
 
+  if (!roomId) throw new Error('No Room');
   if (!player) throw new Error('No player');
   if (!attempts) throw new Error('No Attempts');
+
+  const handleAnswerAttempt = (askerId: string, answer: AnswerType): void => {
+    answerAttempt(roomId, askerId, answer);
+  };
 
   return (
     <>
@@ -21,7 +27,7 @@ export const AnswerAttempts = (): JSX.Element => {
           </div>
         </Card>
       </div>
-      <AttemptsList answerAttempt={answerAttempt} players={players} me={player} attempts={attempts} />
+      <AttemptsList answerAttempt={handleAnswerAttempt} players={players} me={player} attempts={attempts} />
     </>
   );
 };

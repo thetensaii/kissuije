@@ -14,13 +14,13 @@ let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 type CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string) => string;
 type JoinRoomFn = (name: string, avatar: AvatarType, roomID: string) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
-type ValidatePlayerCharacterFn = (playerId: string, character: string) => void;
-export type AskQuestionFn = (text: string) => void;
-export type TryGuessFn = (text: string) => void;
-export type AnswerAttemptFn = (askerId: string, answer: AnswerType) => void;
-type ContinueToNextRoundFn = () => void;
+type ValidatePlayerCharacterFn = (roomId: string, playerId: string, character: string) => void;
+type AskQuestionFn = (roomId: string, text: string) => void;
+type TryGuessFn = (roomId: string, text: string) => void;
+type AnswerAttemptFn = (roomId: string, askerId: string, answer: AnswerType) => void;
+type ContinueToNextRoundFn = (roomId: string) => void;
 type MoveToRankingPageFn = () => void;
-type RestartFn = () => void;
+type RestartFn = (nextRoomId: string, player: PlayerType) => void;
 type RedirectToTryGuessSceneFn = () => void;
 type RedirectToAskQuestionSceneFn = () => void;
 
@@ -34,6 +34,7 @@ export type UseRoomReturnType = {
   actualRound: number;
   myAttempt: AttemptType | null;
   attempts: AttemptType[] | null;
+  nextRoomId: string;
   createRoom: CreateRoomFn;
   joinRoom: JoinRoomFn;
   startGame: StartGameFn;
@@ -242,9 +243,12 @@ export const useRoom = (): UseRoomReturnType => {
     socket.emit('startGame', roomId);
   };
 
-  const validatePlayerCharacter: ValidatePlayerCharacterFn = (playerId: string, character: string): void => {
-    if (!state.roomId) return;
-    socket.emit('choosePlayerCharacter', state.roomId, playerId, character);
+  const validatePlayerCharacter: ValidatePlayerCharacterFn = (
+    roomId: string,
+    playerId: string,
+    character: string
+  ): void => {
+    socket.emit('choosePlayerCharacter', roomId, playerId, character);
 
     dispatch({
       type: 'CHOOSE_PLAYER_CHARACTER',
@@ -254,27 +258,24 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
-  const askQuestion: AskQuestionFn = (text: string): void => {
-    if (!state.roomId) return;
-    socket.emit('askQuestion', state.roomId, text, () => {
+  const askQuestion: AskQuestionFn = (roomId: string, text: string): void => {
+    socket.emit('askQuestion', roomId, text, () => {
       dispatch({
         type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
       });
     });
   };
 
-  const tryGuess: TryGuessFn = (text: string): void => {
-    if (!state.roomId) return;
-    socket.emit('tryGuess', state.roomId, text, () => {
+  const tryGuess: TryGuessFn = (roomId: string, text: string): void => {
+    socket.emit('tryGuess', roomId, text, () => {
       dispatch({
         type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
       });
     });
   };
 
-  const answerAttempt: AnswerAttemptFn = (askerId: string, answer: AnswerType) => {
-    if (!state.roomId) return;
-    socket.emit('answerAttempt', state.roomId, askerId, answer, () => {
+  const answerAttempt: AnswerAttemptFn = (roomId: string, askerId: string, answer: AnswerType) => {
+    socket.emit('answerAttempt', roomId, askerId, answer, () => {
       dispatch({
         type: 'ANSWER_ATTEMPT',
         payload: {
@@ -284,11 +285,8 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
-  const continueToNextRound: ContinueToNextRoundFn = (): void => {
-    if (!state.roomId) return;
-    if (!player) return;
-
-    socket.emit('continueToNextRound', state.roomId, (): void => {
+  const continueToNextRound: ContinueToNextRoundFn = (roomId: string): void => {
+    socket.emit('continueToNextRound', roomId, (): void => {
       dispatch({
         type: 'CONTINUE_TO_NEXT_ROUND',
       });
@@ -301,10 +299,7 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
-  const restart: RestartFn = async () => {
-    if (!player) return;
-    const { nextRoomId } = state;
-
+  const restart: RestartFn = async (nextRoomId: string, player: PlayerType) => {
     const roomAlreadyCreated = await doesRoomExist(nextRoomId);
 
     if (roomAlreadyCreated) {
@@ -337,6 +332,7 @@ export const useRoom = (): UseRoomReturnType => {
     actualRound: state.actualRound,
     myAttempt,
     attempts: state.attempts,
+    nextRoomId: state.nextRoomId,
     createRoom,
     joinRoom,
     startGame,

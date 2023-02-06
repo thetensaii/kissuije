@@ -1,13 +1,13 @@
 import { InputButton } from 'components/atom/InputButton';
 import { Svg } from 'components/atom/Svg';
-import { AnswerAttemptFn } from 'hooks/useRoom';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
 import { QuestionType } from 'lib/frontend/types/question';
 import styles from './AnswerQuestionForm.module.scss';
 export type Props = {
   asker: PlayerType;
   question: QuestionType;
-  answerQuestion: AnswerAttemptFn;
+  answerQuestion: (askerId: string, answer: AnswerType) => void;
   disabled: boolean;
 };
 

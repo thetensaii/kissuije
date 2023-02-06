@@ -6,10 +6,15 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './RoundResult.module.scss';
 
 export const RoundResult = (): JSX.Element => {
-  const { myAttempt, player, continueToNextRound } = useGameRoomContext();
+  const { roomId, myAttempt, player, continueToNextRound } = useGameRoomContext();
 
+  if (!roomId) throw new Error('No Room');
   if (!player) throw new Error('No player');
   if (!myAttempt) throw new Error('No Answer');
+
+  const handleContinueToNextRound = (): void => {
+    continueToNextRound(roomId);
+  };
 
   return (
     <>
@@ -23,7 +28,7 @@ export const RoundResult = (): JSX.Element => {
         </div>
       )}
 
-      <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={continueToNextRound}>
+      <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={handleContinueToNextRound}>
         Continuer
       </Button>
     </>

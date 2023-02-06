@@ -1,4 +1,4 @@
-import { AnswerAttemptFn } from 'hooks/useRoom';
+import { AnswerType } from 'lib/frontend/types/answer';
 import { AttemptType } from 'lib/frontend/types/attempt';
 import { isGuess } from 'lib/frontend/types/guess';
 import { PlayerType } from 'lib/frontend/types/player';
@@ -11,7 +11,7 @@ type Props = {
   attempts: AttemptType[];
   players: PlayerType[];
   me: PlayerType;
-  answerAttempt: AnswerAttemptFn;
+  answerAttempt: (askerId: string, answer: AnswerType) => void;
 };
 
 export const AttemptsList = ({ attempts, players, me, answerAttempt }: Props): JSX.Element => {
