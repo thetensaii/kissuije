@@ -1,14 +1,13 @@
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
 import { H1 } from 'components/atom/Typo/H1';
-import { AskQuestionFn } from 'hooks/useRoom';
 import { isStringEmpty } from 'lib/common/functions';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './AskQuestionForm.module.scss';
 
 type Props = {
-  askQuestion: AskQuestionFn;
+  askQuestion: (text: string) => void;
 };
 
 type AskQuestionFormData = {

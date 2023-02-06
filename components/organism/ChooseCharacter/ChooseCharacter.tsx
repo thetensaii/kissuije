@@ -6,8 +6,9 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './ChooseCharacter.module.scss';
 
 export const ChooseCharacter = (): JSX.Element => {
-  const { playerChoosed, validatePlayerCharacter } = useGameRoomContext();
+  const { roomId, playerChoosed, validatePlayerCharacter } = useGameRoomContext();
 
+  if (!roomId) throw new Error('No Room');
   if (!playerChoosed) throw new Error('No player choosed');
 
   const validateCharacter = (character: string): void => {
@@ -16,7 +17,7 @@ export const ChooseCharacter = (): JSX.Element => {
       return;
     }
 
-    validatePlayerCharacter(playerChoosed.id, character);
+    validatePlayerCharacter(roomId, playerChoosed.id, character);
   };
 
   return (

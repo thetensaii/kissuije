@@ -7,13 +7,20 @@ import { useGameRoomContext } from 'providers/GameRoomProvider';
 import styles from './FinalResults.module.scss';
 
 export const FinalResults = (): JSX.Element => {
-  const { players, restart } = useGameRoomContext();
+  const { nextRoomId, player, players, restart } = useGameRoomContext();
+
+  if (!player) throw new Error('No Player');
 
   const winners = players.filter(isWinner);
   const losers = players.filter(isLoser);
 
   const redirectHome = (): void => {
     window.location.href = process.env.NEXT_PUBLIC_HOST ?? '';
+  };
+
+  const handleRestart = (): void => {
+    if (!nextRoomId) throw new Error('No Next Room');
+    restart(nextRoomId, player);
   };
 
   return (
@@ -32,7 +39,7 @@ export const FinalResults = (): JSX.Element => {
         <Button variant="ternary" onClick={redirectHome}>
           Retour à l'accueil
         </Button>
-        <Button onClick={restart}>Rejouer</Button>
+        <Button onClick={handleRestart}>Rejouer</Button>
       </div>
     </>
   );

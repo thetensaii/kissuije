@@ -1,13 +1,12 @@
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
-import { TryGuessFn } from 'hooks/useRoom';
 import { isStringEmpty } from 'lib/common/functions';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './TryGuessForm.module.scss';
 
 type Props = {
-  tryGuess: TryGuessFn;
+  tryGuess: (text: string) => void;
 };
 
 type AskQuestionFormData = {
