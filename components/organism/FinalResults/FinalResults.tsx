@@ -2,12 +2,13 @@ import Button from 'components/atom/Button';
 import { FinalLosersGrid } from 'components/molecule/FinalLosersGrid';
 import { FinalWinnersGrid } from 'components/molecule/FinalWinnersGrid';
 import { isLoser, isWinner } from 'lib/frontend/types/player';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext, useGameRoomDataContext } from 'providers/GameRoomProvider';
 
 import styles from './FinalResults.module.scss';
 
 export const FinalResults = (): JSX.Element => {
-  const { nextRoomId, player, players, restart } = useGameRoomContext();
+  const { nextRoomId, player, players } = useGameRoomDataContext();
+  const { restart } = useGameRoomAPIContext();
 
   if (!player) throw new Error('No Player');
 

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { Home } from 'components/organism/Home';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomDataContext } from 'providers/GameRoomProvider';
 import { Lobby } from 'components/organism/Lobby';
 import { ChooseCharacter } from 'components/organism/ChooseCharacter';
 import { WaitForCharacter } from 'components/organism/WaitForCharacter';
@@ -19,7 +19,7 @@ import { WaitForContinue } from 'components/organism/WaitForContinue';
 export default function Root(): JSX.Element {
   const router = useRouter();
   const { room_id } = router.query;
-  const { sceneState } = useGameRoomContext();
+  const { scene } = useGameRoomDataContext();
 
   const roomId = useMemo(() => {
     if (room_id === undefined) return undefined;
@@ -34,7 +34,7 @@ export default function Root(): JSX.Element {
     [router]
   );
 
-  switch (sceneState) {
+  switch (scene) {
     case SceneState.HOME:
       return <Home roomId={roomId} redirectToRoom={redirectToRoom} />;
     case SceneState.LOBBY:

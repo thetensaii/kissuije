@@ -5,11 +5,12 @@ import { AskQuestionForm } from 'components/molecule/AskQuestionForm';
 import { Card } from 'components/molecule/Card';
 import { PlayersReadyList } from 'components/molecule/PlayersReadyList';
 import { PlayerType } from 'lib/frontend/types/player';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext, useGameRoomDataContext } from 'providers/GameRoomProvider';
 import styles from './AskQuestion.module.scss';
 
 export const AskQuestion = (): JSX.Element => {
-  const { roomId, players, askQuestion, redirectToTryGuessScene } = useGameRoomContext();
+  const { roomId, players } = useGameRoomDataContext();
+  const { askQuestion, redirectToTryGuessScene } = useGameRoomAPIContext();
 
   if (!roomId) throw new Error('No Room');
 

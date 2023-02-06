@@ -1,9 +1,9 @@
 import { WaitForOthersCard } from 'components/molecule/WaitForOthersCard';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomDataContext } from 'providers/GameRoomProvider';
 import styles from './WaitForContinue.module.scss';
 
 export const WaitForContinue = (): JSX.Element => {
-  const { players } = useGameRoomContext();
+  const { players } = useGameRoomDataContext();
 
   return (
     <div className={styles.container}>

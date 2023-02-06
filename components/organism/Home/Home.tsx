@@ -1,5 +1,5 @@
 import { useName } from 'hooks/useName';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext } from 'providers/GameRoomProvider';
 import { PlayerForm } from 'components/molecule/PlayerForm';
 import { RulesExplanation } from 'components/molecule/RulesExplanation';
 
@@ -13,7 +13,7 @@ interface Props {
 
 export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
   const { name, storeNewName } = useName();
-  const { createRoom, joinRoom } = useGameRoomContext();
+  const { createRoom, joinRoom } = useGameRoomAPIContext();
 
   const createGameRoom = (name: string, avatar: AvatarType): void => {
     const newName = storeNewName(name);

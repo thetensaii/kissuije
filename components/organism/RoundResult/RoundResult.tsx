@@ -2,11 +2,12 @@ import Button from 'components/atom/Button';
 import { QuestionResultCard } from 'components/molecule/QuestionResultCard';
 import { WrongGuessResultCard } from 'components/molecule/WrongGuessResultCard';
 import { isQuestion } from 'lib/frontend/types/question';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext, useGameRoomDataContext } from 'providers/GameRoomProvider';
 import styles from './RoundResult.module.scss';
 
 export const RoundResult = (): JSX.Element => {
-  const { roomId, myAttempt, player, continueToNextRound } = useGameRoomContext();
+  const { roomId, myAttempt, player } = useGameRoomDataContext();
+  const { continueToNextRound } = useGameRoomAPIContext();
 
   if (!roomId) throw new Error('No Room');
   if (!player) throw new Error('No player');

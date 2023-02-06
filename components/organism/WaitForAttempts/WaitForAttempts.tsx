@@ -1,10 +1,10 @@
 import { WaitForOthersCard } from 'components/molecule/WaitForOthersCard';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomDataContext } from 'providers/GameRoomProvider';
 
 import styles from './WaitForAttempts.module.scss';
 
 export const WaitForAttempts = (): JSX.Element => {
-  const { players } = useGameRoomContext();
+  const { players } = useGameRoomDataContext();
   return (
     <div className={styles.container}>
       <WaitForOthersCard
