@@ -2,12 +2,13 @@ import { Card } from 'components/molecule/Card';
 import { PlayersReadyList } from 'components/molecule/PlayersReadyList';
 import { TryGuessForm } from 'components/molecule/TryGuessForm';
 import { PlayerType } from 'lib/frontend/types/player';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext, useGameRoomDataContext } from 'providers/GameRoomProvider';
 
 import styles from './TryGuess.module.scss';
 
 export const TryGuess = (): JSX.Element => {
-  const { roomId, players, tryGuess, redirectToAskQuestionScene } = useGameRoomContext();
+  const { roomId, players } = useGameRoomDataContext();
+  const { tryGuess, redirectToAskQuestionScene } = useGameRoomAPIContext();
 
   if (!roomId) throw new Error('No room');
 

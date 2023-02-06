@@ -1,15 +1,23 @@
 import { useRoom, UseRoomReturnType } from 'hooks/useRoom';
-import { createContext, useContext } from 'react';
-type GameRoomContextType = UseRoomReturnType;
+import { createContext, useContext, useMemo } from 'react';
+type GameRoomDataContextType = UseRoomReturnType['state'];
+const GameRoomDataContext = createContext<GameRoomDataContextType | null>(null);
+export const useGameRoomDataContext = (): GameRoomDataContextType => {
+  const gameRoomDataContext = useContext(GameRoomDataContext);
 
-const GameRoomContext = createContext<GameRoomContextType | null>(null);
+  if (gameRoomDataContext === null) throw new Error('useGameRoomDataContext must be within GameRoomDataProvider');
 
-export const useGameRoomContext = (): GameRoomContextType => {
-  const gameRoomContext = useContext(GameRoomContext);
+  return gameRoomDataContext;
+};
 
-  if (gameRoomContext === null) throw new Error('useRoom must be within GameRoomProvider');
+type GameRoomAPIContextType = UseRoomReturnType['api'];
+const GameRoomAPIContext = createContext<GameRoomAPIContextType | null>(null);
+export const useGameRoomAPIContext = (): GameRoomAPIContextType => {
+  const gameRoomAPIContext = useContext(GameRoomAPIContext);
 
-  return gameRoomContext;
+  if (gameRoomAPIContext === null) throw new Error('useGameRoomAPIContext must be within GameRoomAPIProvider');
+
+  return gameRoomAPIContext;
 };
 
 interface Props {
@@ -17,7 +25,14 @@ interface Props {
 }
 
 export function GameRoomProvider({ children }: Props): JSX.Element {
-  const value = useRoom();
+  const { state, api } = useRoom();
 
-  return <GameRoomContext.Provider value={value}>{children}</GameRoomContext.Provider>;
+  const apiValue = useMemo(() => api, [api]);
+  const stateValue = useMemo(() => state, [state]);
+
+  return (
+    <GameRoomAPIContext.Provider value={apiValue}>
+      <GameRoomDataContext.Provider value={stateValue}>{children}</GameRoomDataContext.Provider>;
+    </GameRoomAPIContext.Provider>
+  );
 }

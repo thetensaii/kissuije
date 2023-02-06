@@ -1,12 +1,13 @@
 import Button from 'components/atom/Button';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext, useGameRoomDataContext } from 'providers/GameRoomProvider';
 import { Card } from 'components/molecule/Card';
 import { LobbyPlayersList } from 'components/molecule/LobbyPlayersList';
 import { LobbyInvitation } from 'components/molecule/LobbyInvitation';
 import styles from './Lobby.module.scss';
 
 export const Lobby = (): JSX.Element => {
-  const { player, roomId, players, startGame } = useGameRoomContext();
+  const { player, roomId, players } = useGameRoomDataContext();
+  const { startGame } = useGameRoomAPIContext();
 
   if (!roomId) throw new Error('No Room');
   if (!player) throw new Error('No Player');

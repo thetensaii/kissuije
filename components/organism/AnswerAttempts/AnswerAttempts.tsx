@@ -1,11 +1,12 @@
 import { AttemptsList } from 'components/molecule/AttemptsList';
 import { Card } from 'components/molecule/Card';
 import { AnswerType } from 'lib/frontend/types/answer';
-import { useGameRoomContext } from 'providers/GameRoomProvider';
+import { useGameRoomAPIContext, useGameRoomDataContext } from 'providers/GameRoomProvider';
 import styles from './AnswerAttempts.module.scss';
 
 export const AnswerAttempts = (): JSX.Element => {
-  const { roomId, players, player, attempts, answerAttempt } = useGameRoomContext();
+  const { roomId, players, player, attempts } = useGameRoomDataContext();
+  const { answerAttempt } = useGameRoomAPIContext();
 
   if (!roomId) throw new Error('No Room');
   if (!player) throw new Error('No player');

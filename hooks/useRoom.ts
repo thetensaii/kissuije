@@ -4,10 +4,9 @@ import { ClientToServerEvents, ServerToClientEvents } from 'lib/common/socketsTy
 import { generateRoomId } from 'lib/common/generators/roomId-generator';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { convertSocketPlayerToFrontendPlayer, PlayerType } from 'lib/frontend/types/player';
-import { SceneState } from 'lib/frontend/types/sceneState';
 import { AttemptType, convertSocketAttemptToFrontendAttempt } from 'lib/frontend/types/attempt';
 import { AvatarType } from 'lib/frontend/types/svg';
-import { gameRoomReducer, initialGameRoomState } from 'reducers/gameRoomReducer';
+import { gameRoomReducer, GameRoomState, initialGameRoomState } from 'reducers/gameRoomReducer';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -25,28 +24,25 @@ type RedirectToTryGuessSceneFn = () => void;
 type RedirectToAskQuestionSceneFn = () => void;
 
 export type UseRoomReturnType = {
-  sceneState: SceneState;
-  player: PlayerType | null;
-  roomId: null | string;
-  ownerId: string;
-  players: PlayerType[];
-  playerChoosed: PlayerType | null;
-  actualRound: number;
-  myAttempt: AttemptType | null;
-  attempts: AttemptType[] | null;
-  nextRoomId: string;
-  createRoom: CreateRoomFn;
-  joinRoom: JoinRoomFn;
-  startGame: StartGameFn;
-  validatePlayerCharacter: ValidatePlayerCharacterFn;
-  askQuestion: AskQuestionFn;
-  redirectToTryGuessScene: RedirectToTryGuessSceneFn;
-  redirectToAskQuestionScene: RedirectToAskQuestionSceneFn;
-  tryGuess: TryGuessFn;
-  answerAttempt: AnswerAttemptFn;
-  continueToNextRound: ContinueToNextRoundFn;
-  moveToRankingPage: MoveToRankingPageFn;
-  restart: RestartFn;
+  state: GameRoomState & {
+    player: PlayerType | null;
+    choosedPlayer: PlayerType | null;
+    myAttempt: AttemptType | null;
+  };
+  api: {
+    createRoom: CreateRoomFn;
+    joinRoom: JoinRoomFn;
+    startGame: StartGameFn;
+    validatePlayerCharacter: ValidatePlayerCharacterFn;
+    askQuestion: AskQuestionFn;
+    redirectToTryGuessScene: RedirectToTryGuessSceneFn;
+    redirectToAskQuestionScene: RedirectToAskQuestionSceneFn;
+    tryGuess: TryGuessFn;
+    answerAttempt: AnswerAttemptFn;
+    continueToNextRound: ContinueToNextRoundFn;
+    moveToRankingPage: MoveToRankingPageFn;
+    restart: RestartFn;
+  };
 };
 
 export const useRoom = (): UseRoomReturnType => {
@@ -176,7 +172,7 @@ export const useRoom = (): UseRoomReturnType => {
     return players.find((p) => p.id === playerId) ?? null;
   }, [state]);
 
-  const playerChoosed = useMemo(() => {
+  const choosedPlayer = useMemo(() => {
     const { choosedPlayerId, players } = state;
     if (!choosedPlayerId) return null;
 
@@ -323,27 +319,25 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   return {
-    sceneState: state.scene,
-    player,
-    roomId: state.roomId,
-    ownerId: state.ownerId,
-    players: state.players,
-    playerChoosed,
-    actualRound: state.actualRound,
-    myAttempt,
-    attempts: state.attempts,
-    nextRoomId: state.nextRoomId,
-    createRoom,
-    joinRoom,
-    startGame,
-    validatePlayerCharacter,
-    askQuestion,
-    tryGuess,
-    redirectToTryGuessScene,
-    redirectToAskQuestionScene,
-    answerAttempt,
-    continueToNextRound,
-    moveToRankingPage,
-    restart,
+    state: {
+      ...state,
+      player,
+      choosedPlayer,
+      myAttempt,
+    },
+    api: {
+      createRoom,
+      joinRoom,
+      startGame,
+      validatePlayerCharacter,
+      askQuestion,
+      tryGuess,
+      redirectToTryGuessScene,
+      redirectToAskQuestionScene,
+      answerAttempt,
+      continueToNextRound,
+      moveToRankingPage,
+      restart,
+    },
   };
 };
