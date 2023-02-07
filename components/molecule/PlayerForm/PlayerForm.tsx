@@ -43,9 +43,6 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
   }, [setFocus]);
 
   const handleFormSubmit = ({ name }: PlayerFormData): void => {
-    // eslint-disable-next-line no-console
-    console.log('Avatar :', avatar);
-
     if (type === 'createRoom') createGameRoom(name, avatar);
     else joinGameRoom(name, avatar);
   };

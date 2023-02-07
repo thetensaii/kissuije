@@ -1,3 +1,4 @@
+import React from 'react';
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
 import { H2 } from 'components/atom/Typo/H2';
@@ -7,7 +8,7 @@ type Props = {
   invitationLink: string;
 };
 
-export const LobbyInvitation = ({ invitationLink }: Props): JSX.Element => {
+export const LobbyInvitation = React.memo(({ invitationLink }: Props): JSX.Element => {
   const copyRoomLink = (): void => {
     navigator.clipboard.writeText(invitationLink);
   };
@@ -22,4 +23,5 @@ export const LobbyInvitation = ({ invitationLink }: Props): JSX.Element => {
       </Button>
     </div>
   );
-};
+});
+LobbyInvitation.displayName = 'LobbyInvitation';
