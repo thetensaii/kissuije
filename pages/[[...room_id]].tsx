@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { SceneState } from 'lib/frontend/types/sceneState';
 import { Home } from 'components/organism/Home';
@@ -15,10 +15,11 @@ import { TryGuess } from 'components/organism/TryGuess';
 import { AnswerAttempts } from 'components/organism/AnswerAttempts';
 import { WaitForAnswers } from 'components/organism/WaitForAnswers';
 import { WaitForContinue } from 'components/organism/WaitForContinue';
+import { H1 } from 'components/atom/Typo/H1';
 
 export default function Root(): JSX.Element {
-  const router = useRouter();
-  const { room_id } = router.query;
+  const { query, isReady, push } = useRouter();
+  const { room_id } = query;
   const { scene } = useGameRoomDataContext();
 
   const roomId = useMemo(() => {
@@ -27,12 +28,11 @@ export default function Root(): JSX.Element {
     return room_id[0];
   }, [room_id]);
 
-  const redirectToRoom = useCallback(
-    (roomID: string): void => {
-      router.push(`/${roomID}`, undefined, { shallow: true });
-    },
-    [router]
-  );
+  const redirectToRoom = (roomID: string): void => {
+    push(`/${roomID}`, undefined, { shallow: true });
+  };
+
+  if (!isReady) return <H1>Loading...</H1>;
 
   switch (scene) {
     case SceneState.HOME:
