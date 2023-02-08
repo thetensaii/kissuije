@@ -51,7 +51,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - [x] When all player's character are choosed, game starts
   - [x] Players are ordered in a random order
   
-- [ ] **Game logic**
+- [x] **Game logic**
   - [x] Every player ask a question or try to guess at the same time
     - [x] Ask a Question
     - [x] Try to Guess
