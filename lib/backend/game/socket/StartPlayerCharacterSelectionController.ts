@@ -11,15 +11,23 @@ export class StartPlayerCharacterSelectionController {
   public startPlayerCharacterSelection(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('startGame', (roomId) => {
-        const whoPickCharacterForWho = this.startPlayerCharacterSelectionService.startPlayerCharacterSelection(roomId);
+        try {
+          const whoPickCharacterForWho =
+            this.startPlayerCharacterSelectionService.startPlayerCharacterSelection(roomId);
 
-        for (const [playerId, targetId] of Object.entries(whoPickCharacterForWho)) {
-          if (playerId === socket.id) {
-            socket.emit('choosePlayerCharacter', targetId);
-            continue;
+          for (const [playerId, targetId] of Object.entries(whoPickCharacterForWho)) {
+            if (playerId === socket.id) {
+              socket.emit('choosePlayerCharacter', targetId);
+              continue;
+            }
+
+            socket.to(playerId).emit('choosePlayerCharacter', targetId);
           }
-
-          socket.to(playerId).emit('choosePlayerCharacter', targetId);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
         }
       });
     });

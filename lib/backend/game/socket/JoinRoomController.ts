@@ -11,14 +11,21 @@ export class JoinRoomController {
   public joinRoom(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('joinRoom', (name, avatar, roomId, callback) => {
-        const { ownerId, player, players } = this.joinRoomService.joinRoom(roomId, socket.id, name, avatar);
+        try {
+          const { ownerId, player, players } = this.joinRoomService.joinRoom(roomId, socket.id, name, avatar);
 
-        socket.join(roomId);
-        socket.data.joinedRoom = roomId;
+          socket.join(roomId);
+          socket.data.joinedRoom = roomId;
 
-        socket.broadcast.to(roomId).emit('playerJoinRoom', player);
+          socket.broadcast.to(roomId).emit('playerJoinRoom', player);
 
-        callback(ownerId, players);
+          callback(ownerId, players);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }

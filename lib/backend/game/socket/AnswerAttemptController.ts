@@ -38,39 +38,46 @@ export class AnswerAttemptController {
   public answerAttempt(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('answerAttempt', (roomId, askerId, socketAnswer, cb) => {
-        const answer = this.answerAdapter.toDomain(socketAnswer);
+        try {
+          const answer = this.answerAdapter.toDomain(socketAnswer);
 
-        this.answerAttemptService.answerAttempt(roomId, askerId, answer);
+          this.answerAttemptService.answerAttempt(roomId, askerId, answer);
 
-        cb();
+          cb();
 
-        const attempts = this.doAllPlayersAnsweredService.doAllPlayersAnswered(roomId);
-        if (!attempts) return;
+          const attempts = this.doAllPlayersAnsweredService.doAllPlayersAnswered(roomId);
+          if (!attempts) return;
 
-        const winners = this.doPlayersWonService.doPlayersWon(roomId);
+          const winners = this.doPlayersWonService.doPlayersWon(roomId);
 
-        if (winners) {
-          let nextRoomId;
-          do {
-            nextRoomId = generateRoomId();
-          } while (this.checkRoomService.doesRoomExist(nextRoomId));
+          if (winners) {
+            let nextRoomId;
+            do {
+              nextRoomId = generateRoomId();
+            } while (this.checkRoomService.doesRoomExist(nextRoomId));
 
-          socket.emit('gameFinish', winners, nextRoomId);
-          socket.to(roomId).emit('gameFinish', winners, nextRoomId);
-          socket.to(roomId).socketsLeave(roomId);
-          this.deleteRoomService.deleteRoom(roomId);
-          return;
-        }
-
-        const playerId = socket.id;
-        attempts.getAllAttempts().forEach((attempt) => {
-          const socketAttempt = this.attemptAdapter.toSocket(attempt);
-          if (socketAttempt.askerId === playerId) {
-            socket.emit('allPlayersAnswered', socketAttempt);
+            socket.emit('gameFinish', winners, nextRoomId);
+            socket.to(roomId).emit('gameFinish', winners, nextRoomId);
+            socket.to(roomId).socketsLeave(roomId);
+            this.deleteRoomService.deleteRoom(roomId);
             return;
           }
-          socket.to(socketAttempt.askerId).emit('allPlayersAnswered', socketAttempt);
-        });
+
+          const playerId = socket.id;
+          attempts.getAllAttempts().forEach((attempt) => {
+            const socketAttempt = this.attemptAdapter.toSocket(attempt);
+            if (socketAttempt.askerId === playerId) {
+              socket.emit('allPlayersAnswered', socketAttempt);
+              return;
+            }
+            socket.to(socketAttempt.askerId).emit('allPlayersAnswered', socketAttempt);
+          });
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }

@@ -22,23 +22,30 @@ export class TryGuessController {
   public tryGuess(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('tryGuess', (roomId, text, cb) => {
-        const playerId = socket.id;
+        try {
+          const playerId = socket.id;
 
-        this.tryGuessService.tryGuess(roomId, playerId, text);
+          this.tryGuessService.tryGuess(roomId, playerId, text);
 
-        socket.emit('playerAttempted', socket.id);
-        socket.to(roomId).emit('playerAttempted', socket.id);
-        cb();
+          socket.emit('playerAttempted', socket.id);
+          socket.to(roomId).emit('playerAttempted', socket.id);
+          cb();
 
-        const allPlayersAttempted = this.doAllPlayersAttemptedService.doAllPlayersAttempted(roomId);
-        if (!allPlayersAttempted) return;
+          const allPlayersAttempted = this.doAllPlayersAttemptedService.doAllPlayersAttempted(roomId);
+          if (!allPlayersAttempted) return;
 
-        const socketPlayersAttempt = allPlayersAttempted
-          .getAllAttempts()
-          .map<SocketAttemptType>(this.attemptAdapter.toSocket);
+          const socketPlayersAttempt = allPlayersAttempted
+            .getAllAttempts()
+            .map<SocketAttemptType>(this.attemptAdapter.toSocket);
 
-        socket.emit('allPlayersAttempted', socketPlayersAttempt);
-        socket.to(roomId).emit('allPlayersAttempted', socketPlayersAttempt);
+          socket.emit('allPlayersAttempted', socketPlayersAttempt);
+          socket.to(roomId).emit('allPlayersAttempted', socketPlayersAttempt);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }

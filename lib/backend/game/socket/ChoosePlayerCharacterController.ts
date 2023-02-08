@@ -20,15 +20,22 @@ export class ChoosePlayerCharacterController {
   public choosePlayerCharacter(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('choosePlayerCharacter', (roomId, targetId, character) => {
-        const updatedPlayer = this.choosePlayerCharacterService.choosePlayerCharacter(roomId, targetId, character);
-        socket.broadcast.to(roomId).emit('updatePlayerCharacter', targetId, updatedPlayer.character);
+        try {
+          const updatedPlayer = this.choosePlayerCharacterService.choosePlayerCharacter(roomId, targetId, character);
+          socket.broadcast.to(roomId).emit('updatePlayerCharacter', targetId, updatedPlayer.character);
 
-        const doAllPlayersHaveCharacter = this.doAllPlayersHaveCharacterService.doAllPlayersHaveCharacter(roomId);
-        if (!doAllPlayersHaveCharacter) return;
+          const doAllPlayersHaveCharacter = this.doAllPlayersHaveCharacterService.doAllPlayersHaveCharacter(roomId);
+          if (!doAllPlayersHaveCharacter) return;
 
-        this.launchNewRoundService.launchNewRound(roomId);
-        socket.emit('launchFirstRound');
-        socket.to(roomId).emit('launchFirstRound');
+          this.launchNewRoundService.launchNewRound(roomId);
+          socket.emit('launchFirstRound');
+          socket.to(roomId).emit('launchFirstRound');
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }

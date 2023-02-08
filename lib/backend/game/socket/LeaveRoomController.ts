@@ -21,13 +21,19 @@ export class LeaveRoomController {
 
       socket.on('disconnecting', () => {
         if (!roomId) return;
+        try {
+          const room = this.leaveRoomService.leaveRoom(roomId, socket.id);
 
-        const room = this.leaveRoomService.leaveRoom(roomId, socket.id);
+          if (room.isEmpty()) return;
 
-        if (room.isEmpty()) return;
-
-        socket.broadcast.to(roomId).emit('newOwner', room.getOwnerId());
-        socket.broadcast.to(roomId).emit('playerLeaveRoom', socket.id);
+          socket.broadcast.to(roomId).emit('newOwner', room.getOwnerId());
+          socket.broadcast.to(roomId).emit('playerLeaveRoom', socket.id);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }

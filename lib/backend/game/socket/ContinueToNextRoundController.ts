@@ -21,18 +21,25 @@ export class ContinueToNextRoundController {
   public continueToNextRound(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('continueToNextRound', (roomId, cb) => {
-        const playerId = socket.id;
-        this.continueToNextRoundService.continueToNextRound(roomId, playerId);
-        cb();
+        try {
+          const playerId = socket.id;
+          this.continueToNextRoundService.continueToNextRound(roomId, playerId);
+          cb();
 
-        const everyPlayerWantsToContinueToNextRound =
-          this.doAllPlayersWantToContinueToNextRoundService.doAllPlayersWantToContinueToNextRound(roomId);
+          const everyPlayerWantsToContinueToNextRound =
+            this.doAllPlayersWantToContinueToNextRoundService.doAllPlayersWantToContinueToNextRound(roomId);
 
-        if (!everyPlayerWantsToContinueToNextRound) return;
-        const newRoundNumber = this.launchNewRoundService.launchNewRound(roomId);
+          if (!everyPlayerWantsToContinueToNextRound) return;
+          const newRoundNumber = this.launchNewRoundService.launchNewRound(roomId);
 
-        socket.emit('newRound', newRoundNumber);
-        socket.to(roomId).emit('newRound', newRoundNumber);
+          socket.emit('newRound', newRoundNumber);
+          socket.to(roomId).emit('newRound', newRoundNumber);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }
