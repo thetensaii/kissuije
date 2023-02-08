@@ -10,9 +10,16 @@ export class CheckRoomController {
   public doesRoomExist(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('doesRoomExist', (roomId, callback) => {
-        const doesExist = this.checkRoomService.doesRoomExist(roomId);
+        try {
+          const doesExist = this.checkRoomService.doesRoomExist(roomId);
 
-        callback(doesExist);
+          callback(doesExist);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }

@@ -10,12 +10,18 @@ export class CreateRoomController {
   public createRoom(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('createRoom', (name, avatar, roomId, callback) => {
-        const owner = this.createRoomService.createRoom(roomId, socket.id, name, avatar);
+        try {
+          const owner = this.createRoomService.createRoom(roomId, socket.id, name, avatar);
+          socket.join(roomId);
+          socket.data.joinedRoom = roomId;
 
-        socket.join(roomId);
-        socket.data.joinedRoom = roomId;
-
-        callback(owner);
+          callback(owner);
+        } catch (error) {
+          if (error instanceof Error) {
+            // eslint-disable-next-line no-console
+            console.error(error.message);
+          }
+        }
       });
     });
   }
