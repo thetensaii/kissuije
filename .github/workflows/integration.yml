@@ -1,0 +1,27 @@
+name: CI Pipeline
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.4
+        with: 
+          version: 7.6
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Check Linting
+        run: pnpm lint
+      - name: Build App
+        run: pnpm run build
+      - name: Build Storybook
+        run: pnpm run build-storybook
