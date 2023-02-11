@@ -1,0 +1,17 @@
+name: CD Staging Pipeline
+
+on:
+  workflow_run:
+    workflows: [CI Pipeline]
+    types:
+      - completed
+    branches: 
+      - ${{ github.event.repository.default_branch }}
+
+jobs:
+  on_ci_success:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy Staging
+        run: curl "${{ secrets.STAGING_ENVIRONMENT_WEBHOOK_URL }}"
