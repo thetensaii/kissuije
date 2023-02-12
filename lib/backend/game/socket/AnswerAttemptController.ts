@@ -37,7 +37,7 @@ export class AnswerAttemptController {
 
   public answerAttempt(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('answerAttempt', (roomId, askerId, socketAnswer, cb) => {
+      socket.on('answerAttempt', ({ roomId, askerId, answer: socketAnswer }, cb) => {
         try {
           const answer = this.answerAdapter.toDomain(socketAnswer);
 
@@ -48,16 +48,16 @@ export class AnswerAttemptController {
           const attempts = this.doAllPlayersAnsweredService.doAllPlayersAnswered(roomId);
           if (!attempts) return;
 
-          const winners = this.doPlayersWonService.doPlayersWon(roomId);
+          const winnerIds = this.doPlayersWonService.doPlayersWon(roomId);
 
-          if (winners) {
+          if (winnerIds) {
             let nextRoomId;
             do {
               nextRoomId = generateRoomId();
             } while (this.checkRoomService.doesRoomExist(nextRoomId));
 
-            socket.emit('gameFinish', winners, nextRoomId);
-            socket.to(roomId).emit('gameFinish', winners, nextRoomId);
+            socket.emit('gameFinish', { winnerIds, nextRoomId });
+            socket.to(roomId).emit('gameFinish', { winnerIds, nextRoomId });
             socket.to(roomId).socketsLeave(roomId);
             this.deleteRoomService.deleteRoom(roomId);
             return;
@@ -67,10 +67,10 @@ export class AnswerAttemptController {
           attempts.getAllAttempts().forEach((attempt) => {
             const socketAttempt = this.attemptAdapter.toSocket(attempt);
             if (socketAttempt.askerId === playerId) {
-              socket.emit('allPlayersAnswered', socketAttempt);
+              socket.emit('allPlayersAnswered', { playerAttempt: socketAttempt });
               return;
             }
-            socket.to(socketAttempt.askerId).emit('allPlayersAnswered', socketAttempt);
+            socket.to(socketAttempt.askerId).emit('allPlayersAnswered', { playerAttempt: socketAttempt });
           });
         } catch (error) {
           if (error instanceof Error) {

@@ -9,7 +9,7 @@ export class CheckRoomController {
 
   public doesRoomExist(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('doesRoomExist', (roomId, callback) => {
+      socket.on('doesRoomExist', ({ roomId }, callback) => {
         try {
           const doesExist = this.checkRoomService.doesRoomExist(roomId);
 

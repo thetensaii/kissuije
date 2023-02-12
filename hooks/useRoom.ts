@@ -53,16 +53,16 @@ export const useRoom = (): UseRoomReturnType => {
 
     socket = io();
 
-    socket.on('newOwner', (playerId) => {
+    socket.on('newOwner', ({ ownerId }) => {
       dispatch({
         type: 'NEW_OWNER',
         payload: {
-          ownerId: playerId,
+          ownerId,
         },
       });
     });
 
-    socket.on('playerJoinRoom', (player) => {
+    socket.on('playerJoinRoom', ({ player }) => {
       dispatch({
         type: 'PLAYER_JOIN_ROOM',
         payload: {
@@ -71,7 +71,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('playerLeaveRoom', (id) => {
+    socket.on('playerLeaveRoom', ({ id }) => {
       dispatch({
         type: 'PLAYER_LEAVE_ROOM',
         payload: {
@@ -80,7 +80,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('choosePlayerCharacter', (id) => {
+    socket.on('choosePlayerCharacter', ({ id }) => {
       dispatch({
         type: 'MOVE_TO_CHOOSE_CHARACTER_SCENE',
         payload: {
@@ -89,7 +89,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('updatePlayerCharacter', (id, character) => {
+    socket.on('updatePlayerCharacter', ({ id, character }) => {
       dispatch({
         type: 'UPDATE_PLAYER_CHARACTER',
         payload: {
@@ -108,7 +108,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('playerAttempted', (playerId) => {
+    socket.on('playerAttempted', ({ playerId }) => {
       dispatch({
         type: 'UPDATE_PLAYER_ATTEMPTED',
         payload: {
@@ -117,7 +117,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('allPlayersAttempted', (socketAttempts) => {
+    socket.on('allPlayersAttempted', ({ attempts: socketAttempts }) => {
       const attempts = socketAttempts.map(convertSocketAttemptToFrontendAttempt);
 
       dispatch({
@@ -128,7 +128,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('allPlayersAnswered', (socketAttempt) => {
+    socket.on('allPlayersAnswered', ({ playerAttempt: socketAttempt }) => {
       const attempt = convertSocketAttemptToFrontendAttempt(socketAttempt);
 
       dispatch({
@@ -139,7 +139,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('newRound', (roundNumber) => {
+    socket.on('newRound', ({ roundNumber }) => {
       dispatch({
         type: 'LAUNCH_NEW_ROUND',
         payload: {
@@ -148,7 +148,7 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('gameFinish', (winnerIds, nextRoomId) => {
+    socket.on('gameFinish', ({ winnerIds, nextRoomId }) => {
       dispatch({
         type: 'GAME_FINISH',
         payload: {
@@ -162,8 +162,16 @@ export const useRoom = (): UseRoomReturnType => {
   useEffect(() => {
     socketInitializer();
 
+    const cleanup = (): void => {
+      if (!socket) return;
+      socket.emit('leaveRoom');
+      socket.close();
+    };
+
+    window.addEventListener('beforeunload', cleanup);
+
     return () => {
-      if (socket) socket.close();
+      window.removeEventListener('beforeunload', cleanup);
     };
   }, [socketInitializer]);
 
@@ -193,24 +201,38 @@ export const useRoom = (): UseRoomReturnType => {
   const createRoom: CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string): string => {
     const newRoomId = roomId ?? generateRoomId();
 
-    socket.emit('createRoom', name, avatar, newRoomId, (owner) => {
-      dispatch({
-        type: 'CREATE_ROOM',
-        payload: {
-          owner: convertSocketPlayerToFrontendPlayer(owner),
-          roomId: newRoomId,
-        },
-      });
-    });
+    socket.emit(
+      'createRoom',
+      {
+        name,
+        avatar,
+        roomId: newRoomId,
+      },
+      (owner) => {
+        dispatch({
+          type: 'CREATE_ROOM',
+          payload: {
+            owner: convertSocketPlayerToFrontendPlayer(owner),
+            roomId: newRoomId,
+          },
+        });
+      }
+    );
 
     return newRoomId;
   };
 
   const doesRoomExist = async (roomId: string): Promise<boolean> => {
     return await new Promise((resolve) => {
-      socket.emit('doesRoomExist', roomId, (doesExist) => {
-        resolve(doesExist);
-      });
+      socket.emit(
+        'doesRoomExist',
+        {
+          roomId: roomId,
+        },
+        (doesExist) => {
+          resolve(doesExist);
+        }
+      );
     });
   };
 
@@ -218,25 +240,33 @@ export const useRoom = (): UseRoomReturnType => {
     const roomExist: boolean = await doesRoomExist(roomId);
     if (!roomExist) return createRoom(name, avatar);
 
-    socket.emit('joinRoom', name, avatar, roomId, (ownerId, players) => {
-      const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => convertSocketPlayerToFrontendPlayer(p));
+    socket.emit(
+      'joinRoom',
+      {
+        name,
+        avatar,
+        roomId,
+      },
+      (ownerId, players) => {
+        const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => convertSocketPlayerToFrontendPlayer(p));
 
-      dispatch({
-        type: 'JOIN_ROOM',
-        payload: {
-          roomId: roomId,
-          ownerId: ownerId,
-          playerId: socket.id,
-          players: frontendTypePlayers,
-        },
-      });
-    });
+        dispatch({
+          type: 'JOIN_ROOM',
+          payload: {
+            roomId: roomId,
+            ownerId: ownerId,
+            playerId: socket.id,
+            players: frontendTypePlayers,
+          },
+        });
+      }
+    );
 
     return roomId;
   };
 
   const startGame: StartGameFn = (roomId: string): void => {
-    socket.emit('startGame', roomId);
+    socket.emit('startGame', { roomId });
   };
 
   const validatePlayerCharacter: ValidatePlayerCharacterFn = (
@@ -244,7 +274,7 @@ export const useRoom = (): UseRoomReturnType => {
     playerId: string,
     character: string
   ): void => {
-    socket.emit('choosePlayerCharacter', roomId, playerId, character);
+    socket.emit('choosePlayerCharacter', { roomId, targetId: playerId, character });
 
     dispatch({
       type: 'CHOOSE_PLAYER_CHARACTER',
@@ -255,38 +285,66 @@ export const useRoom = (): UseRoomReturnType => {
   };
 
   const askQuestion: AskQuestionFn = (roomId: string, text: string): void => {
-    socket.emit('askQuestion', roomId, text, () => {
-      dispatch({
-        type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
-      });
-    });
+    socket.emit(
+      'askQuestion',
+      {
+        roomId,
+        text,
+      },
+      () => {
+        dispatch({
+          type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
+        });
+      }
+    );
   };
 
   const tryGuess: TryGuessFn = (roomId: string, text: string): void => {
-    socket.emit('tryGuess', roomId, text, () => {
-      dispatch({
-        type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
-      });
-    });
+    socket.emit(
+      'tryGuess',
+      {
+        roomId,
+        text,
+      },
+      () => {
+        dispatch({
+          type: 'MOVE_TO_WAIT_FOR_ATTEMPTS_SCENE',
+        });
+      }
+    );
   };
 
   const answerAttempt: AnswerAttemptFn = (roomId: string, askerId: string, answer: AnswerType) => {
-    socket.emit('answerAttempt', roomId, askerId, answer, () => {
-      dispatch({
-        type: 'ANSWER_ATTEMPT',
-        payload: {
-          askerId: askerId,
-        },
-      });
-    });
+    socket.emit(
+      'answerAttempt',
+      {
+        roomId,
+        askerId,
+        answer,
+      },
+      () => {
+        dispatch({
+          type: 'ANSWER_ATTEMPT',
+          payload: {
+            askerId: askerId,
+          },
+        });
+      }
+    );
   };
 
   const continueToNextRound: ContinueToNextRoundFn = (roomId: string): void => {
-    socket.emit('continueToNextRound', roomId, (): void => {
-      dispatch({
-        type: 'CONTINUE_TO_NEXT_ROUND',
-      });
-    });
+    socket.emit(
+      'continueToNextRound',
+      {
+        roomId,
+      },
+      (): void => {
+        dispatch({
+          type: 'CONTINUE_TO_NEXT_ROUND',
+        });
+      }
+    );
   };
 
   const moveToRankingPage: MoveToRankingPageFn = (): void => {
