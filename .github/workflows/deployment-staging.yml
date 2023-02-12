@@ -8,7 +8,7 @@ on:
       - master
 
 jobs:
-  on_ci_success:
+  deploy_staging:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-22.04
     steps:

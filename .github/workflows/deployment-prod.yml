@@ -1,0 +1,12 @@
+name: CD Prod Pipeline
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy_prod:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy Prod
+        run: curl "${{ secrets.PROD_ENVIRONMENT_WEBHOOK_URL }}"
