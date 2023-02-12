@@ -10,18 +10,18 @@ export class StartPlayerCharacterSelectionController {
 
   public startPlayerCharacterSelection(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('startGame', (roomId) => {
+      socket.on('startGame', ({ roomId }) => {
         try {
           const whoPickCharacterForWho =
             this.startPlayerCharacterSelectionService.startPlayerCharacterSelection(roomId);
 
           for (const [playerId, targetId] of Object.entries(whoPickCharacterForWho)) {
             if (playerId === socket.id) {
-              socket.emit('choosePlayerCharacter', targetId);
+              socket.emit('choosePlayerCharacter', { id: targetId });
               continue;
             }
 
-            socket.to(playerId).emit('choosePlayerCharacter', targetId);
+            socket.to(playerId).emit('choosePlayerCharacter', { id: targetId });
           }
         } catch (error) {
           if (error instanceof Error) {

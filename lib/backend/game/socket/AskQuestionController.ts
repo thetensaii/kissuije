@@ -21,14 +21,14 @@ export class AskQuestionController {
 
   public askQuestion(io: CustomServer): void {
     io.on('connection', (socket) => {
-      socket.on('askQuestion', (roomId, text, cb) => {
+      socket.on('askQuestion', ({ roomId, text }, cb) => {
         try {
           const playerId = socket.id;
 
           this.askQuestionService.askQuestion(roomId, playerId, text);
 
-          socket.emit('playerAttempted', socket.id);
-          socket.to(roomId).emit('playerAttempted', socket.id);
+          socket.emit('playerAttempted', { playerId });
+          socket.to(roomId).emit('playerAttempted', { playerId });
           cb();
 
           const allPlayersAttempted = this.doAllPlayersAttemptedService.doAllPlayersAttempted(roomId);
@@ -38,8 +38,8 @@ export class AskQuestionController {
             .getAllAttempts()
             .map<SocketAttemptType>(this.attemptAdapter.toSocket);
 
-          socket.emit('allPlayersAttempted', socketPlayersAttempt);
-          socket.to(roomId).emit('allPlayersAttempted', socketPlayersAttempt);
+          socket.emit('allPlayersAttempted', { attempts: socketPlayersAttempt });
+          socket.to(roomId).emit('allPlayersAttempted', { attempts: socketPlayersAttempt });
         } catch (error) {
           if (error instanceof Error) {
             // eslint-disable-next-line no-console

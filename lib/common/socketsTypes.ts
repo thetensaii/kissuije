@@ -13,33 +13,42 @@ export type SocketAttemptType = {
 };
 
 export interface ServerToClientEvents {
-  newOwner: (id: string) => void;
-  playerJoinRoom: (player: SocketPlayerType) => void;
-  playerLeaveRoom: (id: string) => void;
-  choosePlayerCharacter: (id: string) => void;
-  updatePlayerCharacter: (id: string, character: string) => void;
+  newOwner: (variables: { ownerId: string }) => void;
+  playerJoinRoom: (variables: { player: SocketPlayerType }) => void;
+  playerLeaveRoom: (variables: { id: string }) => void;
+  choosePlayerCharacter: (variables: { id: string }) => void;
+  updatePlayerCharacter: (variables: { id: string; character: string }) => void;
   launchFirstRound: () => void;
-  newRound: (roundNumber: number) => void;
-  playerAttempted: (playerId: string) => void;
-  allPlayersAttempted: (attempts: SocketAttemptType[]) => void;
-  allPlayersAnswered: (playerAttempt: SocketAttemptType) => void;
-  gameFinish: (winnerIds: string[], nextRoomId: string) => void;
+  newRound: (variables: { roundNumber: number }) => void;
+  playerAttempted: (variables: { playerId: string }) => void;
+  allPlayersAttempted: (variables: { attempts: SocketAttemptType[] }) => void;
+  allPlayersAnswered: (variables: { playerAttempt: SocketAttemptType }) => void;
+  gameFinish: (variables: { winnerIds: string[]; nextRoomId: string }) => void;
 }
 
 export interface ClientToServerEvents {
-  doesRoomExist: (room: string, callback: (doesExist: boolean) => void) => void;
-  createRoom: (name: string, avatar: string, roomId: string, callback: (owner: SocketPlayerType) => void) => void;
+  doesRoomExist: (variables: { roomId: string }, callback: (doesExist: boolean) => void) => void;
+  createRoom: (
+    variables: {
+      name: string;
+      avatar: string;
+      roomId: string;
+    },
+    callback: (owner: SocketPlayerType) => void
+  ) => void;
   joinRoom: (
-    name: string,
-    avatar: string,
-    roomId: string,
+    variables: {
+      name: string;
+      avatar: string;
+      roomId: string;
+    },
     callback: (ownerId: string, roomPlayers: SocketPlayerType[]) => void
   ) => void;
-  newPlayer: (name: string, roomId: string, callback: (players: SocketPlayerType[]) => void) => void;
-  startGame: (roomId: string) => void;
-  choosePlayerCharacter: (roomId: string, targetId: string, character: string) => void;
-  askQuestion: (roomId: string, text: string, cb: () => void) => void;
-  tryGuess: (roomId: string, text: string, cb: () => void) => void;
-  answerAttempt: (roomId: string, askerId: string, answer: SocketAnswerType, cb: () => void) => void;
-  continueToNextRound: (roomId: string, cb: () => void) => void;
+  startGame: (variables: { roomId: string }) => void;
+  choosePlayerCharacter: (variables: { roomId: string; targetId: string; character: string }) => void;
+  askQuestion: (variables: { roomId: string; text: string }, cb: () => void) => void;
+  tryGuess: (variables: { roomId: string; text: string }, cb: () => void) => void;
+  answerAttempt: (variables: { roomId: string; askerId: string; answer: SocketAnswerType }, cb: () => void) => void;
+  continueToNextRound: (variables: { roomId: string }, cb: () => void) => void;
+  leaveRoom: () => void;
 }

@@ -12,22 +12,23 @@ export class LeaveRoomController {
     let roomId: string | null = null;
 
     io.on('connection', (socket) => {
-      socket.on('createRoom', (_name, _avatar, newRoom) => {
+      socket.on('createRoom', ({ roomId: newRoom }) => {
         roomId = newRoom;
       });
-      socket.on('joinRoom', (_name, _avatar, newRoom) => {
+      socket.on('joinRoom', ({ roomId: newRoom }) => {
         roomId = newRoom;
       });
 
-      socket.on('disconnecting', () => {
+      socket.on('leaveRoom', () => {
         if (!roomId) return;
         try {
-          const room = this.leaveRoomService.leaveRoom(roomId, socket.id);
+          const playerId = socket.id;
+          const room = this.leaveRoomService.leaveRoom(roomId, playerId);
 
           if (room.isEmpty()) return;
 
-          socket.broadcast.to(roomId).emit('newOwner', room.getOwnerId());
-          socket.broadcast.to(roomId).emit('playerLeaveRoom', socket.id);
+          socket.broadcast.to(roomId).emit('newOwner', { ownerId: room.getOwnerId() });
+          socket.broadcast.to(roomId).emit('playerLeaveRoom', { id: playerId });
         } catch (error) {
           if (error instanceof Error) {
             // eslint-disable-next-line no-console
