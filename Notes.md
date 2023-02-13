@@ -51,3 +51,9 @@ pnpm dlx sb@next init
 I've installed storybook on my **Windows WSL (Ubuntu 20.04)** as i said in the [5th point](#5-add-storybook-to-nextjs-x-pnpm-project) and it was working correctly.
 
 But on **MacOS** it didn't work, to fix it i had to install those dependencies : `css-loader postcss-loader resolve-url-loader sass-loader style-loader`
+
+### 7) Render.com free-tier limitation 
+
+Render.com socket connections are dropped after 5 minutes regardless of the activity
+
+[Source](https://community.render.com/t/socket-io-in-a-node-app/3051)
