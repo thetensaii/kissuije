@@ -28,7 +28,7 @@ export class InMemoryGameRooms extends GameRooms {
   public joinRoom(roomId: GameRoom['id'], player: Player): GameRoom {
     const room = this.getRoom(roomId);
 
-    room.addPlayer(player);
+    room.joinRoom(player);
 
     return room;
   }

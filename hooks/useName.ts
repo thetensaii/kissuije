@@ -1,12 +1,10 @@
-import { isStringEmpty } from 'lib/common/functions';
-import { generateRandomName } from 'lib/common/generators/name-generator';
 import { useEffect, useState } from 'react';
 
-type StoreNewNameFn = (name: string | undefined) => string;
+export type SetNewNameFn = (name: string, toStore: boolean) => string;
 
 type UseNameReturnType = {
   name: string;
-  storeNewName: StoreNewNameFn;
+  setNewName: SetNewNameFn;
 };
 
 export const useName = (): UseNameReturnType => {
@@ -17,18 +15,17 @@ export const useName = (): UseNameReturnType => {
     setName(storedName ?? '');
   }, []);
 
-  const storeNewName = (name: string | undefined): string => {
-    if (name && !isStringEmpty(name)) {
+  const setNewName: SetNewNameFn = (name: string, toStore = false): string => {
+    setName(name);
+
+    if (toStore) {
       localStorage.setItem('name', name);
     } else {
-      name = generateRandomName();
       localStorage.removeItem('name');
     }
-
-    setName(name);
 
     return name;
   };
 
-  return { name, storeNewName };
+  return { name, setNewName };
 };

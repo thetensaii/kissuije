@@ -7,11 +7,26 @@ import { convertSocketPlayerToFrontendPlayer, PlayerType } from 'lib/frontend/ty
 import { AttemptType, convertSocketAttemptToFrontendAttempt } from 'lib/frontend/types/attempt';
 import { AvatarType } from 'lib/frontend/types/svg';
 import { gameRoomReducer, GameRoomState, initialGameRoomState } from 'reducers/gameRoomReducer';
+import { SetNewNameFn } from './useName';
+import { isStringEmpty } from 'lib/common/functions';
+import { generateRandomName } from 'lib/common/generators/name-generator';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-type CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string) => string;
-type JoinRoomFn = (name: string, avatar: AvatarType, roomID: string) => Promise<string>;
+type CreateRoomFn = (variables: {
+  name: string;
+  avatar: AvatarType;
+  roomId?: string;
+  setNewName?: SetNewNameFn;
+}) => string;
+type JoinRoomFn = (variables: {
+  name: string;
+  avatar: AvatarType;
+  roomId: string;
+  setNewName?: SetNewNameFn;
+}) => Promise<string>;
 type StartGameFn = (roomId: string) => void;
 type ValidatePlayerCharacterFn = (roomId: string, playerId: string, character: string) => void;
 type AskQuestionFn = (roomId: string, text: string) => void;
@@ -47,6 +62,7 @@ export type UseRoomReturnType = {
 
 export const useRoom = (): UseRoomReturnType => {
   const [state, dispatch] = useReducer(gameRoomReducer, initialGameRoomState);
+  const router = useRouter();
 
   const socketInitializer = useCallback(async () => {
     await fetch('api/game-rooms');
@@ -198,17 +214,21 @@ export const useRoom = (): UseRoomReturnType => {
     return attempts.find((a) => a.askerId === player.id) ?? null;
   }, [state, player]);
 
-  const createRoom: CreateRoomFn = (name: string, avatar: AvatarType, roomId?: string): string => {
+  const createRoom: CreateRoomFn = ({ name, avatar, roomId, setNewName }): string => {
     const newRoomId = roomId ?? generateRoomId();
+    const newName = isStringEmpty(name) ? generateRandomName() : name;
 
     socket.emit(
       'createRoom',
       {
-        name,
+        name: newName,
         avatar,
         roomId: newRoomId,
       },
       (owner) => {
+        if (setNewName) {
+          setNewName(newName, name === newName);
+        }
         dispatch({
           type: 'CREATE_ROOM',
           payload: {
@@ -236,19 +256,32 @@ export const useRoom = (): UseRoomReturnType => {
     });
   };
 
-  const joinRoom: JoinRoomFn = async (name: string, avatar: AvatarType, roomId: string): Promise<string> => {
+  const joinRoom: JoinRoomFn = async ({ name, avatar, roomId, setNewName }): Promise<string> => {
     const roomExist: boolean = await doesRoomExist(roomId);
-    if (!roomExist) return createRoom(name, avatar);
+    if (!roomExist) return createRoom({ name, avatar, setNewName });
+
+    const newName = isStringEmpty(name) ? generateRandomName() : name;
 
     socket.emit(
       'joinRoom',
       {
-        name,
+        name: newName,
         avatar,
         roomId,
       },
-      (ownerId, players) => {
+      (variable) => {
+        if (variable.status === 'NOK') {
+          router.push(`/`, undefined, { shallow: true });
+          toast.error(variable.message);
+          return;
+        }
+
+        const { players, ownerId } = variable.payload;
+
         const frontendTypePlayers = players.map<PlayerType>((p): PlayerType => convertSocketPlayerToFrontendPlayer(p));
+        if (setNewName) {
+          setNewName(newName, name === newName);
+        }
 
         dispatch({
           type: 'JOIN_ROOM',
@@ -357,11 +390,11 @@ export const useRoom = (): UseRoomReturnType => {
     const roomAlreadyCreated = await doesRoomExist(nextRoomId);
 
     if (roomAlreadyCreated) {
-      joinRoom(player.name, player.avatar, nextRoomId);
+      joinRoom({ name: player.name, avatar: player.avatar, roomId: nextRoomId });
       return;
     }
 
-    createRoom(player.name, player.avatar, nextRoomId);
+    createRoom({ name: player.name, avatar: player.avatar, roomId: nextRoomId });
   };
 
   const redirectToTryGuessScene: RedirectToTryGuessSceneFn = (): void => {
