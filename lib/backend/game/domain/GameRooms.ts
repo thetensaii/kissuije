@@ -11,6 +11,7 @@ export abstract class GameRooms {
   public abstract deleteRoom(roomId: GameRoom['id']): void;
   public abstract joinRoom(roomId: GameRoom['id'], owner: Player): GameRoom;
   public abstract leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom;
+  public abstract getPlayer(roomId: GameRoom['id'], playerId: Player['id']): Player;
   public abstract doesRoomExist(roomId: GameRoom['id']): boolean;
   public abstract startPlayerCharacterSelection(roomId: GameRoom['id']): PlayerBindToPlayerType;
   public abstract choosePlayerCharacter(

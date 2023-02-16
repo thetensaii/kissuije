@@ -46,8 +46,12 @@ export class GameRoom {
     this.players.addPlayer(player);
   }
 
-  public removePlayer(playerId: Player['id']): void {
+  public leaveRoom(playerId: Player['id']): void {
     this.players.removePlayer(playerId);
+
+    if (this.state === GameState.CHOOSE_CHARACTER) {
+      this.setState(GameState.LOBBY);
+    }
 
     if (this.ownerId !== playerId) return;
 
@@ -59,12 +63,16 @@ export class GameRoom {
     this.ownerId = newOwner.id;
   }
 
+  public getPlayer(playerId: Player['id']): Player {
+    return this.players.getPlayer(playerId);
+  }
+
   public getPlayers(): Players {
     return this.players;
   }
 
   public startPlayerCharacterSelection(): PlayerBindToPlayerType {
-    this.setState(GameState.IN_GAME);
+    this.setState(GameState.CHOOSE_CHARACTER);
     this.whoPickCharacterForWho = this.players.getWhoPickCharacterForWho();
 
     return this.whoPickCharacterForWho;

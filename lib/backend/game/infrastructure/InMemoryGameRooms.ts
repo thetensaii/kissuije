@@ -33,6 +33,11 @@ export class InMemoryGameRooms extends GameRooms {
     return room;
   }
 
+  public getPlayer(roomId: string, playerId: string): Player {
+    const room = this.getRoom(roomId);
+    return room.getPlayer(playerId);
+  }
+
   public doesRoomExist(roomId: GameRoom['id']): boolean {
     return this.gameRooms.has(roomId);
   }
@@ -40,7 +45,7 @@ export class InMemoryGameRooms extends GameRooms {
   public leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom {
     const room = this.getRoom(roomId);
 
-    room.removePlayer(playerId);
+    room.leaveRoom(playerId);
 
     if (room.getPlayers().getAll().length === 0) this.gameRooms.delete(roomId);
 

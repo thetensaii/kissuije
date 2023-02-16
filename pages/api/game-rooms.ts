@@ -34,6 +34,7 @@ import { ContinueToNextRoundController } from 'lib/backend/game/socket/ContinueT
 import { DoAllPlayersWantToContinueToNextRoundService } from 'lib/backend/game/app-service/DoAllPlayersWantToContinueToNextRoundService';
 import { DoPlayersWonService } from 'lib/backend/game/app-service/DoPlayersWonService';
 import { DeleteRoomService } from 'lib/backend/game/app-service/DeleteRoomService';
+import { GetPlayerService } from 'lib/backend/game/app-service/GetPlayerService';
 
 interface SocketServer extends HTTPServer {
   io?: CustomServer | undefined;
@@ -72,7 +73,8 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   checkRoomController.doesRoomExist(io);
 
   const leaveRoomService = new LeaveRoomService(inMemoryGameRooms);
-  const leaveRoomController = new LeaveRoomController(leaveRoomService);
+  const getPlayerService = new GetPlayerService(inMemoryGameRooms);
+  const leaveRoomController = new LeaveRoomController(leaveRoomService, getPlayerService);
   leaveRoomController.leaveRoom(io);
 
   const startPlayerCharacterSelectionService = new StartPlayerCharacterSelectionService(inMemoryGameRooms);
