@@ -12,20 +12,16 @@ interface Props {
 }
 
 export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
-  const { name, storeNewName } = useName();
+  const { name, setNewName } = useName();
   const { createRoom, joinRoom } = useGameRoomAPIContext();
 
   const createGameRoom = (name: string, avatar: AvatarType): void => {
-    const newName = storeNewName(name);
-
-    const newRoomID = createRoom(newName, avatar);
+    const newRoomID = createRoom({ setNewName, name, avatar });
     redirectToRoom(newRoomID);
   };
 
   const joinPartyRoom = async (name: string, avatar: AvatarType): Promise<void> => {
-    const newName = storeNewName(name);
-
-    const joinedRoomID = await joinRoom(newName, avatar, roomId ?? '');
+    const joinedRoomID = await joinRoom({ setNewName, name, avatar, roomId: roomId ?? '' });
     redirectToRoom(joinedRoomID);
   };
 

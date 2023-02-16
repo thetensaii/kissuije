@@ -12,6 +12,22 @@ export type SocketAttemptType = {
   answers: SocketAnswerType[];
 };
 
+type CallbackVariable<T extends object | undefined> =
+  | (T extends object
+      ? {
+          status: 'OK';
+          payload: T;
+        }
+      : {
+          status: 'OK';
+        })
+  | {
+      status: 'NOK';
+      message: string;
+    };
+
+type CallbackFn<T extends object | undefined = undefined> = (variable: CallbackVariable<T>) => void;
+
 export interface ServerToClientEvents {
   newOwner: (variables: { ownerId: string }) => void;
   playerJoinRoom: (variables: { player: SocketPlayerType }) => void;
@@ -42,7 +58,7 @@ export interface ClientToServerEvents {
       avatar: string;
       roomId: string;
     },
-    callback: (ownerId: string, roomPlayers: SocketPlayerType[]) => void
+    callback: CallbackFn<{ ownerId: string; players: SocketPlayerType[] }>
   ) => void;
   startGame: (variables: { roomId: string }) => void;
   choosePlayerCharacter: (variables: { roomId: string; targetId: string; character: string }) => void;

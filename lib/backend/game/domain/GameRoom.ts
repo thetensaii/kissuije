@@ -1,9 +1,11 @@
 import { getRandomElementFromArray } from 'lib/common/functions';
 import { Answer } from './Answer';
 import { Attempts } from './Attempts';
+import { GameAlreadyLaunchError } from './errors/GameAlreadyLaunchError';
 import { GameHasNotStartedError } from './errors/GameHasNotStartedError';
 import { PlayerHaveAlreadyAttemptedError } from './errors/PlayerHaveAlreadyAttemptedError';
 import { RoundAttemptsNotFoundError } from './errors/RoundAttemptsNotFoundError';
+import { GameState } from './GameState';
 import { Guess } from './Guess';
 import { Player } from './Player';
 import { PlayerBindToPlayerType, Players } from './Players';
@@ -11,6 +13,7 @@ import { Question } from './Question';
 
 export class GameRoom {
   private id: string;
+  private state: GameState;
   private players: Players;
   private ownerId: Player['id'];
   private whoPickCharacterForWho: PlayerBindToPlayerType;
@@ -20,6 +23,7 @@ export class GameRoom {
 
   constructor(id: GameRoom['id'], owner: Player) {
     this.id = id;
+    this.state = GameState.LOBBY;
     this.players = new Players(owner);
     this.ownerId = owner.id;
     this.whoPickCharacterForWho = {};
@@ -36,7 +40,9 @@ export class GameRoom {
     return this.players.isEmpty();
   }
 
-  public addPlayer(player: Player): void {
+  public joinRoom(player: Player): void {
+    if (this.state !== GameState.LOBBY) throw new GameAlreadyLaunchError();
+
     this.players.addPlayer(player);
   }
 
@@ -58,6 +64,7 @@ export class GameRoom {
   }
 
   public startPlayerCharacterSelection(): PlayerBindToPlayerType {
+    this.setState(GameState.IN_GAME);
     this.whoPickCharacterForWho = this.players.getWhoPickCharacterForWho();
 
     return this.whoPickCharacterForWho;
@@ -146,5 +153,8 @@ export class GameRoom {
     if (!roundAttempts) throw new RoundAttemptsNotFoundError();
 
     return roundAttempts;
+  }
+  private setState(newState: GameState): void {
+    this.state = newState;
   }
 }
