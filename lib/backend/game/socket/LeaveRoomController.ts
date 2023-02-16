@@ -27,8 +27,8 @@ export class LeaveRoomController {
 
           if (room.isEmpty()) return;
 
-          socket.broadcast.to(roomId).emit('newOwner', { ownerId: room.getOwnerId() });
-          socket.broadcast.to(roomId).emit('playerLeaveRoom', { id: playerId });
+          io.to(roomId).emit('newOwner', { ownerId: room.getOwnerId() });
+          io.to(roomId).emit('playerLeaveRoom', { id: playerId });
         } catch (error) {
           if (error instanceof Error) {
             // eslint-disable-next-line no-console

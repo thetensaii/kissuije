@@ -56,9 +56,8 @@ export class AnswerAttemptController {
               nextRoomId = generateRoomId();
             } while (this.checkRoomService.doesRoomExist(nextRoomId));
 
-            socket.emit('gameFinish', { winnerIds, nextRoomId });
-            socket.to(roomId).emit('gameFinish', { winnerIds, nextRoomId });
-            socket.to(roomId).socketsLeave(roomId);
+            io.to(roomId).emit('gameFinish', { winnerIds, nextRoomId });
+            io.socketsLeave(roomId);
             this.deleteRoomService.deleteRoom(roomId);
             return;
           }
