@@ -30,8 +30,7 @@ export class ChoosePlayerCharacterController {
           if (!doAllPlayersHaveCharacter) return;
 
           this.launchNewRoundService.launchNewRound(roomId);
-          socket.emit('launchFirstRound');
-          socket.to(roomId).emit('launchFirstRound');
+          io.to(roomId).emit('launchFirstRound');
         } catch (error) {
           if (error instanceof Error) {
             // eslint-disable-next-line no-console

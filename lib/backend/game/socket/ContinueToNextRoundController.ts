@@ -32,8 +32,7 @@ export class ContinueToNextRoundController {
           if (!everyPlayerWantsToContinueToNextRound) return;
           const newRoundNumber = this.launchNewRoundService.launchNewRound(roomId);
 
-          socket.emit('newRound', { roundNumber: newRoundNumber });
-          socket.to(roomId).emit('newRound', { roundNumber: newRoundNumber });
+          io.to(roomId).emit('newRound', { roundNumber: newRoundNumber });
         } catch (error) {
           if (error instanceof Error) {
             // eslint-disable-next-line no-console
