@@ -1,6 +1,6 @@
 export const GameState = {
   LOBBY: 'LOBBY',
-  IN_GAME: 'IN_GAME',
+  CHOOSE_CHARACTER: 'CHOOSE_CHARACTER',
 } as const;
 
 export type GameState = typeof GameState[keyof typeof GameState];

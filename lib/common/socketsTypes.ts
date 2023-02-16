@@ -31,7 +31,7 @@ type CallbackFn<T extends object | undefined = undefined> = (variable: CallbackV
 export interface ServerToClientEvents {
   newOwner: (variables: { ownerId: string }) => void;
   playerJoinRoom: (variables: { player: SocketPlayerType }) => void;
-  playerLeaveRoom: (variables: { id: string }) => void;
+  playerLeaveRoom: (variables: { id: string; name: string }) => void;
   choosePlayerCharacter: (variables: { id: string }) => void;
   updatePlayerCharacter: (variables: { id: string; character: string }) => void;
   launchFirstRound: () => void;

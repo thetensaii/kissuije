@@ -205,6 +205,8 @@ export const gameRoomReducer: GameRoomReducerFn = (state: GameRoomState, action:
       const { playerId } = action.payload;
       return {
         ...state,
+        scene: state.scene === SceneState.CHOOSE_CHARACTER ? SceneState.LOBBY : state.scene,
+        choosedPlayerId: null,
         players: state.players.filter((p) => p.id !== playerId),
       };
     }

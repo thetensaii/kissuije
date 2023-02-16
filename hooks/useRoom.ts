@@ -87,7 +87,8 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('playerLeaveRoom', ({ id }) => {
+    socket.on('playerLeaveRoom', ({ id, name }) => {
+      toast.error(`${name} a quitté la partie`);
       dispatch({
         type: 'PLAYER_LEAVE_ROOM',
         payload: {
