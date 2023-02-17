@@ -16,7 +16,7 @@ export class GameRoom {
   private state: GameState;
   private players: Players;
   private ownerId: Player['id'];
-  private whoPickCharacterForWho: PlayerBindToPlayerType;
+  private whoChooseCharacterForWho: PlayerBindToPlayerType;
   private actualRound: number | null;
   private gameAttempts: Map<NonNullable<GameRoom['actualRound']>, Attempts>;
   private playersWhoWantToContinue: Player['id'][];
@@ -26,7 +26,7 @@ export class GameRoom {
     this.state = GameState.LOBBY;
     this.players = new Players(owner);
     this.ownerId = owner.id;
-    this.whoPickCharacterForWho = {};
+    this.whoChooseCharacterForWho = {};
     this.actualRound = null;
     this.gameAttempts = new Map<NonNullable<GameRoom['actualRound']>, Attempts>();
     this.playersWhoWantToContinue = [];
@@ -71,11 +71,11 @@ export class GameRoom {
     return this.players;
   }
 
-  public startPlayerCharacterSelection(): PlayerBindToPlayerType {
+  public startGame(): PlayerBindToPlayerType {
     this.setState(GameState.CHOOSE_CHARACTER);
-    this.whoPickCharacterForWho = this.players.getWhoPickCharacterForWho();
+    this.whoChooseCharacterForWho = this.players.generateWhoChooseCharacterForWho();
 
-    return this.whoPickCharacterForWho;
+    return this.whoChooseCharacterForWho;
   }
 
   public choosePlayerCharacter(targetId: Player['id'], character: Player['character']): Player {

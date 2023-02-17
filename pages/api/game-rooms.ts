@@ -13,8 +13,8 @@ import { CheckRoomService } from 'lib/backend/game/app-service/CheckRoomService'
 import { CheckRoomController } from 'lib/backend/game/socket/CheckRoomController';
 import { LeaveRoomService } from 'lib/backend/game/app-service/LeaveRoomService';
 import { LeaveRoomController } from 'lib/backend/game/socket/LeaveRoomController';
-import { StartPlayerCharacterSelectionService } from 'lib/backend/game/app-service/StartPlayerCharacterSelectionService';
-import { StartPlayerCharacterSelectionController } from 'lib/backend/game/socket/StartPlayerCharacterSelectionController';
+import { StartGameService } from 'lib/backend/game/app-service/StartGameService';
+import { StartGameController } from 'lib/backend/game/socket/StartGameController';
 import { ChoosePlayerCharacterService } from 'lib/backend/game/app-service/ChoosePlayerCharacterService';
 import { DoAllPlayersHaveCharacterService } from 'lib/backend/game/app-service/DoAllPlayersHaveCharacterService';
 import { ChoosePlayerCharacterController } from 'lib/backend/game/socket/ChoosePlayerCharacterController';
@@ -77,11 +77,9 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   const leaveRoomController = new LeaveRoomController(leaveRoomService, getPlayerService);
   leaveRoomController.leaveRoom(io);
 
-  const startPlayerCharacterSelectionService = new StartPlayerCharacterSelectionService(inMemoryGameRooms);
-  const startPlayerCharacterSelectionController = new StartPlayerCharacterSelectionController(
-    startPlayerCharacterSelectionService
-  );
-  startPlayerCharacterSelectionController.startPlayerCharacterSelection(io);
+  const startGameService = new StartGameService(inMemoryGameRooms);
+  const startGameController = new StartGameController(startGameService);
+  startGameController.startGame(io);
 
   const choosePlayerCharacterService = new ChoosePlayerCharacterService(inMemoryGameRooms);
   const doAllPlayersHaveCharacterService = new DoAllPlayersHaveCharacterService(inMemoryGameRooms);

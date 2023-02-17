@@ -1,19 +1,18 @@
-import { StartPlayerCharacterSelectionService } from '../app-service/StartPlayerCharacterSelectionService';
+import { StartGameService } from '../app-service/StartGameService';
 import { CustomServer } from './socketTypes';
 
-export class StartPlayerCharacterSelectionController {
-  private startPlayerCharacterSelectionService: StartPlayerCharacterSelectionService;
+export class StartGameController {
+  private startGameService: StartGameService;
 
-  constructor(startPlayerCharacterSelectionService: StartPlayerCharacterSelectionService) {
-    this.startPlayerCharacterSelectionService = startPlayerCharacterSelectionService;
+  constructor(startGameService: StartGameService) {
+    this.startGameService = startGameService;
   }
 
-  public startPlayerCharacterSelection(io: CustomServer): void {
+  public startGame(io: CustomServer): void {
     io.on('connection', (socket) => {
       socket.on('startGame', ({ roomId }) => {
         try {
-          const whoPickCharacterForWho =
-            this.startPlayerCharacterSelectionService.startPlayerCharacterSelection(roomId);
+          const whoPickCharacterForWho = this.startGameService.startGame(roomId);
 
           for (const [playerId, targetId] of Object.entries(whoPickCharacterForWho)) {
             if (playerId === socket.id) {
