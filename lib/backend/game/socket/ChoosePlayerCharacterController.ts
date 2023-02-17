@@ -1,20 +1,15 @@
+import { CheckRoomService } from '../app-service/CheckRoomService';
 import { ChoosePlayerCharacterService } from '../app-service/ChoosePlayerCharacterService';
-import { DoAllPlayersHaveCharacterService } from '../app-service/DoAllPlayersHaveCharacterService';
-import { LaunchNewRoundService } from '../app-service/LaunchNewRoundService';
+import { GameState } from '../domain/GameState';
 import { CustomServer } from './socketTypes';
 
 export class ChoosePlayerCharacterController {
   private choosePlayerCharacterService: ChoosePlayerCharacterService;
-  private doAllPlayersHaveCharacterService: DoAllPlayersHaveCharacterService;
-  private launchNewRoundService: LaunchNewRoundService;
-  constructor(
-    choosePlayerCharacterService: ChoosePlayerCharacterService,
-    doAllPlayersHaveCharacterService: DoAllPlayersHaveCharacterService,
-    launchNewRoundService: LaunchNewRoundService
-  ) {
+  private checkRoomService: CheckRoomService;
+
+  constructor(choosePlayerCharacterService: ChoosePlayerCharacterService, checkRoomService: CheckRoomService) {
     this.choosePlayerCharacterService = choosePlayerCharacterService;
-    this.doAllPlayersHaveCharacterService = doAllPlayersHaveCharacterService;
-    this.launchNewRoundService = launchNewRoundService;
+    this.checkRoomService = checkRoomService;
   }
 
   public choosePlayerCharacter(io: CustomServer): void {
@@ -26,11 +21,9 @@ export class ChoosePlayerCharacterController {
             .to(roomId)
             .emit('updatePlayerCharacter', { id: targetId, character: updatedPlayer.character });
 
-          const doAllPlayersHaveCharacter = this.doAllPlayersHaveCharacterService.doAllPlayersHaveCharacter(roomId);
-          if (!doAllPlayersHaveCharacter) return;
+          const gameState = this.checkRoomService.getRoomGameState(roomId);
 
-          this.launchNewRoundService.launchNewRound(roomId);
-          io.to(roomId).emit('launchFirstRound');
+          if (gameState === GameState.ATTEMPTING) io.to(roomId).emit('newRound', { roundNumber: 1 });
         } catch (error) {
           if (error instanceof Error) {
             // eslint-disable-next-line no-console

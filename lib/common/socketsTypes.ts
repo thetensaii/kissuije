@@ -34,7 +34,6 @@ export interface ServerToClientEvents {
   playerLeaveRoom: (variables: { id: string; name: string }) => void;
   choosePlayerCharacter: (variables: { id: string }) => void;
   updatePlayerCharacter: (variables: { id: string; character: string }) => void;
-  launchFirstRound: () => void;
   newRound: (variables: { roundNumber: number }) => void;
   playerAttempted: (variables: { playerId: string }) => void;
   allPlayersAttempted: (variables: { attempts: SocketAttemptType[] }) => void;

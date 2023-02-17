@@ -16,7 +16,6 @@ import { LeaveRoomController } from 'lib/backend/game/socket/LeaveRoomController
 import { StartGameService } from 'lib/backend/game/app-service/StartGameService';
 import { StartGameController } from 'lib/backend/game/socket/StartGameController';
 import { ChoosePlayerCharacterService } from 'lib/backend/game/app-service/ChoosePlayerCharacterService';
-import { DoAllPlayersHaveCharacterService } from 'lib/backend/game/app-service/DoAllPlayersHaveCharacterService';
 import { ChoosePlayerCharacterController } from 'lib/backend/game/socket/ChoosePlayerCharacterController';
 import { LaunchNewRoundService } from 'lib/backend/game/app-service/LaunchNewRoundService';
 import { AskQuestionService } from 'lib/backend/game/app-service/AskQuestionService';
@@ -82,12 +81,9 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   startGameController.startGame(io);
 
   const choosePlayerCharacterService = new ChoosePlayerCharacterService(inMemoryGameRooms);
-  const doAllPlayersHaveCharacterService = new DoAllPlayersHaveCharacterService(inMemoryGameRooms);
-  const launchNewRoundService = new LaunchNewRoundService(inMemoryGameRooms);
   const choosePlayerCharacterController = new ChoosePlayerCharacterController(
     choosePlayerCharacterService,
-    doAllPlayersHaveCharacterService,
-    launchNewRoundService
+    checkRoomService
   );
   choosePlayerCharacterController.choosePlayerCharacter(io);
 
@@ -126,6 +122,7 @@ export default function gameRooms(_req: NextApiRequest, res: NextApiResponseWith
   const doAllPlayersWantToContinueToNextRoundService = new DoAllPlayersWantToContinueToNextRoundService(
     inMemoryGameRooms
   );
+  const launchNewRoundService = new LaunchNewRoundService(inMemoryGameRooms);
   const continueToNextRoundController = new ContinueToNextRoundController(
     continueToNextRoundService,
     doAllPlayersWantToContinueToNextRoundService,
