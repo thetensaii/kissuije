@@ -25,6 +25,7 @@ export class ContinueToNextRoundController {
           const playerId = socket.id;
           this.continueToNextRoundService.continueToNextRound(roomId, playerId);
           cb();
+          socket.broadcast.to(roomId).emit('playerWantsToContinue', { playerId });
 
           const everyPlayerWantsToContinueToNextRound =
             this.doAllPlayersWantToContinueToNextRoundService.doAllPlayersWantToContinueToNextRound(roomId);

@@ -38,6 +38,7 @@ export interface ServerToClientEvents {
   playerAttempted: (variables: { playerId: string }) => void;
   allPlayersAttempted: (variables: { attempts: SocketAttemptType[] }) => void;
   allPlayersAnswered: (variables: { playerAttempt: SocketAttemptType }) => void;
+  playerWantsToContinue: (variables: { playerId: string }) => void;
   gameFinish: (variables: { winnerIds: string[]; nextRoomId: string }) => void;
   onlyPlayerLeft: () => void;
 }
