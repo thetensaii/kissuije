@@ -12,6 +12,7 @@ export const SceneState = {
   WAIT_FOR_CONTINUE: 'WAIT_FOR_CONTINUE',
   END_GAME: 'END_GAME',
   FINAL_RESULTS: 'FINAL_RESULTS',
+  ONLY_PLAYER_LEFT: 'ONLY_PLAYER_LEFT',
 } as const;
 
 export type SceneState = typeof SceneState[keyof typeof SceneState];

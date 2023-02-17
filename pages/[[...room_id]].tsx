@@ -16,6 +16,7 @@ import { AnswerAttempts } from 'components/organism/AnswerAttempts';
 import { WaitForAnswers } from 'components/organism/WaitForAnswers';
 import { WaitForContinue } from 'components/organism/WaitForContinue';
 import { H1 } from 'components/atom/Typo/H1';
+import { OnlyPlayerLeft } from 'components/organism/OnlyPlayerLeft';
 
 export default function Root(): JSX.Element {
   const { query, isReady, push } = useRouter();
@@ -61,6 +62,8 @@ export default function Root(): JSX.Element {
       return <EndGame />;
     case SceneState.FINAL_RESULTS:
       return <FinalResults />;
+    case SceneState.ONLY_PLAYER_LEFT:
+      return <OnlyPlayerLeft />;
 
     default:
       throw new Error('SCENE DOES NOT EXIST');

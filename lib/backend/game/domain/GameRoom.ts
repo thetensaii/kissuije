@@ -5,6 +5,7 @@ import { GameAlreadyLaunchError } from './errors/GameAlreadyLaunchError';
 import { GameHasNotStartedError } from './errors/GameHasNotStartedError';
 import { PlayerHaveAlreadyAttemptedError } from './errors/PlayerHaveAlreadyAttemptedError';
 import { RoundAttemptsNotFoundError } from './errors/RoundAttemptsNotFoundError';
+import { RoundNotDefinedError } from './errors/RoundNotDefinedError';
 import { GameState } from './GameState';
 import { Guess } from './Guess';
 import { Player } from './Player';
@@ -55,6 +56,11 @@ export class GameRoom {
 
     if (this.state === GameState.CHOOSE_CHARACTER) {
       this.setState(GameState.LOBBY);
+    } else if (this.state === GameState.ATTEMPTING) {
+      if (!this.actualRound) throw new RoundNotDefinedError();
+
+      const attempts = this.gameAttempts.get(this.actualRound);
+      if (attempts) attempts.deletePlayerAttempt(playerId);
     }
 
     if (this.ownerId !== playerId) return;
@@ -73,6 +79,9 @@ export class GameRoom {
 
   public getPlayers(): Players {
     return this.players;
+  }
+  public countPlayers(): number {
+    return this.players.countPlayers();
   }
 
   public startGame(): PlayerBindToPlayerType {

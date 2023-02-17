@@ -165,6 +165,10 @@ export const useRoom = (): UseRoomReturnType => {
         },
       });
     });
+
+    socket.on('onlyPlayerLeft', () => {
+      dispatch({ type: 'ONLY_PLAYER_LEFT' });
+    });
   }, []);
 
   useEffect(() => {
