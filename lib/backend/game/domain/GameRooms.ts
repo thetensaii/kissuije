@@ -1,6 +1,7 @@
 import { Answer } from './Answer';
 import { Attempts } from './Attempts';
 import { GameRoom } from './GameRoom';
+import { GameState } from './GameState';
 import { Guess } from './Guess';
 import { Player } from './Player';
 import { PlayerBindToPlayerType } from './Players';
@@ -13,13 +14,13 @@ export abstract class GameRooms {
   public abstract leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom;
   public abstract getPlayer(roomId: GameRoom['id'], playerId: Player['id']): Player;
   public abstract doesRoomExist(roomId: GameRoom['id']): boolean;
+  public abstract getRoomGameState(roomId: GameRoom['id']): GameState;
   public abstract startGame(roomId: GameRoom['id']): PlayerBindToPlayerType;
   public abstract choosePlayerCharacter(
     roomId: GameRoom['id'],
     targetId: Player['id'],
     character: Player['character']
   ): Player;
-  public abstract doAllPlayersHaveCharacter(roomId: GameRoom['id']): boolean;
   public abstract launchNewRound(roomId: GameRoom['id']): NonNullable<GameRoom['actualRound']>;
   public abstract askQuestion(roomId: GameRoom['id'], playerId: Player['id'], text: Question['text']): void;
   public abstract tryGuess(roomId: GameRoom['id'], playerId: Player['id'], text: Guess['text']): void;

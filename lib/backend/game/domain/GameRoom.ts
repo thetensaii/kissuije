@@ -36,6 +36,10 @@ export class GameRoom {
     return this.ownerId;
   }
 
+  public getState(): GameRoom['state'] {
+    return this.state;
+  }
+
   public isEmpty(): boolean {
     return this.players.isEmpty();
   }
@@ -82,15 +86,14 @@ export class GameRoom {
     const player = this.players.getPlayer(targetId);
     player.character = character;
 
-    return player;
-  }
+    if (this.players.doAllPlayersHaveCharacter()) this.launchNewRound();
 
-  public doAllPlayersHaveCharacter(): boolean {
-    return this.players.doAllPlayersHaveCharacter();
+    return player;
   }
 
   public launchNewRound(): NonNullable<GameRoom['actualRound']> {
     this.playersWhoWantToContinue = [];
+    this.setState(GameState.ATTEMPTING);
 
     if (this.actualRound === null) this.actualRound = 1;
     else this.actualRound += 1;

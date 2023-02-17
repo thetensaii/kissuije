@@ -116,15 +116,6 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
-    socket.on('launchFirstRound', () => {
-      dispatch({
-        type: 'LAUNCH_NEW_ROUND',
-        payload: {
-          roundNumber: 1,
-        },
-      });
-    });
-
     socket.on('playerAttempted', ({ playerId }) => {
       dispatch({
         type: 'UPDATE_PLAYER_ATTEMPTED',

@@ -6,6 +6,7 @@ import { PlayerBindToPlayerType } from '../domain/Players';
 import { Question } from '../domain/Question';
 import { Answer } from '../domain/Answer';
 import { Attempts } from '../domain/Attempts';
+import { GameState } from '../domain/GameState';
 export class InMemoryGameRooms extends GameRooms {
   private gameRooms: Map<GameRoom['id'], GameRoom>;
 
@@ -42,6 +43,11 @@ export class InMemoryGameRooms extends GameRooms {
     return this.gameRooms.has(roomId);
   }
 
+  public getRoomGameState(roomId: string): GameState {
+    const room = this.getRoom(roomId);
+    return room.getState();
+  }
+
   public leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom {
     const room = this.getRoom(roomId);
 
@@ -66,12 +72,6 @@ export class InMemoryGameRooms extends GameRooms {
     const updatedPlayer = room.choosePlayerCharacter(targetId, character);
 
     return updatedPlayer;
-  }
-
-  public doAllPlayersHaveCharacter(roomId: GameRoom['id']): boolean {
-    const room = this.getRoom(roomId);
-
-    return room.doAllPlayersHaveCharacter();
   }
 
   public launchNewRound(roomId: GameRoom['id']): NonNullable<GameRoom['actualRound']> {
