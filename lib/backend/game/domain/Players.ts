@@ -40,7 +40,7 @@ export class Players {
     return true;
   }
 
-  public getWhoPickCharacterForWho(): PlayerBindToPlayerType {
+  public generateWhoChooseCharacterForWho(): PlayerBindToPlayerType {
     if (this.playersArray.length < 2) throw new NotEnoughPlayerError();
     const playersIds = this.playersArray.map((p) => p.id);
     let playersIdsCopy = [...playersIds];

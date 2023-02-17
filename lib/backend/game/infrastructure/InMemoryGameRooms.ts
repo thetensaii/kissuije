@@ -52,10 +52,10 @@ export class InMemoryGameRooms extends GameRooms {
     return room;
   }
 
-  public startPlayerCharacterSelection(roomId: GameRoom['id']): PlayerBindToPlayerType {
+  public startGame(roomId: GameRoom['id']): PlayerBindToPlayerType {
     const room = this.getRoom(roomId);
 
-    const whoPickCharacterForWho = room.startPlayerCharacterSelection();
+    const whoPickCharacterForWho = room.startGame();
 
     return whoPickCharacterForWho;
   }

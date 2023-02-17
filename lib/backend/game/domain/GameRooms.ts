@@ -13,7 +13,7 @@ export abstract class GameRooms {
   public abstract leaveRoom(roomId: GameRoom['id'], playerId: Player['id']): GameRoom;
   public abstract getPlayer(roomId: GameRoom['id'], playerId: Player['id']): Player;
   public abstract doesRoomExist(roomId: GameRoom['id']): boolean;
-  public abstract startPlayerCharacterSelection(roomId: GameRoom['id']): PlayerBindToPlayerType;
+  public abstract startGame(roomId: GameRoom['id']): PlayerBindToPlayerType;
   public abstract choosePlayerCharacter(
     roomId: GameRoom['id'],
     targetId: Player['id'],
