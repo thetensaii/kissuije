@@ -22,6 +22,7 @@ export const GameRoomActionsType = {
   CONTINUE_TO_NEXT_ROUND: 'CONTINUE_TO_NEXT_ROUND',
   GAME_FINISH: 'GAME_FINISH',
   MOVE_TO_FINAL_RESULTS_SCENE: 'MOVE_TO_FINAL_RESULTS_SCENE',
+  ONLY_PLAYER_LEFT: 'ONLY_PLAYER_LEFT',
 } as const;
 export type GameRoomActionsType = typeof GameRoomActionsType[keyof typeof GameRoomActionsType];
 
@@ -130,6 +131,9 @@ type GameRoomActions =
     }
   | {
       type: typeof GameRoomActionsType.MOVE_TO_FINAL_RESULTS_SCENE;
+    }
+  | {
+      type: typeof GameRoomActionsType.ONLY_PLAYER_LEFT;
     };
 
 export type GameRoomState = {
@@ -310,6 +314,9 @@ export const gameRoomReducer: GameRoomReducerFn = (state: GameRoomState, action:
     }
     case GameRoomActionsType.MOVE_TO_FINAL_RESULTS_SCENE: {
       return { ...state, scene: SceneState.FINAL_RESULTS };
+    }
+    case GameRoomActionsType.ONLY_PLAYER_LEFT: {
+      return { ...state, scene: SceneState.ONLY_PLAYER_LEFT };
     }
 
     default:

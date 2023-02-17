@@ -1,5 +1,6 @@
 import { GetPlayerService } from '../app-service/GetPlayerService';
 import { LeaveRoomService } from '../app-service/LeaveRoomService';
+import { GameState } from '../domain/GameState';
 import { CustomServer } from './socketTypes';
 
 export class LeaveRoomController {
@@ -30,6 +31,16 @@ export class LeaveRoomController {
           const room = this.leaveRoomService.leaveRoom(roomId, playerId);
 
           if (room.isEmpty()) return;
+
+          if (
+            room.countPlayers() === 1 &&
+            room.getState() !== GameState.LOBBY &&
+            room.getState() !== GameState.CHOOSE_CHARACTER
+          ) {
+            io.to(roomId).emit('onlyPlayerLeft');
+            io.socketsLeave(roomId);
+            return;
+          }
 
           io.to(roomId).emit('newOwner', { ownerId: room.getOwnerId() });
           io.to(roomId).emit('playerLeaveRoom', { id: player.id, name: player.name });

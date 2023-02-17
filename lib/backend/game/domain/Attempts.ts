@@ -58,6 +58,10 @@ export class Attempts {
     return winners;
   }
 
+  public deletePlayerAttempt(playerId: Player['id']): void {
+    this.attempts = this.attempts.filter((a) => a.askerId !== playerId);
+  }
+
   private getPlayerAttempt(playerId: Player['id']): Attempt | undefined {
     return this.attempts.find((attempt) => attempt.askerId === playerId);
   }

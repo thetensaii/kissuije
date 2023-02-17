@@ -1,0 +1,1 @@
+export { OnlyPlayerLeft } from './OnlyPlayerLeft';

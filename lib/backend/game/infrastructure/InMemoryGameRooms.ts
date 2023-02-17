@@ -53,7 +53,14 @@ export class InMemoryGameRooms extends GameRooms {
 
     room.leaveRoom(playerId);
 
-    if (room.getPlayers().getAll().length === 0) this.gameRooms.delete(roomId);
+    if (room.countPlayers() === 0) this.gameRooms.delete(roomId);
+
+    if (
+      room.countPlayers() === 1 &&
+      room.getState() !== GameState.LOBBY &&
+      room.getState() !== GameState.CHOOSE_CHARACTER
+    )
+      this.gameRooms.delete(roomId);
 
     return room;
   }
