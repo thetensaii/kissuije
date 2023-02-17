@@ -19,6 +19,7 @@ export const GameRoomActionsType = {
   MOVE_TO_ANSWER_ATTEMPTS_SCENE: 'MOVE_TO_ANSWER_ATTEMPTS_SCENE',
   ANSWER_ATTEMPT: 'ANSWER_ATTEMPT',
   MOVE_TO_ROUND_RESULT: 'MOVE_TO_ROUND_RESULT',
+  PLAYER_WANTS_TO_CONTINUE_TO_NEXT_ROUND: 'PLAYER_WANTS_TO_CONTINUE_TO_NEXT_ROUND',
   CONTINUE_TO_NEXT_ROUND: 'CONTINUE_TO_NEXT_ROUND',
   GAME_FINISH: 'GAME_FINISH',
   MOVE_TO_FINAL_RESULTS_SCENE: 'MOVE_TO_FINAL_RESULTS_SCENE',
@@ -121,6 +122,12 @@ type GameRoomActions =
     }
   | {
       type: typeof GameRoomActionsType.CONTINUE_TO_NEXT_ROUND;
+    }
+  | {
+      type: typeof GameRoomActionsType.PLAYER_WANTS_TO_CONTINUE_TO_NEXT_ROUND;
+      payload: {
+        playerId: string;
+      };
     }
   | {
       type: typeof GameRoomActionsType.GAME_FINISH;
@@ -293,6 +300,13 @@ export const gameRoomReducer: GameRoomReducerFn = (state: GameRoomState, action:
         ...state,
         scene: SceneState.ROUND_RESULT,
         attempts: state.attempts.map((a) => (a.askerId === myAttemptWithAnswers.askerId ? myAttemptWithAnswers : a)),
+      };
+    }
+    case GameRoomActionsType.PLAYER_WANTS_TO_CONTINUE_TO_NEXT_ROUND: {
+      const { playerId } = action.payload;
+      return {
+        ...state,
+        players: state.players.map((p): PlayerType => (p.id === playerId ? { ...p, wantsToContinue: true } : p)),
       };
     }
     case GameRoomActionsType.CONTINUE_TO_NEXT_ROUND: {

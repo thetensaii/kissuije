@@ -147,6 +147,15 @@ export const useRoom = (): UseRoomReturnType => {
       });
     });
 
+    socket.on('playerWantsToContinue', ({ playerId }) => {
+      dispatch({
+        type: 'PLAYER_WANTS_TO_CONTINUE_TO_NEXT_ROUND',
+        payload: {
+          playerId,
+        },
+      });
+    });
+
     socket.on('newRound', ({ roundNumber }) => {
       dispatch({
         type: 'LAUNCH_NEW_ROUND',
