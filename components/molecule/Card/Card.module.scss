@@ -1,4 +1,5 @@
 @import '../../../styles/colors';
+@import '../../../styles/variables';
 
 .container {
   width: 100%;
@@ -11,7 +12,7 @@
     padding: 1rem;
     min-height: 64px;
     
-    box-shadow: 10px 10px 0px $shadow-color;
+    box-shadow: $classic-shadow;
     
     .backButton {
       font-weight: 600;
@@ -27,6 +28,6 @@
     border-radius: 8px;
     padding: 40px 32px;
   
-    box-shadow: 10px 10px 0px $shadow-color;
+    box-shadow: $classic-shadow;
   }
 }
