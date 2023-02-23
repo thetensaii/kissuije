@@ -15,3 +15,17 @@ export const Default: Story = {
     children: 'H2 Title',
   },
 };
+
+export const Medium: Story = {
+  args: {
+    variant: 'medium',
+    children: 'H2 Medium Title',
+  },
+};
+
+export const SemiBold: Story = {
+  args: {
+    variant: 'semiBold',
+    children: 'H2 SemiBold Title',
+  },
+};

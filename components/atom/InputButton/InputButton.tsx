@@ -1,5 +1,5 @@
 import Button from '../Button';
-import { ButtonTypo } from '../Typo/ButtonTypo';
+import { ButtonTypo } from '../Typo/ButtonText';
 import styles from './InputButton.module.scss';
 
 export type InputButtonType = 'yes' | 'no' | 'idk' | 'true' | 'false';

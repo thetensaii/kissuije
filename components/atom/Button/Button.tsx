@@ -1,7 +1,7 @@
 import { SvgType } from 'lib/frontend/types/svg';
 import { ReactElement } from 'react';
 import { Svg } from '../Svg';
-import { ButtonTypo } from '../Typo/ButtonTypo';
+import { ButtonTypo } from '../Typo/ButtonText';
 import styles from './Button.module.scss';
 type ButtonVariant = 'primary' | 'secondary' | 'ternary' | 'transparent' | 'true' | 'false';
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
