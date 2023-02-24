@@ -1,6 +1,6 @@
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
-import { Label } from 'components/atom/Label';
+import { H2 } from 'components/atom/Typo/H2';
 import { AvatarType } from 'lib/frontend/types/svg';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -60,7 +60,7 @@ export const PlayerForm = ({ initialName, type, createGameRoom, joinGameRoom }: 
             <SelectAvatarForm onChange={setAvatar} />
           </fieldset>
           <fieldset className={styles.fieldset}>
-            <Label htmlFor="name">Choisis ton pseudo</Label>
+            <H2>Choisis ton pseudo</H2>
             <InputText type="text" {...register('name')} placeholder="Saisir ton pseudo" />
             {type === 'createRoom' ? (
               <Button type="submit">Créer une partie</Button>
