@@ -1,5 +1,6 @@
 import { InputButton } from 'components/atom/InputButton';
 import { Svg } from 'components/atom/Svg';
+import { QuestionText } from 'components/atom/Typo/QuestionText';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
 import { QuestionType } from 'lib/frontend/types/question';
@@ -24,7 +25,7 @@ export const AnswerQuestionForm = ({ asker, question, answerQuestion, disabled }
       </p>
       <div className={styles.label}>
         <p>répondez à sa question</p>
-        <p className={styles.guessText}>"{question.text}"</p>
+        <QuestionText>"{question.text}"</QuestionText>
       </div>
       <div className={styles.answers}>
         <InputButton type="yes" onClick={(): void => answerQuestion(question.askerId, 'yes')} disabled={disabled}>
