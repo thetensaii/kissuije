@@ -18,7 +18,7 @@ export const RoundResult = (): JSX.Element => {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       {isQuestion(myAttempt) ? (
         <div className={styles.questionResultCard}>
           <QuestionResultCard question={myAttempt} />
@@ -32,6 +32,6 @@ export const RoundResult = (): JSX.Element => {
       <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={handleContinueToNextRound}>
         Continuer
       </Button>
-    </>
+    </div>
   );
 };

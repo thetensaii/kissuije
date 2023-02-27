@@ -3,6 +3,7 @@ import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
 import { H2 } from 'components/atom/Typo/H2';
 import styles from './LobbyInvitation.module.scss';
+import { toast } from 'react-toastify';
 
 type Props = {
   invitationLink: string;
@@ -11,6 +12,7 @@ type Props = {
 export const LobbyInvitation = React.memo(({ invitationLink }: Props): JSX.Element => {
   const copyRoomLink = (): void => {
     navigator.clipboard.writeText(invitationLink);
+    toast.info('Le lien a bien été copié');
   };
 
   return (

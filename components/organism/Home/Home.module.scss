@@ -1,7 +1,17 @@
-.formContainer {
-  width: 40%;
-}
+.container{
+  margin-top: 1rem;
 
-.rulesContainer {
-  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
+
+  & > .formContainer {
+    width: 40%;
+  }
+  
+  & > .rulesContainer {
+    width: 80%;
+  }
 }

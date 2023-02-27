@@ -25,7 +25,7 @@ export const FinalResults = (): JSX.Element => {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.winners}>
         <FinalWinnersGrid winners={winners} />
       </div>
@@ -42,6 +42,6 @@ export const FinalResults = (): JSX.Element => {
         </Button>
         <Button onClick={handleRestart}>Rejouer</Button>
       </div>
-    </>
+    </div>
   );
 };

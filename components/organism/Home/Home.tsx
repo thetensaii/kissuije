@@ -26,7 +26,7 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.formContainer}>
         {roomId ? (
           <PlayerForm initialName={name} type="joinRoom" createGameRoom={createGameRoom} joinGameRoom={joinPartyRoom} />
@@ -38,6 +38,6 @@ export function Home({ roomId, redirectToRoom }: Props): JSX.Element {
       <div className={styles.rulesContainer}>
         <RulesExplanation />
       </div>
-    </>
+    </div>
   );
 }
