@@ -12,13 +12,13 @@ export const EndGame = (): JSX.Element => {
   if (!myAttempt) throw new Error('No Attempt');
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.card}>
         {player.hasWon ? <WinnerCard player={player} attempt={myAttempt} /> : <LoserCard player={player} />}
       </div>
       <Button className={styles.continueButton} rightIcon="ArrowRight" onClick={moveToRankingPage}>
         Continuer
       </Button>
-    </>
+    </div>
   );
 };
