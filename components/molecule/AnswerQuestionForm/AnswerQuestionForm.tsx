@@ -1,10 +1,10 @@
 import { Icon } from 'components/atom/Icon';
 import { Choice } from 'components/atom/Choice';
-import { QuestionText } from 'components/atom/Typo/QuestionText';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
 import { QuestionType } from 'lib/frontend/types/question';
 import styles from './AnswerQuestionForm.module.scss';
+import { Typo } from 'components/atom/Typo';
 export type Props = {
   asker: PlayerType;
   question: QuestionType;
@@ -25,7 +25,9 @@ export const AnswerQuestionForm = ({ asker, question, answerQuestion, disabled }
       </p>
       <div className={styles.label}>
         <p>répondez à sa question</p>
-        <QuestionText>"{question.text}"</QuestionText>
+        <Typo tag="p" variant="question">
+          "{question.text}"
+        </Typo>
       </div>
       <div className={styles.answers}>
         <Choice type="yes" onClick={(): void => answerQuestion(question.askerId, 'yes')} disabled={disabled}>

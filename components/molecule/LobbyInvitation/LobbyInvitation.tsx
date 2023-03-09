@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from 'components/atom/Button';
 import { InputText } from 'components/atom/InputText';
-import { H2 } from 'components/atom/Typo/H2';
 import styles from './LobbyInvitation.module.scss';
 import { toast } from 'react-toastify';
+import { Typo } from 'components/atom/Typo';
 
 type Props = {
   invitationLink: string;
@@ -17,7 +17,9 @@ export const LobbyInvitation = React.memo(({ invitationLink }: Props): JSX.Eleme
 
   return (
     <div className={styles.lobbyInvitation}>
-      <H2>Inviter des amis</H2>
+      <Typo tag="h2" variant="heading2" font="medium">
+        Inviter des amis
+      </Typo>
       <p>Envoyez le lien d’invitation ci-dessous à vos amis afin qu’il puisse rejoindre la partie</p>
       <InputText disabled value={invitationLink} />
       <Button variant="secondary" rightIcon="Link" onClick={copyRoomLink}>

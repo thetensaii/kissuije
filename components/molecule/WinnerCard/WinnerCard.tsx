@@ -1,5 +1,5 @@
 import { Icon } from 'components/atom/Icon';
-import { H1 } from 'components/atom/Typo/H1';
+import { Typo } from 'components/atom/Typo';
 import { getAttemptAnswerStats } from 'lib/frontend/functions/ResultStats';
 import { AttemptType } from 'lib/frontend/types/attempt';
 import { PlayerType } from 'lib/frontend/types/player';
@@ -19,7 +19,9 @@ export const WinnerCard = ({ player, attempt }: Props): JSX.Element => {
     <Card>
       <div className={styles.container}>
         <Icon variant="PartyPopper" width={109} height={109} />
-        <H1>Vous avez gagné !</H1>
+        <Typo tag="h1" variant="heading1">
+          Vous avez gagné !
+        </Typo>
         <p className={styles.label}>
           Vous avez deviné <b>{player.character}</b>
         </p>

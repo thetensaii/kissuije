@@ -1,4 +1,4 @@
-import { H2 } from 'components/atom/Typo/H2';
+import { Typo } from 'components/atom/Typo';
 import { AttemptsList } from 'components/molecule/AttemptsList';
 import { Card } from 'components/molecule/Card';
 import { AnswerType } from 'lib/frontend/types/answer';
@@ -22,7 +22,9 @@ export const AnswerAttempts = (): JSX.Element => {
       <div className={styles.labelWindow}>
         <Card>
           <div className={styles.windowContent}>
-            <H2>Répondez aux questions</H2>
+            <Typo tag="h2" variant="heading2" font="medium">
+              Répondez aux questions
+            </Typo>
             <p>
               Choisissez une réponse à chacune des questions afin d’aiguiller les participants à trouver leur personnage
             </p>

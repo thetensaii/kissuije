@@ -1,5 +1,5 @@
 import { Icon } from 'components/atom/Icon';
-import { H1 } from 'components/atom/Typo/H1';
+import { Typo } from 'components/atom/Typo';
 import { getAttemptAnswerStats } from 'lib/frontend/functions/ResultStats';
 import { GuessType } from 'lib/frontend/types/guess';
 import { Card } from '../Card';
@@ -17,7 +17,9 @@ export const WrongGuessResultCard = ({ guess }: Props): JSX.Element => {
     <Card>
       <div className={styles.title}>
         <Icon variant="RedCross" width={48} height={48} />
-        <H1>Mauvaise réponse !</H1>
+        <Typo tag="h1" variant="heading1">
+          Mauvaise réponse !
+        </Typo>
       </div>
       <p className={styles.label}>
         Vous avez essayé de deviner <b>{guess.text}</b>

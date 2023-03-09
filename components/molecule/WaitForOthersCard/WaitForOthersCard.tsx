@@ -1,5 +1,5 @@
 import { Icon } from 'components/atom/Icon';
-import { H2 } from 'components/atom/Typo/H2';
+import { Typo } from 'components/atom/Typo';
 import { PlayerType } from 'lib/frontend/types/player';
 import { Card } from '../Card';
 import { DidYouKnowCard } from '../DidYouKnowCard';
@@ -18,7 +18,9 @@ export const WaitForOthersCard = ({ didYouKnowCardText, players, checkPlayerRead
       <div className={styles.container}>
         <div className={styles.waitContainer}>
           <Icon variant="Checked" width={72} height={72} />
-          <H2>En attente des autres joueurs...</H2>
+          <Typo tag="h2" variant="heading2" font="medium">
+            En attente des autres joueurs...
+          </Typo>
           <div className={styles.cardContainer}>
             <DidYouKnowCard text={didYouKnowCardText} />
           </div>
