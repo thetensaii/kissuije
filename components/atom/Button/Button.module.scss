@@ -25,17 +25,39 @@
 
 .primary {
   background-color: $primary;
-  color: $white
+  color: $white;
+
+  &:hover {
+    background-color: $white;
+    color: $primary;
+  }
+  
+  &:focus {
+    outline: 2px solid $primary-dark;
+  }
 }
 
 .secondary {
   background-color: $secondary;
   color: $white;
+  
+  &:hover {
+    background-color: $white;
+    color: $secondary;
+  }
+
+  &:focus {
+    outline: 2px solid $green;
+  }
 }
 
 .ternary {
-  background-color: white;
+  background-color: $white;
   color: $primary;
+  
+  &:focus{
+    outline: 2px solid $green;
+  }
 }
 
 .transparent {

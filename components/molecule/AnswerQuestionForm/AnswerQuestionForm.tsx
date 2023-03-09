@@ -1,5 +1,5 @@
-import { InputButton } from 'components/atom/InputButton';
-import { Svg } from 'components/atom/Svg';
+import { Icon } from 'components/atom/Icon';
+import { Choice } from 'components/atom/Choice';
 import { QuestionText } from 'components/atom/Typo/QuestionText';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { PlayerType } from 'lib/frontend/types/player';
@@ -16,7 +16,7 @@ export const AnswerQuestionForm = ({ asker, question, answerQuestion, disabled }
   return (
     <form className={`${styles.container} ${disabled ? styles.disabled : ''}`}>
       <p className={styles.askerCard}>
-        <Svg type={asker.avatar} alt={asker.avatar} width={32} height={32} />
+        <Icon variant={asker.avatar} width={32} height={32} />
         <span className={styles.askerText}>
           <span className={styles.askerName}>{asker.name}</span>
           <span>est</span>
@@ -28,15 +28,15 @@ export const AnswerQuestionForm = ({ asker, question, answerQuestion, disabled }
         <QuestionText>"{question.text}"</QuestionText>
       </div>
       <div className={styles.answers}>
-        <InputButton type="yes" onClick={(): void => answerQuestion(question.askerId, 'yes')} disabled={disabled}>
+        <Choice type="yes" onClick={(): void => answerQuestion(question.askerId, 'yes')} disabled={disabled}>
           Oui
-        </InputButton>
-        <InputButton type="no" onClick={(): void => answerQuestion(question.askerId, 'no')} disabled={disabled}>
+        </Choice>
+        <Choice type="no" onClick={(): void => answerQuestion(question.askerId, 'no')} disabled={disabled}>
           Non
-        </InputButton>
-        <InputButton type="idk" onClick={(): void => answerQuestion(question.askerId, 'idk')} disabled={disabled}>
+        </Choice>
+        <Choice type="idk" onClick={(): void => answerQuestion(question.askerId, 'idk')} disabled={disabled}>
           Je ne sais pas
-        </InputButton>
+        </Choice>
       </div>
     </form>
   );

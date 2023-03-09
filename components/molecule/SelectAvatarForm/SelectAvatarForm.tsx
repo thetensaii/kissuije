@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { avatarList, AvatarType } from 'lib/frontend/types/svg';
-import { Svg } from 'components/atom/Svg';
 import Button from 'components/atom/Button';
 import styles from './SelectAvatarForm.module.scss';
+import { Icon } from 'components/atom/Icon';
 
 type Props = {
   initialAvatar?: AvatarType;
@@ -31,11 +31,11 @@ export const SelectAvatarForm = ({ initialAvatar, onChange }: Props): JSX.Elemen
   return (
     <div className={styles.selectAvatar}>
       <Button variant="transparent" onClick={handleLeftChevronClick}>
-        <Svg type="ChevronLeft" alt="Chevron Gauche" width={20} height={35} />
+        <Icon variant="ChevronLeft" width={20} height={35} />
       </Button>
-      <Svg type={avatar} alt={avatar} width={80} height={80} />
+      <Icon variant={avatar} width={80} height={80} />
       <Button variant="transparent" onClick={handleRightChevronClick}>
-        <Svg type="ChevronRight" alt="Chevron Droite" width={20} height={35} />
+        <Icon variant="ChevronRight" width={20} height={35} />
       </Button>
     </div>
   );

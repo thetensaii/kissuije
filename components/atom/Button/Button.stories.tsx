@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SvgType } from 'lib/frontend/types/svg';
-import { Svg } from '../Svg';
+import { Icon } from '../Icon';
 
 import { Button } from './Button';
 
@@ -54,7 +53,7 @@ export const Transparent: Story = {
     children: (
       <>
         TransparentButton
-        <Svg type="ChevronRight" alt="Chevron Droit" width={25} height={25} />
+        <Icon variant="ChevronRight" width={25} height={25} />
       </>
     ),
   },
@@ -63,21 +62,21 @@ export const Transparent: Story = {
 export const WithLeftIcon: Story = {
   args: {
     children: 'With Left Icon',
-    leftIcon: SvgType.ChevronLeft,
+    leftIcon: 'ChevronLeft',
   },
 };
 
 export const WithRightIcon: Story = {
   args: {
     children: 'With Right Icon',
-    rightIcon: SvgType.ChevronRight,
+    rightIcon: 'ChevronRight',
   },
 };
 
 export const WithBothIcon: Story = {
   args: {
     children: 'With Both Icon',
-    leftIcon: SvgType.ChevronLeft,
-    rightIcon: SvgType.ChevronRight,
+    leftIcon: 'ChevronLeft',
+    rightIcon: 'ChevronRight',
   },
 };

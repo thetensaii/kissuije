@@ -1,15 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { InputButton } from './InputButton';
+import { Choice } from './Choice';
 
-const meta: Meta<typeof InputButton> = {
-  title: 'Atom/InputButton',
-  component: InputButton,
+const meta: Meta<typeof Choice> = {
+  title: 'Atom/Choice',
+  component: Choice,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof InputButton>;
+type Story = StoryObj<typeof Choice>;
 
 export const Oui: Story = {
   args: {

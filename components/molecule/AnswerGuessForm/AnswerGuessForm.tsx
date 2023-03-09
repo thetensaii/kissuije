@@ -1,5 +1,5 @@
-import { InputButton } from 'components/atom/InputButton';
-import { Svg } from 'components/atom/Svg';
+import { Icon } from 'components/atom/Icon';
+import { Choice } from 'components/atom/Choice';
 import { QuestionText } from 'components/atom/Typo/QuestionText';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { GuessType } from 'lib/frontend/types/guess';
@@ -16,7 +16,7 @@ export const AnswerGuessForm = ({ asker, guess, answerGuess, disabled }: Props):
   return (
     <form className={`${styles.container} ${disabled ? styles.disabled : ''}`}>
       <p className={styles.askerCard}>
-        <Svg type={asker.avatar} alt={asker.avatar} width={32} height={32} />
+        <Icon variant={asker.avatar} width={32} height={32} />
         <span className={styles.askerText}>
           <span className={styles.askerName}>{asker.name}</span>
           <span>est</span>
@@ -29,12 +29,12 @@ export const AnswerGuessForm = ({ asker, guess, answerGuess, disabled }: Props):
           <QuestionText>"{guess.text}"</QuestionText>
         </div>
         <div className={styles.answers}>
-          <InputButton type="true" onClick={(): void => answerGuess(guess.askerId, 'yes')} disabled={disabled}>
+          <Choice type="true" onClick={(): void => answerGuess(guess.askerId, 'yes')} disabled={disabled}>
             Vrai
-          </InputButton>
-          <InputButton type="false" onClick={(): void => answerGuess(guess.askerId, 'no')} disabled={disabled}>
+          </Choice>
+          <Choice type="false" onClick={(): void => answerGuess(guess.askerId, 'no')} disabled={disabled}>
             Faux
-          </InputButton>
+          </Choice>
         </div>
       </div>
     </form>

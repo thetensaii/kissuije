@@ -1,6 +1,5 @@
-import Button from '../Button';
 import { ButtonTypo } from '../Typo/ButtonText';
-import styles from './InputButton.module.scss';
+import styles from './Choice.module.scss';
 
 export type InputButtonType = 'yes' | 'no' | 'idk' | 'true' | 'false';
 
@@ -16,10 +15,10 @@ const valueStyleMap: Record<InputButtonType, typeof styles[keyof typeof styles]>
   idk: styles.idk,
 };
 
-export const InputButton = ({ type, children, ...props }: Props): JSX.Element => {
+export const Choice = ({ type, children, ...props }: Props): JSX.Element => {
   return (
-    <Button type="button" className={`${styles.inputButton} ${valueStyleMap[type]}`} {...props}>
+    <button type="button" className={`${styles.choice} ${valueStyleMap[type]}`} {...props}>
       <ButtonTypo>{children}</ButtonTypo>
-    </Button>
+    </button>
   );
 };

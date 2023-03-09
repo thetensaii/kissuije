@@ -1,4 +1,4 @@
-import { Svg } from 'components/atom/Svg';
+import { Icon } from 'components/atom/Icon';
 import { PlayerType } from 'lib/frontend/types/player';
 import styles from './Player.module.scss';
 
@@ -13,9 +13,11 @@ type Props = {
 export const Player = ({ avatar, name, isPlayer = false, isOwner = false, afterSpanText }: Props): JSX.Element => {
   return (
     <div className={styles.player}>
-      <Svg type={avatar} alt={avatar} width={32} height={32} />
+      <span>
+        <Icon variant={avatar} width={32} height={32} />
+      </span>
       {isPlayer ? <b className={styles.playerName}>{name}</b> : <span className={styles.playerName}>{name}</span>}
-      {isOwner && <Svg type="Crown" alt="Crown" width={22} height={22} />}
+      {isOwner && <Icon variant="Crown" width={22} height={22} />}
       {afterSpanText && <span>{afterSpanText}</span>}
     </div>
   );
