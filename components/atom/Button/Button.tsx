@@ -3,7 +3,7 @@ import { Icon } from '../Icon/Icon';
 import { IconVariant } from '../Icon/types';
 import { ButtonTypo } from '../Typo/ButtonText';
 import styles from './Button.module.scss';
-type ButtonVariant = 'primary' | 'secondary' | 'ternary' | 'transparent' | 'true' | 'false';
+type ButtonVariant = 'primary' | 'secondary' | 'ternary' | 'transparent';
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   leftIcon?: IconVariant;
