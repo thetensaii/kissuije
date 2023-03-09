@@ -1,10 +1,12 @@
-import { MainH1 } from 'components/atom/Typo/MainH1';
+import { Typo } from 'components/atom/Typo';
 import styles from './Header.module.scss';
 
 export const Header = (): JSX.Element => {
   return (
     <header className={styles.header}>
-      <MainH1>Kissuije</MainH1>
+      <Typo tag="h1" variant="mainHeading1">
+        Kissuije
+      </Typo>
     </header>
   );
 };

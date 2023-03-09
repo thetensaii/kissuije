@@ -1,6 +1,6 @@
+import { Typo } from 'components/atom/Typo';
 import { PlayerType } from 'lib/frontend/types/player';
 import { Player } from '../Player';
-import { H2 } from 'components/atom/Typo/H2';
 
 import styles from './LobbyPlayersList.module.scss';
 
@@ -16,7 +16,9 @@ export const LobbyPlayersList = ({ players }: Props): JSX.Element => {
 
   return (
     <section className={styles.container}>
-      <H2>Liste des joueurs connectés</H2>
+      <Typo tag="h2" variant="heading2" font="medium">
+        Liste des joueurs connectés
+      </Typo>
       <div>
         <div className={styles.playersGrid}>
           <Player avatar={owner.avatar} name={owner.name} isPlayer={owner.isPlayer} isOwner={true} />

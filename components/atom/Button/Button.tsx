@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Icon } from '../Icon/Icon';
 import { IconVariant } from '../Icon/types';
-import { ButtonTypo } from '../Typo/ButtonText';
+import { Typo } from '../Typo';
 import styles from './Button.module.scss';
 type ButtonVariant = 'primary' | 'secondary' | 'ternary' | 'transparent';
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -24,7 +24,9 @@ export function Button({
   return (
     <button type={type} className={classNames} {...props}>
       <span>{leftIcon && <Icon variant={leftIcon} width={25} height={25} />}</span>
-      <ButtonTypo>{children}</ButtonTypo>
+      <Typo tag="span" variant="button">
+        {children}
+      </Typo>
       <span>{rightIcon && <Icon variant={rightIcon} width={25} height={25} />}</span>
     </button>
   );

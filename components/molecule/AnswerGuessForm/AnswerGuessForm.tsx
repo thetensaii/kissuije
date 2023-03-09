@@ -1,10 +1,10 @@
 import { Icon } from 'components/atom/Icon';
 import { Choice } from 'components/atom/Choice';
-import { QuestionText } from 'components/atom/Typo/QuestionText';
 import { AnswerType } from 'lib/frontend/types/answer';
 import { GuessType } from 'lib/frontend/types/guess';
 import { PlayerType } from 'lib/frontend/types/player';
 import styles from './AnswerGuessForm.module.scss';
+import { Typo } from 'components/atom/Typo';
 export type Props = {
   asker: PlayerType;
   guess: GuessType;
@@ -26,7 +26,9 @@ export const AnswerGuessForm = ({ asker, guess, answerGuess, disabled }: Props):
       <div className={styles.guess}>
         <div className={styles.label}>
           <p>a essayé de deviner</p>
-          <QuestionText>"{guess.text}"</QuestionText>
+          <Typo tag="p" variant="question">
+            "{guess.text}"
+          </Typo>
         </div>
         <div className={styles.answers}>
           <Choice type="true" onClick={(): void => answerGuess(guess.askerId, 'yes')} disabled={disabled}>

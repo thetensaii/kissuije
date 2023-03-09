@@ -1,11 +1,13 @@
-import { H1 } from 'components/atom/Typo/H1';
+import { Typo } from 'components/atom/Typo';
 import { RuleExplanation } from '../RuleExplanation';
 import styles from './RulesExplanation.module.scss';
 
 export const RulesExplanation = (): JSX.Element => {
   return (
     <div className={styles.container}>
-      <H1>Comment jouer ?</H1>
+      <Typo tag="h1" variant="heading1" className={styles.title}>
+        Comment jouer ?
+      </Typo>
       <div className={styles.rulesExplanation}>
         <RuleExplanation number={1}>
           <p>Chaque joueur choisis un personnage pour un autre joueur</p>

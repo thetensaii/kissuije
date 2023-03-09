@@ -1,6 +1,6 @@
 import Button from 'components/atom/Button';
 import { Icon } from 'components/atom/Icon';
-import { H2 } from 'components/atom/Typo/H2';
+import { Typo } from 'components/atom/Typo';
 import { AskQuestionForm } from 'components/molecule/AskQuestionForm';
 import { Card } from 'components/molecule/Card';
 import { PlayersReadyList } from 'components/molecule/PlayersReadyList';
@@ -24,7 +24,9 @@ export const AskQuestion = (): JSX.Element => {
         <div className={styles.contentContainer}>
           <div className={styles.choiceContainer}>
             <AskQuestionForm askQuestion={handleAskQuestion} />
-            <H2>OU</H2>
+            <Typo tag="h2" variant="heading2" font="medium">
+              OU
+            </Typo>
             <Button onClick={redirectToTryGuessScene}>
               <div className={styles.guessCharacterButtonContent}>
                 <Icon variant="User" width={39} height={39} />

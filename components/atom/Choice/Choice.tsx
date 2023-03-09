@@ -1,4 +1,4 @@
-import { ButtonTypo } from '../Typo/ButtonText';
+import { Typo } from '../Typo';
 import styles from './Choice.module.scss';
 
 export type InputButtonType = 'yes' | 'no' | 'idk' | 'true' | 'false';
@@ -18,7 +18,9 @@ const valueStyleMap: Record<InputButtonType, typeof styles[keyof typeof styles]>
 export const Choice = ({ type, children, ...props }: Props): JSX.Element => {
   return (
     <button type="button" className={`${styles.choice} ${valueStyleMap[type]}`} {...props}>
-      <ButtonTypo>{children}</ButtonTypo>
+      <Typo tag="span" variant="button">
+        {children}
+      </Typo>
     </button>
   );
 };

@@ -1,4 +1,4 @@
-import { H2 } from 'components/atom/Typo/H2';
+import { Typo } from 'components/atom/Typo';
 import styles from './DidYouKnowCard.module.scss';
 
 type Props = {
@@ -8,9 +8,9 @@ type Props = {
 export const DidYouKnowCard = ({ text }: Props): JSX.Element => {
   return (
     <div className={styles.container}>
-      <H2 className={styles.title}>
+      <Typo tag="h2" variant="heading2" font="medium" className={styles.title}>
         <b>Le saviez vous ?</b>
-      </H2>
+      </Typo>
       <p>{text}</p>
     </div>
   );

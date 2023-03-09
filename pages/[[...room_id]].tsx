@@ -15,8 +15,8 @@ import { TryGuess } from 'components/organism/TryGuess';
 import { AnswerAttempts } from 'components/organism/AnswerAttempts';
 import { WaitForAnswers } from 'components/organism/WaitForAnswers';
 import { WaitForContinue } from 'components/organism/WaitForContinue';
-import { H1 } from 'components/atom/Typo/H1';
 import { OnlyPlayerLeft } from 'components/organism/OnlyPlayerLeft';
+import { Typo } from 'components/atom/Typo';
 
 export default function Root(): JSX.Element {
   const { query, isReady, push } = useRouter();
@@ -33,7 +33,12 @@ export default function Root(): JSX.Element {
     push(`/${roomID}`, undefined, { shallow: true });
   };
 
-  if (!isReady) return <H1>Loading...</H1>;
+  if (!isReady)
+    return (
+      <Typo tag="h1" variant="heading1">
+        Loading...
+      </Typo>
+    );
 
   switch (scene) {
     case SceneState.HOME:
