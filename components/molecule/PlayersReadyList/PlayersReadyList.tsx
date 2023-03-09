@@ -1,4 +1,4 @@
-import { Svg } from 'components/atom/Svg';
+import { Icon } from 'components/atom/Icon';
 import { PlayerType } from 'lib/frontend/types/player';
 import { Player } from '../Player';
 
@@ -24,9 +24,7 @@ export const PlayersReadyList = ({ players, checkPlayerReady }: Props): JSX.Elem
             name={p.name}
             avatar={p.avatar}
             isPlayer={p.isPlayer}
-            afterSpanText={
-              checkPlayerReady(p) ? <Svg type="Checked" alt="Checked" width={24} height={24} /> : undefined
-            }
+            afterSpanText={checkPlayerReady(p) ? <Icon variant="Checked" width={24} height={24} /> : null}
           />
         ))}
       </div>

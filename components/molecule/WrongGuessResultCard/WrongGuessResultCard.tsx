@@ -1,4 +1,4 @@
-import { Svg } from 'components/atom/Svg';
+import { Icon } from 'components/atom/Icon';
 import { H1 } from 'components/atom/Typo/H1';
 import { getAttemptAnswerStats } from 'lib/frontend/functions/ResultStats';
 import { GuessType } from 'lib/frontend/types/guess';
@@ -16,7 +16,7 @@ export const WrongGuessResultCard = ({ guess }: Props): JSX.Element => {
   return (
     <Card>
       <div className={styles.title}>
-        <Svg type="RedCross" alt="Croix Rouge" width={48} height={48} />
+        <Icon variant="RedCross" width={48} height={48} />
         <H1>Mauvaise réponse !</H1>
       </div>
       <p className={styles.label}>

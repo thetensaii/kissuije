@@ -1,4 +1,4 @@
-import { Svg } from 'components/atom/Svg';
+import { Icon } from 'components/atom/Icon';
 import { H2 } from 'components/atom/Typo/H2';
 import { PlayerType } from 'lib/frontend/types/player';
 import { Card } from '../Card';
@@ -17,7 +17,7 @@ export const WaitForOthersCard = ({ didYouKnowCardText, players, checkPlayerRead
     <Card>
       <div className={styles.container}>
         <div className={styles.waitContainer}>
-          <Svg type="Checked" alt="Checked" width={72} height={72} />
+          <Icon variant="Checked" width={72} height={72} />
           <H2>En attente des autres joueurs...</H2>
           <div className={styles.cardContainer}>
             <DidYouKnowCard text={didYouKnowCardText} />
